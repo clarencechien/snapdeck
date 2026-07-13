@@ -10,8 +10,8 @@ const dir = join(__dirname, "../../examples");
 const files = readdirSync(dir).filter((f) => f.endsWith(".md")).sort();
 
 describe("buildIR — golden samples", () => {
-  it("有 10 份黃金樣本", () => {
-    expect(files.length).toBe(10);
+  it("有 6 份黃金樣本(產、銷、人、發、財 + 產品規劃)", () => {
+    expect(files.length).toBe(6);
   });
 
   for (const file of files) {

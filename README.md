@@ -27,7 +27,7 @@ npx serve dist     # 任何靜態伺服器皆可
 
 ```bash
 npm test               # IR snapshot、linter、pptx 結構斷言
-npm run lint:samples   # 10 份黃金樣本過 profile linter
+npm run lint:samples   # 黃金樣本過 profile linter
 npm run typecheck
 ```
 
@@ -68,7 +68,7 @@ src/
 spec/PROFILE.md  # MD Profile v1(唯一合約)
 skill/SKILL.md   # LLM 產出技能
 prompt.md        # 「AI 產生」按鈕複製的 prompt
-examples/        # 10 份黃金樣本(= 測試 fixtures)
+examples/        # 6 份黃金樣本:產、銷、人、發、財 + 產品規劃(= 測試 fixtures)
 docs/            # HANDOFF、DEMO 腳本
 DECISIONS.md     # 實作期間的裁決記錄
 ```

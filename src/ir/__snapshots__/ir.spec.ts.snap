@@ -1,13 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
+exports[`buildIR — golden samples > IR snapshot: 01-mdshare-product.md 1`] = `
 {
   "meta": {
-    "author": "Clarence",
+    "author": undefined,
     "date": "2026-07-13",
     "lang": "zh-TW",
     "template": "clean-light",
-    "title": "邊緣 AI 產品線週報 W28",
+    "title": "MD Share & Present 產品規劃",
   },
   "slides": [
     {
@@ -17,7 +17,7 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "邊緣 AI 產品線週報 W28",
+              "text": "MD Share & Present 產品規劃",
             },
           ],
         },
@@ -25,7 +25,7 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
           "kind": "para",
           "text": [
             {
-              "text": "Clarence · 2026-07-13",
+              "text": "2026-07-13",
             },
           ],
         },
@@ -37,11 +37,46 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
     {
       "blocks": [
         {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "定位與問題",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "定位與問題",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
           "depth": 2,
           "kind": "heading",
           "text": [
             {
-              "text": "本週摘要",
+              "text": "產品定位",
+            },
+          ],
+        },
+        {
+          "emphasis": true,
+          "kind": "para",
+          "text": [
+            {
+              "text": "Markdown 的「分享與簡報層」,不是編輯器。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "貼上一份類通用 Markdown,十秒內得到三種產出:",
             },
           ],
         },
@@ -50,51 +85,51 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
             {
               "desc": [
                 {
-                  "text": "GB10 試產批 20 台通過廠測,良率 96%",
+                  "text": "可直接分享的頁面連結",
                 },
               ],
-              "term": "出貨",
+              "term": "設計感網頁",
               "text": [
                 {
                   "bold": true,
-                  "text": "出貨",
+                  "text": "設計感網頁",
                 },
                 {
-                  "text": ":GB10 試產批 20 台通過廠測,良率 96%",
+                  "text": ":可直接分享的頁面連結",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "遠端存取模組完成資安審查,進入整合測試",
+                  "text": "全螢幕、鍵盤翻頁、可直接開會",
                 },
               ],
-              "term": "軟體",
+              "term": "HTML slide",
               "text": [
                 {
                   "bold": true,
-                  "text": "軟體",
+                  "text": "HTML slide",
                 },
                 {
-                  "text": ":遠端存取模組完成資安審查,進入整合測試",
+                  "text": ":全螢幕、鍵盤翻頁、可直接開會",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "兩家 EMS 客戶完成 PoC 簽核,排入 Q3 部署",
+                  "text": "套用企業官方 template",
                 },
               ],
-              "term": "客戶",
+              "term": "可編輯 pptx",
               "text": [
                 {
                   "bold": true,
-                  "text": "客戶",
+                  "text": "可編輯 pptx",
                 },
                 {
-                  "text": ":兩家 EMS 客戶完成 PoC 簽核,排入 Q3 部署",
+                  "text": ":套用企業官方 template",
                 },
               ],
             },
@@ -105,11 +140,12 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
         },
       ],
       "headingPath": [
-        "本週摘要",
+        "定位與問題",
+        "產品定位",
       ],
-      "layout": "cards",
+      "layout": "content",
       "layoutSource": "inferred",
-      "notes": "開場 30 秒帶過,重點放下一頁的風險",
+      "notes": "開場強調不做編輯器,只做「寫完之後」到「拿去報告」的最後一哩",
     },
     {
       "blocks": [
@@ -118,79 +154,76 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "關鍵數字",
-            },
-          ],
-        },
-        {
-          "kind": "stat",
-          "label": "試產良率,高於 90% 的量產門檻",
-          "value": "96%",
-        },
-      ],
-      "headingPath": [
-        "關鍵數字",
-      ],
-      "layout": "big-stat",
-      "layoutSource": "inferred",
-      "notes": "上批是 88%,改了治具之後跳上來的,可以提一下",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "風險與需要的支援",
-            },
-          ],
-        },
-        {
-          "emphasis": true,
-          "kind": "para",
-          "text": [
-            {
-              "text": "韌體簽章憑證流程仍卡在法務,若下週未解,量產排程延後兩週。",
+              "text": "市場缺口",
             },
           ],
         },
         {
           "items": [
             {
+              "desc": [
+                {
+                  "text": "協作編輯為核心,slide 陽春,無企業 pptx 輸出",
+                },
+              ],
+              "term": "HackMD / CodiMD",
               "text": [
                 {
                   "bold": true,
-                  "text": "需要",
+                  "text": "HackMD / CodiMD",
                 },
                 {
-                  "text": ":法務窗口本週內回覆憑證代管條款",
+                  "text": ":協作編輯為核心,slide 陽春,無企業 pptx 輸出",
                 },
               ],
             },
             {
+              "desc": [
+                {
+                  "text": "pptx 是整頁圖片不可編輯,企業場景不可用",
+                },
+              ],
+              "term": "Marp / Slidev",
               "text": [
                 {
                   "bold": true,
-                  "text": "備案",
+                  "text": "Marp / Slidev",
                 },
                 {
-                  "text": ":先以工程憑證出試產批,量產批換正式憑證",
+                  "text": ":pptx 是整頁圖片不可編輯,企業場景不可用",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "分享體驗好,但內容鎖進平台、無法自架",
+                },
+              ],
+              "term": "Notion",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "Notion",
+                },
+                {
+                  "text": ":分享體驗好,但內容鎖進平台、無法自架",
                 },
               ],
             },
           ],
           "kind": "list",
           "ordered": false,
-          "shape": "plain",
+          "shape": "cards",
         },
       ],
       "headingPath": [
-        "風險與需要的支援",
+        "定位與問題",
+        "市場缺口",
       ],
-      "layout": "content",
+      "layout": "cards",
       "layoutSource": "inferred",
-      "notes": "這頁是本次週報唯一的 ask,直接點名請主管協調",
+      "notes": "市場不缺編輯器,缺的是寫完之後到分享報告之間的落差",
     },
     {
       "blocks": [
@@ -199,7 +232,7 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "下週計畫",
+              "text": "企業三大硬需求",
             },
           ],
         },
@@ -208,21 +241,21 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
             {
               "text": [
                 {
-                  "text": "整合測試完成遠端存取模組",
+                  "text": "輸出的 pptx 必須可編輯,主管會改兩個字再轉發",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "出貨第二批試產 30 台",
+                  "text": "必須套用公司官方 template",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "與客戶 A 確認 Q3 部署場勘日期",
+                  "text": "內網資安環境,需可自架或純前端",
                 },
               ],
             },
@@ -233,10 +266,12 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
         },
       ],
       "headingPath": [
-        "下週計畫",
+        "定位與問題",
+        "企業三大硬需求",
       ],
       "layout": "content",
       "layoutSource": "inferred",
+      "notes": "這三點就是差異化所在,MVP 驗收即以此三點為準",
     },
     {
       "blocks": [
@@ -245,175 +280,7 @@ exports[`buildIR — golden samples > IR snapshot: 01-weekly-report.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "附錄:測試明細",
-            },
-          ],
-        },
-        {
-          "header": [
-            [
-              {
-                "text": "測項",
-              },
-            ],
-            [
-              {
-                "text": "樣本數",
-              },
-            ],
-            [
-              {
-                "text": "通過",
-              },
-            ],
-            [
-              {
-                "text": "備註",
-              },
-            ],
-          ],
-          "kind": "table",
-          "rows": [
-            [
-              [
-                {
-                  "text": "高溫老化",
-                },
-              ],
-              [
-                {
-                  "text": "20",
-                },
-              ],
-              [
-                {
-                  "text": "20",
-                },
-              ],
-              [
-                {
-                  "text": "55°C / 72hr",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "振動",
-                },
-              ],
-              [
-                {
-                  "text": "20",
-                },
-              ],
-              [
-                {
-                  "text": "19",
-                },
-              ],
-              [
-                {
-                  "text": "1 台螺絲鬆動,已改扭力值",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "網路壓測",
-                },
-              ],
-              [
-                {
-                  "text": "20",
-                },
-              ],
-              [
-                {
-                  "text": "20",
-                },
-              ],
-              [
-                {
-                  "text": "—",
-                },
-              ],
-            ],
-          ],
-        },
-      ],
-      "headingPath": [
-        "附錄:測試明細",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "skip": true,
-    },
-  ],
-}
-`;
-
-exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = `
-{
-  "meta": {
-    "author": "產品團隊",
-    "date": "2026-07-13",
-    "lang": "zh-TW",
-    "template": "midnight",
-    "title": "廠內知識助理產品提案",
-  },
-  "slides": [
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "廠內知識助理產品提案",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "產品團隊 · 2026-07-13",
-            },
-          ],
-        },
-      ],
-      "headingPath": [],
-      "layout": "title",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "問題",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "問題",
-      ],
-      "layout": "section",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "產線知識正在流失",
+              "text": "目標用戶",
             },
           ],
         },
@@ -422,51 +289,51 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
             {
               "desc": [
                 {
-                  "text": "三年內資深技術員退休比例達 28%",
+                  "text": "LLM 產出週報提案,需快速簡報或轉 pptx",
                 },
               ],
-              "term": "老師傅退休潮",
+              "term": "企業工程師與 PM",
               "text": [
                 {
                   "bold": true,
-                  "text": "老師傅退休潮",
+                  "text": "企業工程師與 PM",
                 },
                 {
-                  "text": ":三年內資深技術員退休比例達 28%",
+                  "text": ":LLM 產出週報提案,需快速簡報或轉 pptx",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "SOP 更新平均落後現場做法 6 個月",
+                  "text": "依 skill 產出合規 MD,一鍵變頁面與簡報",
                 },
               ],
-              "term": "文件失效",
+              "term": "LLM 工作流",
               "text": [
                 {
                   "bold": true,
-                  "text": "文件失效",
+                  "text": "LLM 工作流",
                 },
                 {
-                  "text": ":SOP 更新平均落後現場做法 6 個月",
+                  "text": ":依 skill 產出合規 MD,一鍵變頁面與簡報",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "新人獨立上線時間長達 4 個月",
+                  "text": "把筆記變成正式頁面連結傳給同事",
                 },
               ],
-              "term": "交接斷層",
+              "term": "知識分享者",
               "text": [
                 {
                   "bold": true,
-                  "text": "交接斷層",
+                  "text": "知識分享者",
                 },
                 {
-                  "text": ":新人獨立上線時間長達 4 個月",
+                  "text": ":把筆記變成正式頁面連結傳給同事",
                 },
               ],
             },
@@ -477,49 +344,12 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
         },
       ],
       "headingPath": [
-        "問題",
-        "產線知識正在流失",
+        "定位與問題",
+        "目標用戶",
       ],
       "layout": "cards",
       "layoutSource": "inferred",
-      "notes": "這三個數字來自 HR 與品保的年度報告,有人問就給出處",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "代價",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "每月 120 小時,是工程師花在「問人找答案」上的時間",
-            },
-          ],
-        },
-        {
-          "cite": "某廠課長,訪談紀錄 2026-05",
-          "kind": "quote",
-          "text": [
-            {
-              "text": "同樣的問題,每一批新人都要重新踩一次。",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "問題",
-        "代價",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "換算下來一年約一個全職人力",
+      "notes": "非目標:精雕動畫版面的設計師、需要即時多人協作的團隊",
     },
     {
       "blocks": [
@@ -528,13 +358,13 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
           "kind": "heading",
           "text": [
             {
-              "text": "方案",
+              "text": "核心設計",
             },
           ],
         },
       ],
       "headingPath": [
-        "方案",
+        "核心設計",
       ],
       "layout": "section",
       "layoutSource": "inferred",
@@ -546,16 +376,230 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
           "kind": "heading",
           "text": [
             {
-              "text": "廠內知識助理",
+              "text": "設計原則",
             },
           ],
         },
         {
-          "kind": "para",
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "網頁、slide、pptx 都是同一份 MD 的投影",
+                },
+              ],
+              "term": "MD 唯一 SoT",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "MD 唯一 SoT",
+                },
+                {
+                  "text": ":網頁、slide、pptx 都是同一份 MD 的投影",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "在 GitHub、Obsidian 打開仍是正常 Markdown",
+                },
+              ],
+              "term": "類通用 MD",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "類通用 MD",
+                },
+                {
+                  "text": ":在 GitHub、Obsidian 打開仍是正常 Markdown",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "runtime 不依賴 LLM,可離線、可 diff、可測試",
+                },
+              ],
+              "term": "確定性渲染",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "確定性渲染",
+                },
+                {
+                  "text": ":runtime 不依賴 LLM,可離線、可 diff、可測試",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "美感來自 design rules,使用者只寫內容",
+                },
+              ],
+              "term": "設計感內建",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "設計感內建",
+                },
+                {
+                  "text": ":美感來自 design rules,使用者只寫內容",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "核心設計",
+        "設計原則",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "補充第五原則 client-side first:Tier-1 純靜態站,資料不出瀏覽器",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
           "text": [
             {
-              "bold": true,
-              "text": "做什麼",
+              "text": "系統架構",
+            },
+          ],
+        },
+        {
+          "engine": "mermaid",
+          "kind": "diagram",
+          "source": "flowchart TD
+    MD["類通用 MD(SoT)"] --> P["Parser(remark/unified)"]
+    P --> IR["IR:Slide Tree"]
+    IR --> H["HTML Renderer(頁面 + slide mode)"]
+    IR --> X["PPTX Renderer(pptxgenjs)"]
+    C["Template Config(JSON)"] --> H
+    C --> X
+    T["Template 萃取 Plugin(build-time)"] --> C",
+        },
+      ],
+      "headingPath": [
+        "核心設計",
+        "系統架構",
+      ],
+      "layout": "diagram",
+      "layoutSource": "inferred",
+      "notes": "LLM 只在 build-time 介入:template onboarding 與 authoring,runtime 完全確定性",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "三大資料結構",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "frontmatter 與 directive 詞彙表,同時是 LLM skill 核心",
+                },
+              ],
+              "term": "MD Profile Spec",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "MD Profile Spec",
+                },
+                {
+                  "text": ":frontmatter 與 directive 詞彙表,同時是 LLM skill 核心",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "與呈現無關,每頁帶 layout intent 與 typed 內容塊",
+                },
+              ],
+              "term": "IR(Slide Tree)",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "IR(Slide Tree)",
+                },
+                {
+                  "text": ":與呈現無關,每頁帶 layout intent 與 typed 內容塊",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "色票、字型、layout 座標、design rules,純 JSON",
+                },
+              ],
+              "term": "Template Config",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "Template Config",
+                },
+                {
+                  "text": ":色票、字型、layout 座標、design rules,純 JSON",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "核心設計",
+        "三大資料結構",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "config 產出後 runtime 完全不需要 LLM,一家企業一份",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "分階段交付",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "分階段交付",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "五個階段",
             },
           ],
         },
@@ -564,21 +608,343 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
             {
               "text": [
                 {
-                  "text": "吃進 SOP、維修紀錄、交接文件",
+                  "text": "Phase 0:MD Profile Spec 與 SKILL.md,規格先行",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "自然語言問答,回答附出處段落",
+                  "text": "Phase 1:純前端 MVP,驗證核心體驗",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "全程部署在廠內,資料不出網",
+                  "text": "Phase 2:企業 template 萃取 plugin",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "Phase 3:LLM 藝術指導 pass,選配",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "Phase 4:server tier,高保真與生態",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": true,
+          "shape": "steps",
+        },
+      ],
+      "headingPath": [
+        "分階段交付",
+        "五個階段",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "每階段都有明確驗收與非目標,規格先行是關鍵",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "Phase 0 規格先行",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "frontmatter schema、directive 詞彙表上限 8 個",
+                },
+              ],
+              "term": "MD Profile v1",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "MD Profile v1",
+                },
+                {
+                  "text": ":frontmatter schema、directive 詞彙表上限 8 個",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "教 LLM 產出合規 MD,含正反例",
+                },
+              ],
+              "term": "SKILL.md v1",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "SKILL.md v1",
+                },
+                {
+                  "text": ":教 LLM 產出合規 MD,含正反例",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "週報、提案、技術分享,後續驗收基準",
+                },
+              ],
+              "term": "黃金樣本 10 份",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "黃金樣本 10 份",
+                },
+                {
+                  "text": ":週報、提案、技術分享,後續驗收基準",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "分階段交付",
+        "Phase 0 規格先行",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "驗收:GitHub 上 directive 隱形、LLM 產出通過 profile linter",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "Phase 1 前端 MVP",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "CodeMirror 即時 preview,定位是貼上點",
+                },
+              ],
+              "term": "貼上式 editor",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "貼上式 editor",
+                },
+                {
+                  "text": ":CodeMirror 即時 preview,定位是貼上點",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "HTML 頁面與 slide mode、瀏覽器內產可編輯 pptx",
+                },
+              ],
+              "term": "雙輸出",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "雙輸出",
+                },
+                {
+                  "text": ":HTML 頁面與 slide mode、瀏覽器內產可編輯 pptx",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "2–3 套通用款,附確定性 design rules v1",
+                },
+              ],
+              "term": "內建 template",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "內建 template",
+                },
+                {
+                  "text": ":2–3 套通用款,附確定性 design rules v1",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "HTML 內嵌 SVG,pptx 轉 PNG,自動吃色票",
+                },
+              ],
+              "term": "Mermaid 支援",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "Mermaid 支援",
+                },
+                {
+                  "text": ":HTML 內嵌 SVG,pptx 轉 PNG,自動吃色票",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "分階段交付",
+        "Phase 1 前端 MVP",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "驗收:10 份黃金樣本全過、pptx 開啟零損毀、貼上到下載少於 30 秒",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "Phase 2 企業萃取",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "解析 theme 與 layout XML,自動完成約八成",
+                },
+              ],
+              "term": "自動萃取器",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "自動萃取器",
+                },
+                {
+                  "text": ":解析 theme 與 layout XML,自動完成約八成",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "看縮圖對應 layout intent,生成專屬 design rules",
+                },
+              ],
+              "term": "LLM 語意標註",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "LLM 語意標註",
+                },
+                {
+                  "text": ":看縮圖對應 layout intent,生成專屬 design rules",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "上傳、預覽、人工微調、存為純 JSON config",
+                },
+              ],
+              "term": "Onboarding UI",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "Onboarding UI",
+                },
+                {
+                  "text": ":上傳、預覽、人工微調、存為純 JSON config",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "分階段交付",
+        "Phase 2 企業萃取",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "驗收:一套 template onboarding 含微調少於 1 小時、企業使用者認可像官方簡報",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "Phase 3 與 4",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "bold": true,
+              "text": "Phase 3 AI 藝術指導",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "text": [
+                {
+                  "text": "LLM 只輸出 directive 註解寫回 MD,不產 HTML",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "站內 AI 潤飾按鈕,可設定不啟用",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "潤飾輸出 100% 通過 linter",
                 },
               ],
             },
@@ -592,7 +958,7 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
           "text": [
             {
               "bold": true,
-              "text": "不做什麼",
+              "text": "Phase 4 Server Tier",
             },
           ],
         },
@@ -601,21 +967,21 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
             {
               "text": [
                 {
-                  "text": "不取代 SOP 審核流程",
+                  "text": ".potx 高保真填充,掛在客戶 slide master 之下",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "不自動改寫文件",
+                  "text": "Kroki 整合 PlantUML 等,內網可用",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "不連外部雲端服務",
+                  "text": "短連結、權限、docker-compose 自架",
                 },
               ],
             },
@@ -632,7 +998,7 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
             "text": [
               {
                 "bold": true,
-                "text": "做什麼",
+                "text": "Phase 3 AI 藝術指導",
               },
             ],
           },
@@ -641,21 +1007,21 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
               {
                 "text": [
                   {
-                    "text": "吃進 SOP、維修紀錄、交接文件",
+                    "text": "LLM 只輸出 directive 註解寫回 MD,不產 HTML",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "自然語言問答,回答附出處段落",
+                    "text": "站內 AI 潤飾按鈕,可設定不啟用",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "全程部署在廠內,資料不出網",
+                    "text": "潤飾輸出 100% 通過 linter",
                   },
                 ],
               },
@@ -671,7 +1037,7 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
             "text": [
               {
                 "bold": true,
-                "text": "不做什麼",
+                "text": "Phase 4 Server Tier",
               },
             ],
           },
@@ -680,21 +1046,21 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
               {
                 "text": [
                   {
-                    "text": "不取代 SOP 審核流程",
+                    "text": ".potx 高保真填充,掛在客戶 slide master 之下",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "不自動改寫文件",
+                    "text": "Kroki 整合 PlantUML 等,內網可用",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "不連外部雲端服務",
+                    "text": "短連結、權限、docker-compose 自架",
                   },
                 ],
               },
@@ -706,12 +1072,30 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
         ],
       ],
       "headingPath": [
-        "方案",
-        "廠內知識助理",
+        "分階段交付",
+        "Phase 3 與 4",
       ],
       "layout": "two-col",
       "layoutSource": "directive",
-      "notes": "右欄的「不做什麼」是給資安與品保看的,先講清楚邊界",
+      "notes": "多人即時協作編輯是永久非目標,那是 HackMD 的戰場",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "指標與風險",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "指標與風險",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
     },
     {
       "blocks": [
@@ -720,7 +1104,205 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
           "kind": "heading",
           "text": [
             {
-              "text": "導入路徑",
+              "text": "核心體驗指標",
+            },
+          ],
+        },
+        {
+          "kind": "stat",
+          "label": "內,從貼上到開始簡報。",
+          "value": "10 秒",
+        },
+      ],
+      "headingPath": [
+        "指標與風險",
+        "核心體驗指標",
+      ],
+      "layout": "big-stat",
+      "layoutSource": "inferred",
+      "notes": "北極星:每週貼上到產出完成次數;pptx 下載少於 30 秒、開啟零損毀",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "成功指標",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "每週「貼上 → 產出」完成次數",
+                },
+              ],
+              "term": "北極星",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "北極星",
+                },
+                {
+                  "text": ":每週「貼上 → 產出」完成次數",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "onboarding 少於 1 小時、官方感認可率",
+                },
+              ],
+              "term": "企業端",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "企業端",
+                },
+                {
+                  "text": ":onboarding 少於 1 小時、官方感認可率",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "LLM 依 skill 產出直接通過 linter 的比例",
+                },
+              ],
+              "term": "生態端",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "生態端",
+                },
+                {
+                  "text": ":LLM 依 skill 產出直接通過 linter 的比例",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "指標與風險",
+        "成功指標",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "Phase 3 另看 AI 潤飾採用率與盲測偏好率",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "主要風險",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "無法載 .potx 且已知坑多,集中 generator 層加回歸測試",
+                },
+              ],
+              "term": "pptxgenjs 限制",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "pptxgenjs 限制",
+                },
+                {
+                  "text": ":無法載 .potx 且已知坑多,集中 generator 層加回歸測試",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "HTML 與 pptx 不承諾像素一致,directive 只表達意圖",
+                },
+              ],
+              "term": "版面落差",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "版面落差",
+                },
+                {
+                  "text": ":HTML 與 pptx 不承諾像素一致,directive 只表達意圖",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "差異化釘死可編輯 pptx、企業 template、可自架三點",
+                },
+              ],
+              "term": "採用質疑",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "採用質疑",
+                },
+                {
+                  "text": ":差異化釘死可編輯 pptx、企業 template、可自架三點",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "directive v1 上限 8 個,新增需兩個真實樣本佐證",
+                },
+              ],
+              "term": "DSL 膨脹",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "DSL 膨脹",
+                },
+                {
+                  "text": ":directive v1 上限 8 個,新增需兩個真實樣本佐證",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "指標與風險",
+        "主要風險",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "溢版風險靠瀏覽器端 DOM 量測,export 前自動縮放降級或警告",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "開放問題",
             },
           ],
         },
@@ -729,28 +1311,35 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
             {
               "text": [
                 {
-                  "text": "選一條產線做 8 週試點",
+                  "text": "產品名稱與 OSS 及商用授權策略",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "匯入該線 SOP 與半年維修紀錄",
+                  "text": "Template config 是否公開為開放規格",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "量測「找答案時間」前後差異",
+                  "text": "Slide runtime 自製或基於 reveal.js",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "依結果決定全廠展開範圍",
+                  "text": "IR 是否對外暴露給第三方 renderer",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "中英混排的字級行高規則需獨立驗證",
                 },
               ],
             },
@@ -761,145 +1350,26 @@ exports[`buildIR — golden samples > IR snapshot: 02-product-proposal.md 1`] = 
         },
       ],
       "headingPath": [
-        "方案",
-        "導入路徑",
+        "指標與風險",
+        "開放問題",
       ],
       "layout": "content",
       "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "決策請求",
-            },
-          ],
-        },
-        {
-          "emphasis": true,
-          "kind": "para",
-          "text": [
-            {
-              "text": "本次僅請求核准試點:一條產線、8 週、預算上限見附錄。",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "方案",
-        "決策請求",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "附錄:試點預算",
-            },
-          ],
-        },
-        {
-          "header": [
-            [
-              {
-                "text": "項目",
-              },
-            ],
-            [
-              {
-                "text": "金額(千元)",
-              },
-            ],
-            [
-              {
-                "text": "備註",
-              },
-            ],
-          ],
-          "kind": "table",
-          "rows": [
-            [
-              [
-                {
-                  "text": "邊緣伺服器 ×1",
-                },
-              ],
-              [
-                {
-                  "text": "380",
-                },
-              ],
-              [
-                {
-                  "text": "既有機型",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "軟體授權",
-                },
-              ],
-              [
-                {
-                  "text": "120",
-                },
-              ],
-              [
-                {
-                  "text": "8 週",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "導入人力",
-                },
-              ],
-              [
-                {
-                  "text": "200",
-                },
-              ],
-              [
-                {
-                  "text": "0.5 FTE × 2 月",
-                },
-              ],
-            ],
-          ],
-        },
-      ],
-      "headingPath": [
-        "方案",
-        "附錄:試點預算",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
+      "notes": "附錄頁,不進投影片",
       "skip": true,
     },
   ],
 }
 `;
 
-exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
+exports[`buildIR — golden samples > IR snapshot: 02-production-monthly.md 1`] = `
 {
   "meta": {
-    "author": "Clarence",
+    "author": "製造部",
     "date": "2026-07-13",
     "lang": "zh-TW",
-    "template": "clean-light",
-    "title": "遠端存取架構:從 VPN 到零信任",
+    "template": "forest",
+    "title": "保溫瓶產線 6 月月報",
   },
   "slides": [
     {
@@ -909,7 +1379,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "遠端存取架構:從 VPN 到零信任",
+              "text": "保溫瓶產線 6 月月報",
             },
           ],
         },
@@ -917,7 +1387,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "para",
           "text": [
             {
-              "text": "Clarence · 2026-07-13",
+              "text": "製造部 · 2026-07-13",
             },
           ],
         },
@@ -933,7 +1403,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "為什麼要換掉 VPN",
+              "text": "本月摘要",
             },
           ],
         },
@@ -942,51 +1412,51 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
             {
               "desc": [
                 {
-                  "text": "VPN 進來就是整段內網,橫向移動無阻攔",
+                  "text": "雙層真空瓶 8.2 萬支,達成率 103%",
                 },
               ],
-              "term": "攻擊面",
+              "term": "產量",
               "text": [
                 {
                   "bold": true,
-                  "text": "攻擊面",
+                  "text": "產量",
                 },
                 {
-                  "text": ":VPN 進來就是整段內網,橫向移動無阻攔",
+                  "text": ":雙層真空瓶 8.2 萬支,達成率 103%",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "憑證與帳號生命週期分散在三套系統",
+                  "text": "直通率 94.1%,連續三個月站上 94%",
                 },
               ],
-              "term": "維運",
+              "term": "品質",
               "text": [
                 {
                   "bold": true,
-                  "text": "維運",
+                  "text": "品質",
                 },
                 {
-                  "text": ":憑證與帳號生命週期分散在三套系統",
+                  "text": ":直通率 94.1%,連續三個月站上 94%",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "連線紀錄只到 IP 層,對不到人與行為",
+                  "text": "準時出貨率 98.7%,無重大客訴",
                 },
               ],
-              "term": "稽核",
+              "term": "交期",
               "text": [
                 {
                   "bold": true,
-                  "text": "稽核",
+                  "text": "交期",
                 },
                 {
-                  "text": ":連線紀錄只到 IP 層,對不到人與行為",
+                  "text": ":準時出貨率 98.7%,無重大客訴",
                 },
               ],
             },
@@ -997,11 +1467,11 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
         },
       ],
       "headingPath": [
-        "為什麼要換掉 VPN",
+        "本月摘要",
       ],
       "layout": "cards",
       "layoutSource": "inferred",
-      "notes": "先講痛,下一頁才上架構圖",
+      "notes": "開場一分鐘帶過,重點在下一頁的良率突破",
     },
     {
       "blocks": [
@@ -1010,27 +1480,189 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "目標架構",
+              "text": "關鍵數字",
+            },
+          ],
+        },
+        {
+          "kind": "stat",
+          "label": "直通率,創產線改線以來新高",
+          "value": "94.1%",
+        },
+      ],
+      "headingPath": [
+        "關鍵數字",
+      ],
+      "layout": "big-stat",
+      "layoutSource": "inferred",
+      "notes": "對比去年同期 89.3%,主因是焊接參數標準化",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "不良柏拉圖",
+            },
+          ],
+        },
+        {
+          "header": [
+            [
+              {
+                "text": "不良項目",
+              },
+            ],
+            [
+              {
+                "text": "件數",
+              },
+            ],
+            [
+              {
+                "text": "佔比",
+              },
+            ],
+            [
+              {
+                "text": "對策狀態",
+              },
+            ],
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              [
+                {
+                  "text": "真空度不足",
+                },
+              ],
+              [
+                {
+                  "text": "214",
+                },
+              ],
+              [
+                {
+                  "text": "42%",
+                },
+              ],
+              [
+                {
+                  "text": "封口參數已調整",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "外觀刮傷",
+                },
+              ],
+              [
+                {
+                  "text": "156",
+                },
+              ],
+              [
+                {
+                  "text": "31%",
+                },
+              ],
+              [
+                {
+                  "text": "治具緩衝墊更換中",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "印刷偏位",
+                },
+              ],
+              [
+                {
+                  "text": "78",
+                },
+              ],
+              [
+                {
+                  "text": "15%",
+                },
+              ],
+              [
+                {
+                  "text": "定位銷本週到料",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "其他",
+                },
+              ],
+              [
+                {
+                  "text": "61",
+                },
+              ],
+              [
+                {
+                  "text": "12%",
+                },
+              ],
+              [
+                {
+                  "text": "持續觀察",
+                },
+              ],
+            ],
+          ],
+        },
+      ],
+      "headingPath": [
+        "不良柏拉圖",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "真空度不足已收斂,7 月預期降到 30% 以下",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "產線自動化改造時程",
             },
           ],
         },
         {
           "engine": "mermaid",
           "kind": "diagram",
-          "source": "flowchart LR
-  U[使用者] --> IDP[身分驗證 IdP]
-  IDP --> GW[存取閘道]
-  GW --> P1[產線裝置 GB10]
-  GW --> P2[廠級管理 VM]
-  GW --> LOG[稽核日誌]",
+          "source": "gantt
+  dateFormat YYYY-MM
+  title 下半年改造計畫
+  section 焊接站
+    雷射焊機導入     :2026-07, 2M
+    參數驗證         :2026-09, 1M
+  section 檢測站
+    視覺檢測上線     :2026-08, 2M
+  section 包裝站
+    自動裝箱         :2026-10, 2M",
         },
       ],
       "headingPath": [
-        "目標架構",
+        "產線自動化改造時程",
       ],
       "layout": "diagram",
       "layoutSource": "inferred",
-      "notes": "重點是所有連線都收斂到閘道,裝置端不開任何 inbound port",
+      "notes": "焊接站改造期間用二線分流,不影響出貨",
     },
     {
       "blocks": [
@@ -1039,39 +1671,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "連線建立流程",
-            },
-          ],
-        },
-        {
-          "engine": "mermaid",
-          "kind": "diagram",
-          "source": "sequenceDiagram
-  participant U as 使用者
-  participant I as IdP
-  participant G as 閘道
-  participant D as 裝置
-  U->>I: 登入 + MFA
-  I-->>U: 短效 token
-  U->>G: 攜 token 請求連線
-  G->>D: 建立反向通道
-  D-->>U: 工作階段(全程錄製)",
-        },
-      ],
-      "headingPath": [
-        "連線建立流程",
-      ],
-      "layout": "diagram",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "遷移步驟",
+              "text": "下月行動",
             },
           ],
         },
@@ -1080,28 +1680,21 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
             {
               "text": [
                 {
-                  "text": "閘道與 IdP 上線,與 VPN 並行",
+                  "text": "完成雷射焊機安裝與教育訓練",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "新裝置一律走閘道",
+                  "text": "視覺檢測系統供應商驗收測試",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "既有裝置分廠區批次切換",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "VPN 降為緊急備援,六個月後除役",
+                  "text": "外觀刮傷對策效果確認,目標降至 20%",
                 },
               ],
             },
@@ -1112,7 +1705,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
         },
       ],
       "headingPath": [
-        "遷移步驟",
+        "下月行動",
       ],
       "layout": "content",
       "layoutSource": "inferred",
@@ -1124,7 +1717,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "兩種方案比較",
+              "text": "附錄:各週產量明細",
             },
           ],
         },
@@ -1132,17 +1725,22 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "header": [
             [
               {
-                "text": "面向",
+                "text": "週次",
               },
             ],
             [
               {
-                "text": "續用 VPN",
+                "text": "產量(支)",
               },
             ],
             [
               {
-                "text": "零信任閘道",
+                "text": "直通率",
+              },
+            ],
+            [
+              {
+                "text": "加班時數",
               },
             ],
           ],
@@ -1151,63 +1749,948 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
             [
               [
                 {
-                  "text": "最小權限",
+                  "text": "W23",
                 },
               ],
               [
                 {
-                  "text": "網段級",
+                  "text": "19,800",
                 },
               ],
               [
                 {
-                  "text": "裝置級",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "稽核粒度",
+                  "text": "93.8%",
                 },
               ],
               [
                 {
-                  "text": "IP/流量",
-                },
-              ],
-              [
-                {
-                  "text": "人/指令/工作階段",
+                  "text": "42",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "裝置 inbound port",
+                  "text": "W24",
                 },
               ],
               [
                 {
-                  "text": "需要",
+                  "text": "20,500",
                 },
               ],
               [
                 {
-                  "text": "不需要",
+                  "text": "94.0%",
+                },
+              ],
+              [
+                {
+                  "text": "38",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "導入成本",
+                  "text": "W25",
                 },
               ],
               [
                 {
-                  "text": "低",
+                  "text": "21,200",
+                },
+              ],
+              [
+                {
+                  "text": "94.3%",
+                },
+              ],
+              [
+                {
+                  "text": "35",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "W26",
+                },
+              ],
+              [
+                {
+                  "text": "20,600",
+                },
+              ],
+              [
+                {
+                  "text": "94.2%",
+                },
+              ],
+              [
+                {
+                  "text": "31",
+                },
+              ],
+            ],
+          ],
+        },
+      ],
+      "headingPath": [
+        "附錄:各週產量明細",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "skip": true,
+    },
+  ],
+}
+`;
+
+exports[`buildIR — golden samples > IR snapshot: 03-sales-quarterly.md 1`] = `
+{
+  "meta": {
+    "author": "營運企劃",
+    "date": "2026-07-13",
+    "lang": "zh-TW",
+    "template": "craft",
+    "title": "手搖飲連鎖 Q2 銷售回顧",
+  },
+  "slides": [
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "手搖飲連鎖 Q2 銷售回顧",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "營運企劃 · 2026-07-13",
+            },
+          ],
+        },
+      ],
+      "headingPath": [],
+      "layout": "title",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "整體表現",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "整體表現",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "季度總覽",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "2.84 億,年增 18%,超出目標 6 個百分點",
+                },
+              ],
+              "term": "營收",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "營收",
+                },
+                {
+                  "text": ":2.84 億,年增 18%,超出目標 6 個百分點",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "新開 12 家,累計 187 家,關店 2 家",
+                },
+              ],
+              "term": "展店",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "展店",
+                },
+                {
+                  "text": ":新開 12 家,累計 187 家,關店 2 家",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "App 會員數突破 90 萬,貢獻 61% 營收",
+                },
+              ],
+              "term": "會員",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "會員",
+                },
+                {
+                  "text": ":App 會員數突破 90 萬,貢獻 61% 營收",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "整體表現",
+        "季度總覽",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "三個數字都超標,重點講會員貢獻度的結構變化",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "最亮眼的數字",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "61% 營收來自 App 會員,首次過半後持續攀升",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "整體表現",
+        "最亮眼的數字",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "去年同期 44%,一年拉升 17 個百分點,行銷預算重分配奏效",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "品類結構",
+            },
+          ],
+        },
+        {
+          "header": [
+            [
+              {
+                "text": "品類",
+              },
+            ],
+            [
+              {
+                "text": "營收(萬)",
+              },
+            ],
+            [
+              {
+                "text": "佔比",
+              },
+            ],
+            [
+              {
+                "text": "年增",
+              },
+            ],
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              [
+                {
+                  "text": "鮮果茶",
+                },
+              ],
+              [
+                {
+                  "text": "11,360",
+                },
+              ],
+              [
+                {
+                  "text": "40%",
+                },
+              ],
+              [
+                {
+                  "text": "+31%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "奶茶",
+                },
+              ],
+              [
+                {
+                  "text": "8,520",
+                },
+              ],
+              [
+                {
+                  "text": "30%",
+                },
+              ],
+              [
+                {
+                  "text": "+8%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "純茶",
+                },
+              ],
+              [
+                {
+                  "text": "5,680",
+                },
+              ],
+              [
+                {
+                  "text": "20%",
+                },
+              ],
+              [
+                {
+                  "text": "+12%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "季節限定",
+                },
+              ],
+              [
+                {
+                  "text": "2,840",
+                },
+              ],
+              [
+                {
+                  "text": "10%",
+                },
+              ],
+              [
+                {
+                  "text": "+45%",
+                },
+              ],
+            ],
+          ],
+        },
+      ],
+      "headingPath": [
+        "整體表現",
+        "品類結構",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "鮮果茶毛利低但帶客流,季節限定是毛利王",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "通路與客群",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "通路與客群",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "通路表現",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "佔比 35%,抽成後毛利率仍低於店取 9 個百分點",
+                },
+              ],
+              "term": "外送平台",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "外送平台",
+                },
+                {
+                  "text": ":佔比 35%,抽成後毛利率仍低於店取 9 個百分點",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "佔比 28%,客單價最高,等待時間最短",
+                },
+              ],
+              "term": "App 自取",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "App 自取",
+                },
+                {
+                  "text": ":佔比 28%,客單價最高,等待時間最短",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "佔比 37%,持續下降,尖峰排隊是主因",
+                },
+              ],
+              "term": "現場點餐",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "現場點餐",
+                },
+                {
+                  "text": ":佔比 37%,持續下降,尖峰排隊是主因",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "通路與客群",
+        "通路表現",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "策略是把現場點餐往 App 自取導,下一頁講怎麼導",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "Q3 三個行動",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "text": [
+                {
+                  "text": "App 自取專屬折扣,鎖定尖峰時段分流",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "外送平台談判量階抽成,目標降 2 個百分點",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "季節限定提前兩週上市,搶中秋檔期",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": true,
+          "shape": "steps",
+        },
+      ],
+      "headingPath": [
+        "通路與客群",
+        "Q3 三個行動",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "每個行動都有 owner 與週追蹤,月會檢視",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "給區域主管的一句話",
+            },
+          ],
+        },
+        {
+          "cite": "營運長,Q2 檢討會",
+          "kind": "quote",
+          "text": [
+            {
+              "text": "尖峰十五分鐘的等待,就是下一家店開在你隔壁的理由。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "通路與客群",
+        "給區域主管的一句話",
+      ],
+      "layout": "quote",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "附錄:區域明細",
+            },
+          ],
+        },
+        {
+          "header": [
+            [
+              {
+                "text": "區域",
+              },
+            ],
+            [
+              {
+                "text": "店數",
+              },
+            ],
+            [
+              {
+                "text": "營收(萬)",
+              },
+            ],
+            [
+              {
+                "text": "同店成長",
+              },
+            ],
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              [
+                {
+                  "text": "北區",
+                },
+              ],
+              [
+                {
+                  "text": "72",
+                },
+              ],
+              [
+                {
+                  "text": "11,900",
+                },
+              ],
+              [
+                {
+                  "text": "+14%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "中區",
+                },
+              ],
+              [
+                {
+                  "text": "51",
+                },
+              ],
+              [
+                {
+                  "text": "7,400",
+                },
+              ],
+              [
+                {
+                  "text": "+19%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "南區",
+                },
+              ],
+              [
+                {
+                  "text": "48",
+                },
+              ],
+              [
+                {
+                  "text": "6,800",
+                },
+              ],
+              [
+                {
+                  "text": "+22%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "東區",
+                },
+              ],
+              [
+                {
+                  "text": "16",
+                },
+              ],
+              [
+                {
+                  "text": "2,300",
+                },
+              ],
+              [
+                {
+                  "text": "+9%",
+                },
+              ],
+            ],
+          ],
+        },
+      ],
+      "headingPath": [
+        "通路與客群",
+        "附錄:區域明細",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "skip": true,
+    },
+  ],
+}
+`;
+
+exports[`buildIR — golden samples > IR snapshot: 04-hr-halfyear.md 1`] = `
+{
+  "meta": {
+    "author": "人資處",
+    "date": "2026-07-13",
+    "lang": "zh-TW",
+    "template": "clean-light",
+    "title": "人才招募與留任半年報",
+  },
+  "slides": [
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "人才招募與留任半年報",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "人資處 · 2026-07-13",
+            },
+          ],
+        },
+      ],
+      "headingPath": [],
+      "layout": "title",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "上半年人力全貌",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "期末在職 1,240 人,淨增 86 人",
+                },
+              ],
+              "term": "編制",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "編制",
+                },
+                {
+                  "text": ":期末在職 1,240 人,淨增 86 人",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "年化 11.2%,低於同業中位數 14.5%",
+                },
+              ],
+              "term": "離職率",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "離職率",
+                },
+                {
+                  "text": ":年化 11.2%,低於同業中位數 14.5%",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "錄取 142 人,平均到職週期 34 天",
+                },
+              ],
+              "term": "招募",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "招募",
+                },
+                {
+                  "text": ":錄取 142 人,平均到職週期 34 天",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "上半年人力全貌",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "三個指標都健康,但工程職缺的到職週期是隱憂,下面展開",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "最需要正視的數字",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "52 天,資深工程師平均到職週期,是全職類最長",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "最需要正視的數字",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "同業約 45 天;瓶頸在主管面談排程,不在候選人數量",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "招募漏斗",
+            },
+          ],
+        },
+        {
+          "engine": "mermaid",
+          "kind": "diagram",
+          "source": "flowchart LR
+  A["投遞 3,420"] --> B["書審通過 1,180"]
+  B --> C["初面 520"]
+  C --> D["複面 238"]
+  D --> E["發 offer 168"]
+  E --> F["到職 142"]",
+        },
+      ],
+      "headingPath": [
+        "招募漏斗",
+      ],
+      "layout": "diagram",
+      "layoutSource": "inferred",
+      "notes": "offer 接受率 85% 很好;書審到初面掉最多,JD 關鍵字要修",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "離職原因分析",
+            },
+          ],
+        },
+        {
+          "header": [
+            [
+              {
+                "text": "原因",
+              },
+            ],
+            [
+              {
+                "text": "人數",
+              },
+            ],
+            [
+              {
+                "text": "佔比",
+              },
+            ],
+            [
+              {
+                "text": "可控性",
+              },
+            ],
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              [
+                {
+                  "text": "職涯發展受限",
+                },
+              ],
+              [
+                {
+                  "text": "24",
+                },
+              ],
+              [
+                {
+                  "text": "35%",
+                },
+              ],
+              [
+                {
+                  "text": "高",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "薪酬競爭力",
+                },
+              ],
+              [
+                {
+                  "text": "18",
+                },
+              ],
+              [
+                {
+                  "text": "26%",
                 },
               ],
               [
@@ -1219,30 +2702,56 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
             [
               [
                 {
-                  "text": "憑證管理",
+                  "text": "家庭與健康",
                 },
               ],
               [
                 {
-                  "text": "三套系統",
+                  "text": "14",
                 },
               ],
               [
                 {
-                  "text": "集中於 IdP",
+                  "text": "20%",
+                },
+              ],
+              [
+                {
+                  "text": "低",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "主管管理風格",
+                },
+              ],
+              [
+                {
+                  "text": "13",
+                },
+              ],
+              [
+                {
+                  "text": "19%",
+                },
+              ],
+              [
+                {
+                  "text": "高",
                 },
               ],
             ],
           ],
         },
       ],
-      "fit": true,
       "headingPath": [
-        "兩種方案比較",
+        "離職原因分析",
       ],
       "layout": "content",
       "layoutSource": "inferred",
-      "notes": "表格資訊密度高,這頁允許縮字;口頭只講「稽核粒度」那一列",
+      "notes": "可控性高的兩項合計 54%,是下半年方案的靶心",
     },
     {
       "blocks": [
@@ -1251,297 +2760,7 @@ exports[`buildIR — golden samples > IR snapshot: 03-tech-share.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "一句話總結",
-            },
-          ],
-        },
-        {
-          "kind": "quote",
-          "text": [
-            {
-              "text": "不是把牆加高,而是把每一次連線都變成一次授權。",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "一句話總結",
-      ],
-      "layout": "quote",
-      "layoutSource": "inferred",
-      "notes": "收尾頁,停在這裡開放提問",
-    },
-  ],
-}
-`;
-
-exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
-{
-  "meta": {
-    "author": "平台團隊",
-    "date": "2026-07-13",
-    "lang": "zh-TW",
-    "template": "clean-light",
-    "title": "2026 Q2 OKR 回顧",
-  },
-  "slides": [
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "2026 Q2 OKR 回顧",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "平台團隊 · 2026-07-13",
-            },
-          ],
-        },
-      ],
-      "headingPath": [],
-      "layout": "title",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "成果",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "成果",
-      ],
-      "layout": "section",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "O1:把部署時間降到 15 分鐘內",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "平均部署時間 42 分 → 12 分,達標",
-                },
-              ],
-              "term": "KR1",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "KR1",
-                },
-                {
-                  "text": ":平均部署時間 42 分 → 12 分,達標",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "部署失敗率 8% → 2.5%,達標",
-                },
-              ],
-              "term": "KR2",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "KR2",
-                },
-                {
-                  "text": ":部署失敗率 8% → 2.5%,達標",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "回滾自動化覆蓋率 60%,未達標(目標 90%)",
-                },
-              ],
-              "term": "KR3",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "KR3",
-                },
-                {
-                  "text": ":回滾自動化覆蓋率 60%,未達標(目標 90%)",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "成果",
-        "O1:把部署時間降到 15 分鐘內",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-      "notes": "KR3 未達標的原因在下一頁,先不展開",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "關鍵數字",
-            },
-          ],
-        },
-        {
-          "kind": "stat",
-          "label": "的季度部署在無人值守下完成",
-          "value": "87%",
-        },
-      ],
-      "headingPath": [
-        "成果",
-        "關鍵數字",
-      ],
-      "layout": "big-stat",
-      "layoutSource": "inferred",
-      "notes": "這個數字放大講,是全季最有感的改變",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "O2:開發者滿意度",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "季度調查 +34,較上季 +21 提升",
-                },
-              ],
-              "term": "NPS",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "NPS",
-                },
-                {
-                  "text": ":季度調查 +34,較上季 +21 提升",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "平台相關支援工單下降四成",
-                },
-              ],
-              "term": "工單",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "工單",
-                },
-                {
-                  "text": ":平台相關支援工單下降四成",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "新 CI 模板覆蓋 31 個 repo",
-                },
-              ],
-              "term": "採用",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "採用",
-                },
-                {
-                  "text": ":新 CI 模板覆蓋 31 個 repo",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "成果",
-        "O2:開發者滿意度",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "未達標與學習",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "未達標與學習",
-      ],
-      "layout": "section",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "KR3 為什麼沒到 90%",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "bold": true,
-              "text": "事實",
+              "text": "下半年三項方案",
             },
           ],
         },
@@ -1550,186 +2769,21 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
             {
               "text": [
                 {
-                  "text": "有狀態服務的回滾需要資料遷移配套",
+                  "text": "內部轉調雙軌制上線,轉調媒合會每季一場",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "兩個核心服務仍在舊版建置鏈上",
+                  "text": "關鍵職位薪酬帶對標,10 月完成調整",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "測試環境資料與正式環境差距過大",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "plain",
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "bold": true,
-              "text": "學習",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "text": "回滾自動化應以服務分級,不是一刀切",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "舊建置鏈遷移要先於自動化排程",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "合成資料集需求升級為 Q3 KR",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "plain",
-        },
-      ],
-      "columns": [
-        [
-          {
-            "kind": "para",
-            "text": [
-              {
-                "bold": true,
-                "text": "事實",
-              },
-            ],
-          },
-          {
-            "items": [
-              {
-                "text": [
-                  {
-                    "text": "有狀態服務的回滾需要資料遷移配套",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "text": "兩個核心服務仍在舊版建置鏈上",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "text": "測試環境資料與正式環境差距過大",
-                  },
-                ],
-              },
-            ],
-            "kind": "list",
-            "ordered": false,
-            "shape": "plain",
-          },
-        ],
-        [
-          {
-            "kind": "para",
-            "text": [
-              {
-                "bold": true,
-                "text": "學習",
-              },
-            ],
-          },
-          {
-            "items": [
-              {
-                "text": [
-                  {
-                    "text": "回滾自動化應以服務分級,不是一刀切",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "text": "舊建置鏈遷移要先於自動化排程",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "text": "合成資料集需求升級為 Q3 KR",
-                  },
-                ],
-              },
-            ],
-            "kind": "list",
-            "ordered": false,
-            "shape": "plain",
-          },
-        ],
-      ],
-      "headingPath": [
-        "未達標與學習",
-        "KR3 為什麼沒到 90%",
-      ],
-      "layout": "two-col",
-      "layoutSource": "directive",
-      "notes": "左邊講事實右邊講學習,避免變成檢討大會",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Q3 動向",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "text": "回滾自動化改為 P0/P1 服務先行",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "舊建置鏈兩個服務 8 月底前完成遷移",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "合成資料集立項,與資安共同評審",
+                  "text": "新任主管 90 天教練計畫,涵蓋全部 28 位",
                 },
               ],
             },
@@ -1740,11 +2794,11 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
         },
       ],
       "headingPath": [
-        "未達標與學習",
-        "Q3 動向",
+        "下半年三項方案",
       ],
       "layout": "content",
       "layoutSource": "inferred",
+      "notes": "預算已核,量化目標:年化離職率壓到 10% 以下",
     },
     {
       "blocks": [
@@ -1753,7 +2807,7 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "附錄:KR 明細",
+              "text": "附錄:各部門離職率",
             },
           ],
         },
@@ -1761,22 +2815,22 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
           "header": [
             [
               {
-                "text": "KR",
+                "text": "部門",
               },
             ],
             [
               {
-                "text": "目標",
+                "text": "在職",
               },
             ],
             [
               {
-                "text": "實際",
+                "text": "半年離職",
               },
             ],
             [
               {
-                "text": "狀態",
+                "text": "年化率",
               },
             ],
           ],
@@ -1785,88 +2839,88 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
             [
               [
                 {
-                  "text": "部署時間",
+                  "text": "研發",
                 },
               ],
               [
                 {
-                  "text": "≤15 分",
+                  "text": "420",
                 },
               ],
               [
                 {
-                  "text": "12 分",
+                  "text": "26",
                 },
               ],
               [
                 {
-                  "text": "達標",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "失敗率",
-                },
-              ],
-              [
-                {
-                  "text": "≤3%",
-                },
-              ],
-              [
-                {
-                  "text": "2.5%",
-                },
-              ],
-              [
-                {
-                  "text": "達標",
+                  "text": "12.4%",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "回滾覆蓋",
+                  "text": "業務",
                 },
               ],
               [
                 {
-                  "text": "90%",
+                  "text": "310",
                 },
               ],
               [
                 {
-                  "text": "60%",
+                  "text": "21",
                 },
               ],
               [
                 {
-                  "text": "未達標",
+                  "text": "13.5%",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "NPS",
+                  "text": "製造",
                 },
               ],
               [
                 {
-                  "text": "+25",
+                  "text": "340",
                 },
               ],
               [
                 {
-                  "text": "+34",
+                  "text": "14",
                 },
               ],
               [
                 {
-                  "text": "達標",
+                  "text": "8.2%",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "幕僚",
+                },
+              ],
+              [
+                {
+                  "text": "170",
+                },
+              ],
+              [
+                {
+                  "text": "7",
+                },
+              ],
+              [
+                {
+                  "text": "8.2%",
                 },
               ],
             ],
@@ -1874,8 +2928,7 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
         },
       ],
       "headingPath": [
-        "未達標與學習",
-        "附錄:KR 明細",
+        "附錄:各部門離職率",
       ],
       "layout": "content",
       "layoutSource": "inferred",
@@ -1885,14 +2938,14 @@ exports[`buildIR — golden samples > IR snapshot: 04-okr-review.md 1`] = `
 }
 `;
 
-exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
+exports[`buildIR — golden samples > IR snapshot: 05-rnd-architecture.md 1`] = `
 {
   "meta": {
-    "author": "架構組",
+    "author": "研發架構組",
     "date": "2026-07-13",
     "lang": "zh-TW",
     "template": "midnight",
-    "title": "事件匯流排架構提案",
+    "title": "訂餐平台通知系統重構提案",
   },
   "slides": [
     {
@@ -1902,7 +2955,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "事件匯流排架構提案",
+              "text": "訂餐平台通知系統重構提案",
             },
           ],
         },
@@ -1910,7 +2963,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "kind": "para",
           "text": [
             {
-              "text": "架構組 · 2026-07-13",
+              "text": "研發架構組 · 2026-07-13",
             },
           ],
         },
@@ -1944,7 +2997,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "服務間耦合已成瓶頸",
+              "text": "為什麼要重構",
             },
           ],
         },
@@ -1953,51 +3006,51 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
             {
               "desc": [
                 {
-                  "text": "14 個服務、41 條直連依賴",
+                  "text": "尖峰時段推播延遲 P95 達 45 秒,客訴主因",
                 },
               ],
-              "term": "點對點呼叫",
+              "term": "延遲",
               "text": [
                 {
                   "bold": true,
-                  "text": "點對點呼叫",
+                  "text": "延遲",
                 },
                 {
-                  "text": ":14 個服務、41 條直連依賴",
+                  "text": ":尖峰時段推播延遲 P95 達 45 秒,客訴主因",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "下游抖動放大為全鏈路事故",
+                  "text": "六個服務直連簡訊/推播供應商,改供應商要改六處",
                 },
               ],
-              "term": "重試風暴",
+              "term": "耦合",
               "text": [
                 {
                   "bold": true,
-                  "text": "重試風暴",
+                  "text": "耦合",
                 },
                 {
-                  "text": ":下游抖動放大為全鏈路事故",
+                  "text": ":六個服務直連簡訊/推播供應商,改供應商要改六處",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "每接一個消費方要改動上游程式",
+                  "text": "同一訂單事件最多觸發三則重複通知",
                 },
               ],
-              "term": "新需求",
+              "term": "重複",
               "text": [
                 {
                   "bold": true,
-                  "text": "新需求",
+                  "text": "重複",
                 },
                 {
-                  "text": ":每接一個消費方要改動上游程式",
+                  "text": ":同一訂單事件最多觸發三則重複通知",
                 },
               ],
             },
@@ -2009,11 +3062,11 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
       ],
       "headingPath": [
         "現況",
-        "服務間耦合已成瓶頸",
+        "為什麼要重構",
       ],
       "layout": "cards",
       "layoutSource": "inferred",
-      "notes": "41 條依賴是上個月盤點的結果,圖在下一頁",
+      "notes": "45 秒是外送場景不可接受的數字,騎手都到門口了通知才響",
     },
     {
       "blocks": [
@@ -2022,7 +3075,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "依賴現況",
+              "text": "現行架構",
             },
           ],
         },
@@ -2030,24 +3083,23 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "engine": "mermaid",
           "kind": "diagram",
           "source": "flowchart TD
-  O[訂單] --> I[庫存]
-  O --> N[通知]
-  O --> A[帳務]
-  I --> N
-  A --> N
-  O --> R[報表]
-  I --> R
-  A --> R
-  N --> R",
+  O[訂單服務] --> SMS[簡訊商 A]
+  O --> PUSH[推播商 B]
+  P[出餐服務] --> SMS
+  P --> PUSH
+  D[配送服務] --> SMS
+  D --> PUSH
+  M[行銷服務] --> SMS
+  M --> PUSH",
         },
       ],
       "headingPath": [
         "現況",
-        "依賴現況",
+        "現行架構",
       ],
       "layout": "diagram",
       "layoutSource": "inferred",
-      "notes": "只畫了核心 9 條,實際 41 條;重點是報表誰都連",
+      "notes": "每個服務各自實作重試與模板,行為不一致是重複通知的根因",
     },
     {
       "blocks": [
@@ -2082,12 +3134,14 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "engine": "mermaid",
           "kind": "diagram",
           "source": "flowchart LR
-  O[訂單] --> BUS[(事件匯流排)]
-  I[庫存] --> BUS
-  A[帳務] --> BUS
-  BUS --> N[通知]
-  BUS --> R[報表]
-  BUS --> DW[資料倉儲]",
+  O[訂單服務] --> Q[(事件佇列)]
+  P[出餐服務] --> Q
+  D[配送服務] --> Q
+  Q --> N[通知中樞]
+  N --> R{路由規則}
+  R --> SMS[簡訊商]
+  R --> PUSH[推播]
+  R --> EMAIL[Email]",
         },
       ],
       "headingPath": [
@@ -2096,7 +3150,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
       ],
       "layout": "diagram",
       "layoutSource": "inferred",
-      "notes": "生產者只管發事件,消費者自行訂閱,新增消費方零上游改動",
+      "notes": "通知中樞統一去重、模板、頻控與供應商容錯移轉",
     },
     {
       "blocks": [
@@ -2105,7 +3159,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "事件流轉",
+              "text": "通知決策流程",
             },
           ],
         },
@@ -2113,19 +3167,21 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "engine": "mermaid",
           "kind": "diagram",
           "source": "sequenceDiagram
-  participant O as 訂單服務
-  participant B as 匯流排
-  participant C as 消費者
-  O->>B: OrderCreated(冪等鍵)
-  B-->>O: ack(持久化後)
-  B->>C: 推送(至少一次)
-  C-->>B: 消費確認
-  C->>C: 冪等去重",
+  participant E as 事件佇列
+  participant N as 通知中樞
+  participant U as 用戶偏好
+  participant V as 供應商
+  E->>N: OrderDelivered(冪等鍵)
+  N->>N: 去重視窗檢查
+  N->>U: 讀取通知偏好
+  N->>V: 依路由發送
+  V-->>N: 回執
+  N->>N: 失敗轉備援供應商",
         },
       ],
       "headingPath": [
         "提案",
-        "事件流轉",
+        "通知決策流程",
       ],
       "layout": "diagram",
       "layoutSource": "inferred",
@@ -2137,881 +3193,7 @@ exports[`buildIR — golden samples > IR snapshot: 05-arch-proposal.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "設計決策",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "至少一次 + 消費端冪等,不做恰好一次",
-                },
-              ],
-              "term": "投遞語意",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "投遞語意",
-                },
-                {
-                  "text": ":至少一次 + 消費端冪等,不做恰好一次",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "僅同一聚合根內有序,以分區鍵實現",
-                },
-              ],
-              "term": "順序保證",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "順序保證",
-                },
-                {
-                  "text": ":僅同一聚合根內有序,以分區鍵實現",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "schema registry 管理,相容性檢查進 CI",
-                },
-              ],
-              "term": "事件契約",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "事件契約",
-                },
-                {
-                  "text": ":schema registry 管理,相容性檢查進 CI",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "提案",
-        "設計決策",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "導入計畫",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "text": "匯流排與 registry 上線,先接報表讀路徑",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "訂單事件雙寫,消費方逐一切換",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "直連依賴每季遞減目標入 OKR",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "舊直連全部下線,保留緊急旁路",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": true,
-          "shape": "steps",
-        },
-      ],
-      "headingPath": [
-        "提案",
-        "導入計畫",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "雙寫期預計一季,風險最低的切法",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "決策請求",
-            },
-          ],
-        },
-        {
-          "emphasis": true,
-          "kind": "para",
-          "text": [
-            {
-              "text": "本次請求核准:匯流排選型定案與兩名工程師投入首季導入。",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "提案",
-        "決策請求",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-    },
-  ],
-}
-`;
-
-exports[`buildIR — golden samples > IR snapshot: 06-incident-review.md 1`] = `
-{
-  "meta": {
-    "author": "SRE",
-    "date": "2026-07-13",
-    "lang": "zh-TW",
-    "template": "clean-light",
-    "title": "0628 結帳服務事故複盤",
-  },
-  "slides": [
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "0628 結帳服務事故複盤",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "SRE · 2026-07-13",
-            },
-          ],
-        },
-      ],
-      "headingPath": [],
-      "layout": "title",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "事故摘要",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "結帳失敗率尖峰 34%,持續 47 分鐘",
-                },
-              ],
-              "term": "影響",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "影響",
-                },
-                {
-                  "text": ":結帳失敗率尖峰 34%,持續 47 分鐘",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "行動端全量,網頁端約半數流量",
-                },
-              ],
-              "term": "範圍",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "範圍",
-                },
-                {
-                  "text": ":行動端全量,網頁端約半數流量",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "快取叢集容錯移轉後連線風暴",
-                },
-              ],
-              "term": "origin",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "origin",
-                },
-                {
-                  "text": ":快取叢集容錯移轉後連線風暴",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "事故摘要",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-      "notes": "開場先給結論,時間線在下一頁",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "損失量化",
-            },
-          ],
-        },
-        {
-          "kind": "stat",
-          "label": "約 2,300 筆訂單未完成",
-          "value": "47 分鐘",
-        },
-      ],
-      "headingPath": [
-        "損失量化",
-      ],
-      "layout": "big-stat",
-      "layoutSource": "inferred",
-      "notes": "客服已完成 8 成回撥,剩餘名單在工單系統",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "時間線",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "text": "14:02 快取主節點硬體故障,自動容錯移轉",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "14:03 應用層連線池未釋放舊連線,開始堆積",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "14:11 結帳服務執行緒耗盡,失敗率飆升",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "14:31 定位到連線池設定,分批重啟",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "14:49 失敗率回到基線,事故關閉",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": true,
-          "shape": "steps",
-        },
-      ],
-      "headingPath": [
-        "時間線",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "根因",
-            },
-          ],
-        },
-        {
-          "emphasis": true,
-          "kind": "para",
-          "text": [
-            {
-              "text": "連線池的 keepalive 驗證被停用:容錯移轉後死連線不會被剔除,新請求持續分配到失效連線。",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "根因",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "設定是兩年前為了壓測臨時改的,一直沒改回來",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "為什麼沒被攔住",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "壓測時的臨時設定未回收,無稽核",
-                },
-              ],
-              "term": "設定漂移",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "設定漂移",
-                },
-                {
-                  "text": ":壓測時的臨時設定未回收,無稽核",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "容錯移轉演練只驗證資料層,未驗證應用層連線行為",
-                },
-              ],
-              "term": "演練盲區",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "演練盲區",
-                },
-                {
-                  "text": ":容錯移轉演練只驗證資料層,未驗證應用層連線行為",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "連線池堆積無告警,首個告警已是執行緒耗盡",
-                },
-              ],
-              "term": "告警延遲",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "告警延遲",
-                },
-                {
-                  "text": ":連線池堆積無告警,首個告警已是執行緒耗盡",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "為什麼沒被攔住",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "改善項",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "text": "連線池設定全量稽核,納入設定基線管理",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "容錯移轉演練加入應用層驗收條款",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "連線池水位告警上線",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "結帳服務增加快取旁路降級開關",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": true,
-          "shape": "steps",
-        },
-      ],
-      "headingPath": [
-        "改善項",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "1 與 3 本週完成,2 與 4 排入下個 sprint",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "附錄:監控圖表索引",
-            },
-          ],
-        },
-        {
-          "header": [
-            [
-              {
-                "text": "圖表",
-              },
-            ],
-            [
-              {
-                "text": "位置",
-              },
-            ],
-            [
-              {
-                "text": "備註",
-              },
-            ],
-          ],
-          "kind": "table",
-          "rows": [
-            [
-              [
-                {
-                  "text": "失敗率",
-                },
-              ],
-              [
-                {
-                  "text": "dashboards/checkout-sla",
-                },
-              ],
-              [
-                {
-                  "text": "事故區間已標注",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "連線池水位",
-                },
-              ],
-              [
-                {
-                  "text": "dashboards/cache-pool",
-                },
-              ],
-              [
-                {
-                  "text": "事後補建",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "執行緒數",
-                },
-              ],
-              [
-                {
-                  "text": "dashboards/jvm-threads",
-                },
-              ],
-              [
-                {
-                  "text": "—",
-                },
-              ],
-            ],
-          ],
-        },
-      ],
-      "headingPath": [
-        "附錄:監控圖表索引",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "skip": true,
-    },
-  ],
-}
-`;
-
-exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
-{
-  "meta": {
-    "author": "產品部",
-    "date": "2026-07-13",
-    "lang": "zh-TW",
-    "template": "midnight",
-    "title": "邊緣盒子產品 Roadmap 2026 H2",
-  },
-  "slides": [
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "邊緣盒子產品 Roadmap 2026 H2",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "產品部 · 2026-07-13",
-            },
-          ],
-        },
-      ],
-      "headingPath": [],
-      "layout": "title",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "主軸",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "主軸",
-      ],
-      "layout": "section",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "H2 三個賭注",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "遠端維運能力補齊,讓駐點人力歸零",
-                },
-              ],
-              "term": "無人值守",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "無人值守",
-                },
-                {
-                  "text": ":遠端維運能力補齊,讓駐點人力歸零",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "第三方模型上架與計費,打開軟體收入",
-                },
-              ],
-              "term": "模型市集",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "模型市集",
-                },
-                {
-                  "text": ":第三方模型上架與計費,打開軟體收入",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "百台級裝置的批次部署與監控",
-                },
-              ],
-              "term": "車隊管理",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "車隊管理",
-                },
-                {
-                  "text": ":百台級裝置的批次部署與監控",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "主軸",
-        "H2 三個賭注",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-      "notes": "三個賭注對應三種客戶:既有大客戶、ISV、新的連鎖場景",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "時程總覽",
-            },
-          ],
-        },
-        {
-          "engine": "mermaid",
-          "kind": "diagram",
-          "source": "gantt
-  dateFormat YYYY-MM
-  title 2026 H2
-  section 無人值守
-    遠端診斷        :2026-07, 2M
-    OTA 分批發布     :2026-08, 2M
-  section 模型市集
-    上架流程        :2026-08, 2M
-    計費與拆帳      :2026-10, 2M
-  section 車隊管理
-    批次部署        :2026-09, 2M
-    告警中樞        :2026-11, 2M",
-        },
-      ],
-      "headingPath": [
-        "主軸",
-        "時程總覽",
-      ],
-      "layout": "diagram",
-      "layoutSource": "inferred",
-      "notes": "灰色地帶是計費,依賴財務系統 API,已在對齊",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "各賭注",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "各賭注",
-      ],
-      "layout": "section",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "無人值守",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "遠端診斷代理進試產批",
-                },
-              ],
-              "term": "7 月",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "7 月",
-                },
-                {
-                  "text": ":遠端診斷代理進試產批",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "OTA 分批發布與自動回滾",
-                },
-              ],
-              "term": "8 月",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "8 月",
-                },
-                {
-                  "text": ":OTA 分批發布與自動回滾",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "駐點巡檢改為遠端週檢,試點兩客戶",
-                },
-              ],
-              "term": "9 月",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "9 月",
-                },
-                {
-                  "text": ":駐點巡檢改為遠端週檢,試點兩客戶",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "各賭注",
-        "無人值守",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "模型市集",
+              "text": "方案比較",
             },
           ],
         },
@@ -3020,7 +3202,7 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
           "text": [
             {
               "bold": true,
-              "text": "對 ISV",
+              "text": "自建通知中樞",
             },
           ],
         },
@@ -3029,21 +3211,21 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
             {
               "text": [
                 {
-                  "text": "上架自助化,審核 SLA 三個工作天",
+                  "text": "完全掌控路由與去重邏輯",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "沙箱裝置雲端租用",
+                  "text": "與內部用戶偏好深度整合",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "收入拆帳月結",
+                  "text": "預估 2 人 × 3 個月",
                 },
               ],
             },
@@ -3057,7 +3239,7 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
           "text": [
             {
               "bold": true,
-              "text": "對終端客戶",
+              "text": "採購 SaaS 方案",
             },
           ],
         },
@@ -3066,21 +3248,21 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
             {
               "text": [
                 {
-                  "text": "站內一鍵試用,按日計費",
+                  "text": "上線快,約三週完成串接",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "模型效能分級標示",
+                  "text": "用戶偏好需雙向同步,有一致性風險",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "一鍵回退已購版本",
+                  "text": "年費約自建成本的 1.4 倍",
                 },
               ],
             },
@@ -3097,7 +3279,7 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
             "text": [
               {
                 "bold": true,
-                "text": "對 ISV",
+                "text": "自建通知中樞",
               },
             ],
           },
@@ -3106,21 +3288,21 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
               {
                 "text": [
                   {
-                    "text": "上架自助化,審核 SLA 三個工作天",
+                    "text": "完全掌控路由與去重邏輯",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "沙箱裝置雲端租用",
+                    "text": "與內部用戶偏好深度整合",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "收入拆帳月結",
+                    "text": "預估 2 人 × 3 個月",
                   },
                 ],
               },
@@ -3136,7 +3318,7 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
             "text": [
               {
                 "bold": true,
-                "text": "對終端客戶",
+                "text": "採購 SaaS 方案",
               },
             ],
           },
@@ -3145,21 +3327,21 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
               {
                 "text": [
                   {
-                    "text": "站內一鍵試用,按日計費",
+                    "text": "上線快,約三週完成串接",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "模型效能分級標示",
+                    "text": "用戶偏好需雙向同步,有一致性風險",
                   },
                 ],
               },
               {
                 "text": [
                   {
-                    "text": "一鍵回退已購版本",
+                    "text": "年費約自建成本的 1.4 倍",
                   },
                 ],
               },
@@ -3171,11 +3353,12 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
         ],
       ],
       "headingPath": [
-        "各賭注",
-        "模型市集",
+        "提案",
+        "方案比較",
       ],
       "layout": "two-col",
       "layoutSource": "directive",
+      "notes": "建議自建:通知偏好是核心體驗,不宜外包決策邏輯",
     },
     {
       "blocks": [
@@ -3184,23 +3367,75 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "北極星",
+              "text": "預期效益",
             },
           ],
         },
         {
-          "kind": "stat",
-          "label": "以上車隊客戶數,H2 目標 8 家",
-          "value": "30 台",
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "推播 P95 從 45 秒降到 3 秒內",
+                },
+              ],
+              "term": "延遲",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "延遲",
+                },
+                {
+                  "text": ":推播 P95 從 45 秒降到 3 秒內",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "同事件重複通知歸零",
+                },
+              ],
+              "term": "去重",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "去重",
+                },
+                {
+                  "text": ":同事件重複通知歸零",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "供應商切換由改碼變為改設定",
+                },
+              ],
+              "term": "維運",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "維運",
+                },
+                {
+                  "text": ":供應商切換由改碼變為改設定",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
         },
       ],
       "headingPath": [
-        "各賭注",
-        "北極星",
+        "提案",
+        "預期效益",
       ],
-      "layout": "big-stat",
+      "layout": "cards",
       "layoutSource": "inferred",
-      "notes": "目前 3 家,pipeline 裡有 11 家在談",
     },
     {
       "blocks": [
@@ -3209,7 +3444,55 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "附錄:依賴與風險",
+              "text": "導入步驟",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "text": [
+                {
+                  "text": "通知中樞與事件佇列上線,行銷通知先行",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "訂單三事件切換,雙發驗證兩週",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "全量切換,舊直連路徑下線",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": true,
+          "shape": "steps",
+        },
+      ],
+      "headingPath": [
+        "提案",
+        "導入步驟",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "行銷通知量大但容錯高,適合當白老鼠",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "附錄:容量估算",
             },
           ],
         },
@@ -3222,12 +3505,12 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
             ],
             [
               {
-                "text": "依賴",
+                "text": "尖峰值",
               },
             ],
             [
               {
-                "text": "風險等級",
+                "text": "設計餘裕",
               },
             ],
           ],
@@ -3236,51 +3519,51 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
             [
               [
                 {
-                  "text": "計費拆帳",
+                  "text": "事件量",
                 },
               ],
               [
                 {
-                  "text": "財務系統 API",
+                  "text": "1,200/s",
                 },
               ],
               [
                 {
-                  "text": "高",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "OTA 回滾",
-                },
-              ],
-              [
-                {
-                  "text": "分區儲存改版",
-                },
-              ],
-              [
-                {
-                  "text": "中",
+                  "text": "3x",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "告警中樞",
+                  "text": "推播吞吐",
                 },
               ],
               [
                 {
-                  "text": "監控平台 v3",
+                  "text": "900/s",
                 },
               ],
               [
                 {
-                  "text": "低",
+                  "text": "4x",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "去重視窗",
+                },
+              ],
+              [
+                {
+                  "text": "10 分鐘",
+                },
+              ],
+              [
+                {
+                  "text": "記憶體內 + 落盤",
                 },
               ],
             ],
@@ -3288,8 +3571,8 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
         },
       ],
       "headingPath": [
-        "各賭注",
-        "附錄:依賴與風險",
+        "提案",
+        "附錄:容量估算",
       ],
       "layout": "content",
       "layoutSource": "inferred",
@@ -3299,14 +3582,14 @@ exports[`buildIR — golden samples > IR snapshot: 07-product-roadmap.md 1`] = `
 }
 `;
 
-exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
+exports[`buildIR — golden samples > IR snapshot: 06-finance-annual.md 1`] = `
 {
   "meta": {
-    "author": "內訓講師",
+    "author": "財務部",
     "date": "2026-07-13",
     "lang": "zh-TW",
-    "template": "clean-light",
-    "title": "Git 分支策略入門",
+    "template": "boardroom",
+    "title": "連鎖餐飲年度財務健診",
   },
   "slides": [
     {
@@ -3316,7 +3599,7 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "Git 分支策略入門",
+              "text": "連鎖餐飲年度財務健診",
             },
           ],
         },
@@ -3324,7 +3607,7 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "para",
           "text": [
             {
-              "text": "內訓講師 · 2026-07-13",
+              "text": "財務部 · 2026-07-13",
             },
           ],
         },
@@ -3340,13 +3623,13 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "概念",
+              "text": "損益結構",
             },
           ],
         },
       ],
       "headingPath": [
-        "概念",
+        "損益結構",
       ],
       "layout": "section",
       "layoutSource": "inferred",
@@ -3358,7 +3641,7 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "為什麼需要分支策略",
+              "text": "年度損益速覽",
             },
           ],
         },
@@ -3367,51 +3650,51 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
             {
               "desc": [
                 {
-                  "text": "多人同時開發互不阻塞",
+                  "text": "12.6 億,年增 14%",
                 },
               ],
-              "term": "並行",
+              "term": "營收",
               "text": [
                 {
                   "bold": true,
-                  "text": "並行",
+                  "text": "營收",
                 },
                 {
-                  "text": ":多人同時開發互不阻塞",
+                  "text": ":12.6 億,年增 14%",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "每個變更有脈絡、可回退",
+                  "text": "58.3%,較去年下滑 1.8 個百分點",
                 },
               ],
-              "term": "可回溯",
+              "term": "毛利率",
               "text": [
                 {
                   "bold": true,
-                  "text": "可回溯",
+                  "text": "毛利率",
                 },
                 {
-                  "text": ":每個變更有脈絡、可回退",
+                  "text": ":58.3%,較去年下滑 1.8 個百分點",
                 },
               ],
             },
             {
               "desc": [
                 {
-                  "text": "隨時有一條可上線的乾淨主線",
+                  "text": "9.2%,守住兩位數邊緣",
                 },
               ],
-              "term": "可發布",
+              "term": "營業利益率",
               "text": [
                 {
                   "bold": true,
-                  "text": "可發布",
+                  "text": "營業利益率",
                 },
                 {
-                  "text": ":隨時有一條可上線的乾淨主線",
+                  "text": ":9.2%,守住兩位數邊緣",
                 },
               ],
             },
@@ -3422,12 +3705,12 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
         },
       ],
       "headingPath": [
-        "概念",
-        "為什麼需要分支策略",
+        "損益結構",
+        "年度損益速覽",
       ],
       "layout": "cards",
       "layoutSource": "inferred",
-      "notes": "問學員:你們現在怎麼開分支?收 2-3 個答案再往下",
+      "notes": "營收成長但毛利下滑,剪刀差是今天的主題",
     },
     {
       "blocks": [
@@ -3436,26 +3719,211 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "一條主線的心智模型",
+              "text": "最關鍵的數字",
             },
           ],
         },
         {
-          "kind": "quote",
-          "text": [
-            {
-              "text": "主線永遠可發布;所有工作在短命分支上完成,快進快出。",
-            },
-          ],
+          "kind": "stat",
+          "label": "個百分點,原物料上漲吃掉的毛利",
+          "value": "1.8",
         },
       ],
       "headingPath": [
-        "概念",
-        "一條主線的心智模型",
+        "損益結構",
+        "最關鍵的數字",
       ],
-      "layout": "quote",
+      "layout": "big-stat",
       "layoutSource": "inferred",
-      "notes": "這句是整堂課的錨,後面所有規則都推回這句",
+      "notes": "其中乳製品貢獻一半;鎖價合約 Q3 到期,要提前談",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "成本結構變化",
+            },
+          ],
+        },
+        {
+          "header": [
+            [
+              {
+                "text": "成本項",
+              },
+            ],
+            [
+              {
+                "text": "今年佔比",
+              },
+            ],
+            [
+              {
+                "text": "去年佔比",
+              },
+            ],
+            [
+              {
+                "text": "變化",
+              },
+            ],
+          ],
+          "kind": "table",
+          "rows": [
+            [
+              [
+                {
+                  "text": "原物料",
+                },
+              ],
+              [
+                {
+                  "text": "41.7%",
+                },
+              ],
+              [
+                {
+                  "text": "39.9%",
+                },
+              ],
+              [
+                {
+                  "text": "+1.8pp",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "人事",
+                },
+              ],
+              [
+                {
+                  "text": "24.3%",
+                },
+              ],
+              [
+                {
+                  "text": "24.1%",
+                },
+              ],
+              [
+                {
+                  "text": "+0.2pp",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "租金",
+                },
+              ],
+              [
+                {
+                  "text": "11.8%",
+                },
+              ],
+              [
+                {
+                  "text": "12.4%",
+                },
+              ],
+              [
+                {
+                  "text": "-0.6pp",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "水電物流",
+                },
+              ],
+              [
+                {
+                  "text": "7.4%",
+                },
+              ],
+              [
+                {
+                  "text": "7.0%",
+                },
+              ],
+              [
+                {
+                  "text": "+0.4pp",
+                },
+              ],
+            ],
+            [
+              [
+                {
+                  "text": "其他",
+                },
+              ],
+              [
+                {
+                  "text": "5.6%",
+                },
+              ],
+              [
+                {
+                  "text": "5.8%",
+                },
+              ],
+              [
+                {
+                  "text": "-0.2pp",
+                },
+              ],
+            ],
+          ],
+        },
+      ],
+      "fit": true,
+      "headingPath": [
+        "損益結構",
+        "成本結構變化",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "租金下降來自兩個商場改抽成制,是談判範本",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "費用分佈",
+            },
+          ],
+        },
+        {
+          "engine": "mermaid",
+          "kind": "diagram",
+          "source": "pie title 營業費用結構
+  "行銷" : 34
+  "總部人事" : 28
+  "資訊系統" : 16
+  "折舊攤提" : 13
+  "其他" : 9",
+        },
+      ],
+      "headingPath": [
+        "損益結構",
+        "費用分佈",
+      ],
+      "layout": "diagram",
+      "layoutSource": "inferred",
+      "notes": "行銷佔比連兩年上升,ROI 檢核機制下一頁",
     },
     {
       "blocks": [
@@ -3464,13 +3932,13 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "實作",
+              "text": "資金與行動",
             },
           ],
         },
       ],
       "headingPath": [
-        "實作",
+        "資金與行動",
       ],
       "layout": "section",
       "layoutSource": "inferred",
@@ -3482,28 +3950,76 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "分支流程",
+              "text": "現金水位",
             },
           ],
         },
         {
-          "engine": "mermaid",
-          "kind": "diagram",
-          "source": "flowchart LR
-  M[main] --> F[feature/checkout-fix]
-  F --> PR[Pull Request]
-  PR --> CI{CI 通過?}
-  CI -->|是| R[Review]
-  CI -->|否| F
-  R --> M",
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "4.2 億,約當 3.8 個月營運支出",
+                },
+              ],
+              "term": "期末現金",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "期末現金",
+                },
+                {
+                  "text": ":4.2 億,約當 3.8 個月營運支出",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "31%,授信額度動用不到兩成",
+                },
+              ],
+              "term": "負債比",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "負債比",
+                },
+                {
+                  "text": ":31%,授信額度動用不到兩成",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "1.1 億,八成投入新店與設備更新",
+                },
+              ],
+              "term": "資本支出",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "資本支出",
+                },
+                {
+                  "text": ":1.1 億,八成投入新店與設備更新",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
         },
       ],
       "headingPath": [
-        "實作",
-        "分支流程",
+        "資金與行動",
+        "現金水位",
       ],
-      "layout": "diagram",
+      "layout": "cards",
       "layoutSource": "inferred",
+      "notes": "水位健康,擴張速度不是資金問題而是展店品質問題",
     },
     {
       "blocks": [
@@ -3512,7 +4028,7 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "日常操作步驟",
+              "text": "明年三項財務行動",
             },
           ],
         },
@@ -3521,35 +4037,21 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
             {
               "text": [
                 {
-                  "text": "從 main 切出 feature 分支",
+                  "text": "乳製品與糖鎖價合約重談,目標壓回 0.8 個百分點",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "小步提交,訊息寫「為什麼」",
+                  "text": "行銷費用改零基預算,每案附 ROI 追蹤",
                 },
               ],
             },
             {
               "text": [
                 {
-                  "text": "推上遠端開 PR,CI 自動跑",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "Review 通過後 squash 合併",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "text": "刪除已合併分支",
+                  "text": "建立門市四級評等,末段班改造或退場",
                 },
               ],
             },
@@ -3560,12 +4062,12 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
         },
       ],
       "headingPath": [
-        "實作",
-        "日常操作步驟",
+        "資金與行動",
+        "明年三項財務行動",
       ],
       "layout": "content",
       "layoutSource": "inferred",
-      "notes": "現場 demo 一輪,學員跟著做",
+      "notes": "三項各有量化目標,季度財報會追蹤",
     },
     {
       "blocks": [
@@ -3574,76 +4076,26 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "常見錯誤",
+              "text": "給經營團隊的提醒",
             },
           ],
         },
         {
-          "items": [
+          "cite": "財務長年度總結",
+          "kind": "quote",
+          "text": [
             {
-              "desc": [
-                {
-                  "text": "超過三天不合併,衝突機率倍增",
-                },
-              ],
-              "term": "長命分支",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "長命分支",
-                },
-                {
-                  "text": ":超過三天不合併,衝突機率倍增",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "超過 400 行,review 品質崩壞",
-                },
-              ],
-              "term": "巨型 PR",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "巨型 PR",
-                },
-                {
-                  "text": ":超過 400 行,review 品質崩壞",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "繞過 CI 與 review,事故常客",
-                },
-              ],
-              "term": "直推主線",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "直推主線",
-                },
-                {
-                  "text": ":繞過 CI 與 review,事故常客",
-                },
-              ],
+              "text": "成長掩蓋的問題,會在成長放緩的那一季全部到期。",
             },
           ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
         },
       ],
       "headingPath": [
-        "實作",
-        "常見錯誤",
+        "資金與行動",
+        "給經營團隊的提醒",
       ],
-      "layout": "cards",
+      "layout": "quote",
       "layoutSource": "inferred",
-      "notes": "每一條都配一個真實事故案例講",
     },
     {
       "blocks": [
@@ -3652,66 +4104,7 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "kind": "heading",
           "text": [
             {
-              "text": "檢核表",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "checked": true,
-              "text": [
-                {
-                  "text": "main 受保護,禁止直推",
-                },
-              ],
-            },
-            {
-              "checked": true,
-              "text": [
-                {
-                  "text": "PR 必須綠燈才可合併",
-                },
-              ],
-            },
-            {
-              "checked": false,
-              "text": [
-                {
-                  "text": "合併後自動刪分支",
-                },
-              ],
-            },
-            {
-              "checked": false,
-              "text": [
-                {
-                  "text": "主線壞掉時的凍結規則",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "plain",
-        },
-      ],
-      "headingPath": [
-        "實作",
-        "檢核表",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "前兩項多數團隊有,後兩項是今天回去要補的作業",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "附錄:指令速查",
+              "text": "附錄:季度毛利率走勢",
             },
           ],
         },
@@ -3719,12 +4112,22 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
           "header": [
             [
               {
-                "text": "動作",
+                "text": "季度",
               },
             ],
             [
               {
-                "text": "指令",
+                "text": "營收(億)",
+              },
+            ],
+            [
+              {
+                "text": "毛利率",
+              },
+            ],
+            [
+              {
+                "text": "營業利益率",
               },
             ],
           ],
@@ -3733,52 +4136,88 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
             [
               [
                 {
-                  "text": "切分支",
+                  "text": "Q1",
                 },
               ],
               [
                 {
-                  "code": true,
-                  "text": "git switch -c feature/x",
+                  "text": "2.9",
+                },
+              ],
+              [
+                {
+                  "text": "59.1%",
+                },
+              ],
+              [
+                {
+                  "text": "9.8%",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "更新基底",
+                  "text": "Q2",
                 },
               ],
               [
                 {
-                  "code": true,
-                  "text": "git fetch && git rebase origin/main",
+                  "text": "3.1",
+                },
+              ],
+              [
+                {
+                  "text": "58.6%",
+                },
+              ],
+              [
+                {
+                  "text": "9.5%",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "互動整理",
+                  "text": "Q3",
                 },
               ],
               [
                 {
-                  "code": true,
-                  "text": "git rebase -i origin/main",
+                  "text": "3.2",
+                },
+              ],
+              [
+                {
+                  "text": "58.0%",
+                },
+              ],
+              [
+                {
+                  "text": "9.0%",
                 },
               ],
             ],
             [
               [
                 {
-                  "text": "刪除遠端分支",
+                  "text": "Q4",
                 },
               ],
               [
                 {
-                  "code": true,
-                  "text": "git push origin --delete feature/x",
+                  "text": "3.4",
+                },
+              ],
+              [
+                {
+                  "text": "57.7%",
+                },
+              ],
+              [
+                {
+                  "text": "8.7%",
                 },
               ],
             ],
@@ -3786,752 +4225,8 @@ exports[`buildIR — golden samples > IR snapshot: 08-teaching-notes.md 1`] = `
         },
       ],
       "headingPath": [
-        "實作",
-        "附錄:指令速查",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "skip": true,
-    },
-  ],
-}
-`;
-
-exports[`buildIR — golden samples > IR snapshot: 09-one-pager.md 1`] = `
-{
-  "meta": {
-    "author": undefined,
-    "date": "2026-07-13",
-    "lang": "zh-TW",
-    "template": "clean-light",
-    "title": "會議室預約系統改版備忘",
-  },
-  "slides": [
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "會議室預約系統改版備忘",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "2026-07-13",
-            },
-          ],
-        },
-      ],
-      "headingPath": [],
-      "layout": "title",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "一頁備忘",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "尖峰時段 30% 的預約撞期後被手動協調",
-                },
-              ],
-              "term": "問題",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "問題",
-                },
-                {
-                  "text": ":尖峰時段 30% 的預約撞期後被手動協調",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "改為資源日曆 + 自動候補,取消即遞補",
-                },
-              ],
-              "term": "方案",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "方案",
-                },
-                {
-                  "text": ":改為資源日曆 + 自動候補,取消即遞補",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "兩名工程師 × 三週,無新增採購",
-                },
-              ],
-              "term": "成本",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "成本",
-                },
-                {
-                  "text": ":兩名工程師 × 三週,無新增採購",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "一頁備忘",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-      "notes": "給主管的一頁版,詳細規格另有文件",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "只要一個決定",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "8/1 前核准,即可趕上 Q3 辦公室搬遷前上線",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "只要一個決定",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "過了 8/1 就得排到搬遷後,協調成本再吃一季",
-    },
-  ],
-}
-`;
-
-exports[`buildIR — golden samples > IR snapshot: 10-bilingual-spec.md 1`] = `
-{
-  "meta": {
-    "author": "Platform Team",
-    "date": "2026-07-13",
-    "lang": "zh-TW",
-    "template": "midnight",
-    "title": "Edge Agent 遙測上報規格",
-  },
-  "slides": [
-    {
-      "blocks": [
-        {
-          "depth": 1,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Edge Agent 遙測上報規格",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "text": "Platform Team · 2026-07-13",
-            },
-          ],
-        },
-      ],
-      "headingPath": [],
-      "layout": "title",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Scope",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "MQTT over TLS 1.3,單向 outbound",
-                },
-              ],
-              "term": "上報通道",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "上報通道",
-                },
-                {
-                  "text": ":MQTT over TLS 1.3,單向 outbound",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "heartbeat、metrics、event 三類 topic",
-                },
-              ],
-              "term": "資料類別",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "資料類別",
-                },
-                {
-                  "text": ":heartbeat、metrics、event 三類 topic",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "離線時本地 ring buffer 暫存 72 小時",
-                },
-              ],
-              "term": "降級行為",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "降級行為",
-                },
-                {
-                  "text": ":離線時本地 ring buffer 暫存 72 小時",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "Scope",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-      "notes": "中英混排文件,術語保留英文、敘述用中文",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Topic 結構",
-            },
-          ],
-        },
-        {
-          "kind": "code",
-          "lang": undefined,
-          "value": "telemetry/{site_id}/{device_id}/heartbeat
-telemetry/{site_id}/{device_id}/metrics
-telemetry/{site_id}/{device_id}/event",
-        },
-      ],
-      "headingPath": [
-        "Topic 結構",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-      "notes": "site_id 對應廠區,device_id 出廠燒錄不可變",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Payload 約定",
-            },
-          ],
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "bold": true,
-              "text": "Envelope(必填)",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "code": true,
-                  "text": "schema_ver",
-                },
-                {
-                  "text": ":語意化版本,破壞性變更進位 major",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "code": true,
-                  "text": "ts",
-                },
-                {
-                  "text": ":UTC epoch ms,由裝置端打點",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "code": true,
-                  "text": "seq",
-                },
-                {
-                  "text": ":單調遞增,斷線重連不歸零",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "plain",
-        },
-        {
-          "kind": "para",
-          "text": [
-            {
-              "bold": true,
-              "text": "Metrics body",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "text": [
-                {
-                  "code": true,
-                  "text": "cpu_pct",
-                },
-                {
-                  "text": " / ",
-                },
-                {
-                  "code": true,
-                  "text": "mem_pct",
-                },
-                {
-                  "text": ":0–100 float",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "code": true,
-                  "text": "gpu_util",
-                },
-                {
-                  "text": ":無 GPU 時省略欄位,不送 null",
-                },
-              ],
-            },
-            {
-              "text": [
-                {
-                  "code": true,
-                  "text": "temp_c",
-                },
-                {
-                  "text": ":攝氏,一位小數",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "plain",
-        },
-      ],
-      "columns": [
-        [
-          {
-            "kind": "para",
-            "text": [
-              {
-                "bold": true,
-                "text": "Envelope(必填)",
-              },
-            ],
-          },
-          {
-            "items": [
-              {
-                "text": [
-                  {
-                    "code": true,
-                    "text": "schema_ver",
-                  },
-                  {
-                    "text": ":語意化版本,破壞性變更進位 major",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "code": true,
-                    "text": "ts",
-                  },
-                  {
-                    "text": ":UTC epoch ms,由裝置端打點",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "code": true,
-                    "text": "seq",
-                  },
-                  {
-                    "text": ":單調遞增,斷線重連不歸零",
-                  },
-                ],
-              },
-            ],
-            "kind": "list",
-            "ordered": false,
-            "shape": "plain",
-          },
-        ],
-        [
-          {
-            "kind": "para",
-            "text": [
-              {
-                "bold": true,
-                "text": "Metrics body",
-              },
-            ],
-          },
-          {
-            "items": [
-              {
-                "text": [
-                  {
-                    "code": true,
-                    "text": "cpu_pct",
-                  },
-                  {
-                    "text": " / ",
-                  },
-                  {
-                    "code": true,
-                    "text": "mem_pct",
-                  },
-                  {
-                    "text": ":0–100 float",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "code": true,
-                    "text": "gpu_util",
-                  },
-                  {
-                    "text": ":無 GPU 時省略欄位,不送 null",
-                  },
-                ],
-              },
-              {
-                "text": [
-                  {
-                    "code": true,
-                    "text": "temp_c",
-                  },
-                  {
-                    "text": ":攝氏,一位小數",
-                  },
-                ],
-              },
-            ],
-            "kind": "list",
-            "ordered": false,
-            "shape": "plain",
-          },
-        ],
-      ],
-      "headingPath": [
-        "Payload 約定",
-      ],
-      "layout": "two-col",
-      "layoutSource": "directive",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "上報頻率",
-            },
-          ],
-        },
-        {
-          "items": [
-            {
-              "desc": [
-                {
-                  "text": "30s 固定,jitter ±3s",
-                },
-              ],
-              "term": "heartbeat",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "heartbeat",
-                },
-                {
-                  "text": ":30s 固定,jitter ±3s",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "60s,可由平台下行調整至 10s–300s",
-                },
-              ],
-              "term": "metrics",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "metrics",
-                },
-                {
-                  "text": ":60s,可由平台下行調整至 10s–300s",
-                },
-              ],
-            },
-            {
-              "desc": [
-                {
-                  "text": "即時,重試採指數退避",
-                },
-              ],
-              "term": "event",
-              "text": [
-                {
-                  "bold": true,
-                  "text": "event",
-                },
-                {
-                  "text": ":即時,重試採指數退避",
-                },
-              ],
-            },
-          ],
-          "kind": "list",
-          "ordered": false,
-          "shape": "cards",
-        },
-      ],
-      "headingPath": [
-        "上報頻率",
-      ],
-      "layout": "cards",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "資料流",
-            },
-          ],
-        },
-        {
-          "engine": "mermaid",
-          "kind": "diagram",
-          "source": "sequenceDiagram
-  participant D as Edge Agent
-  participant B as MQTT Broker
-  participant P as Pipeline
-  D->>B: publish(QoS1, retain=false)
-  B-->>D: PUBACK
-  B->>P: bridge to ingestion
-  P->>P: schema validation
-  P-->>B: DLQ on invalid",
-        },
-      ],
-      "headingPath": [
-        "資料流",
-      ],
-      "layout": "diagram",
-      "layoutSource": "inferred",
-      "notes": "QoS1 + 冪等 seq,平台端去重",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Compliance 邊界",
-            },
-          ],
-        },
-        {
-          "emphasis": true,
-          "kind": "para",
-          "text": [
-            {
-              "text": "所有 payload 禁止含 PII;event 內容僅允許機器狀態碼,不得夾帶操作者資訊。",
-            },
-          ],
-        },
-      ],
-      "headingPath": [
-        "Compliance 邊界",
-      ],
-      "layout": "content",
-      "layoutSource": "inferred",
-    },
-    {
-      "blocks": [
-        {
-          "depth": 2,
-          "kind": "heading",
-          "text": [
-            {
-              "text": "Appendix:錯誤碼",
-            },
-          ],
-        },
-        {
-          "header": [
-            [
-              {
-                "text": "Code",
-              },
-            ],
-            [
-              {
-                "text": "意義",
-              },
-            ],
-            [
-              {
-                "text": "處置",
-              },
-            ],
-          ],
-          "kind": "table",
-          "rows": [
-            [
-              [
-                {
-                  "text": "E1001",
-                },
-              ],
-              [
-                {
-                  "text": "schema 驗證失敗",
-                },
-              ],
-              [
-                {
-                  "text": "進 DLQ,告警彙整",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "E1002",
-                },
-              ],
-              [
-                {
-                  "text": "seq 回捲",
-                },
-              ],
-              [
-                {
-                  "text": "視為重啟,重建 session",
-                },
-              ],
-            ],
-            [
-              [
-                {
-                  "text": "E1003",
-                },
-              ],
-              [
-                {
-                  "text": "憑證過期",
-                },
-              ],
-              [
-                {
-                  "text": "裝置端自動換發",
-                },
-              ],
-            ],
-          ],
-        },
-      ],
-      "headingPath": [
-        "Appendix:錯誤碼",
+        "資金與行動",
+        "附錄:季度毛利率走勢",
       ],
       "layout": "content",
       "layoutSource": "inferred",
