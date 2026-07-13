@@ -62,7 +62,8 @@ npm run typecheck
 
 - 文件在 GitHub/Obsidian 打開必須是**正常 Markdown**;專屬資訊只放 YAML frontmatter 與 HTML 註解 directive(共 6 個:`layout` `split` `notes` `emphasis` `fit` `skip`)。
 - **一個 H2 = 一頁**;單獨 H1 = 章節頁;`---` 強制分頁。
-- **先靠形狀,後靠 directive**:「**粗體詞**:說明」×3 → 卡片;有序清單 ≤5 → 步驟條;數字開頭短段落 → 大數字頁;blockquote → 引言頁;```mermaid → 圖表頁。
+- **先靠形狀,後靠 directive**:「**粗體詞**:說明」×3 → 卡片;有序清單 ≤5 → 步驟條;`數值,標籤,補充(可省)` 三欄位格式 → 大數字頁(數值可帶單位與 +,如 `10,000+ 小時`);連續 2–4 段同格式 → KPI 看板;blockquote 尾行 `— 出處` → 引言頁;```mermaid → 圖表頁。
+- **貼上容錯**:LLM 聊天介面複製來的內容若包在 ```` ```` ```` code fence 裡、或 frontmatter 前有空行,貼上時自動修正。
 
 讓 LLM 代寫:站內「✨ AI 產生」按鈕會複製 [`prompt.md`](prompt.md),貼給任何 LLM 即可產出合規 MD;skill 版見 [`skill/SKILL.md`](skill/SKILL.md)。
 
@@ -74,8 +75,8 @@ src/
   ir/            # SlideDoc IR、buildIR、design rules(純函式)
   render-html/   # 頁面 view、slide runtime、溢版量測降級、mermaid
   render-pptx/   # pptxgenjs generator
-  templates/     # clean-light、midnight、schema
-  app/           # 編輯器 UI、export 流程
+  templates/     # 5 套 template(clean-light/midnight/craft/forest/boardroom)+ schema
+  app/           # 編輯器 UI、分享連結、HTML/pptx export 流程
 spec/PROFILE.md  # MD Profile v1(唯一合約)
 skill/SKILL.md   # LLM 產出技能
 prompt.md        # 「AI 產生」按鈕複製的 prompt
@@ -97,4 +98,4 @@ DECISIONS.md     # 實作期間的裁決記錄
 
 ## 非目標(v1)
 
-協作編輯、帳號/登入、雲端儲存、分享短連結、reveal.js、企業 .potx 萃取(Phase 2)、runtime 呼叫 LLM、動畫轉場。
+協作編輯、帳號/登入、雲端儲存、需要後端的短連結服務(URL 自含式分享已內建)、reveal.js、企業 .potx 萃取(Phase 2)、runtime 呼叫 LLM、動畫轉場。
