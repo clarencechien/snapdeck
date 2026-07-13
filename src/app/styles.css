@@ -86,6 +86,12 @@ button { font-family: inherit; }
 .share-menu button:hover { background: #38342a; }
 .share-menu b { color: #f3efe7; font-size: 13px; }
 .share-menu span { color: #a89e8d; font-size: 11.5px; }
+.share-short {
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  border-top: 1px solid #4a453a; margin-top: 4px; cursor: pointer;
+}
+.share-short input { accent-color: var(--app-accent); cursor: pointer; }
+.share-short > span { display: flex; flex-direction: column; gap: 2px; }
 
 .mini-btn {
   border: 1px solid var(--app-line); background: var(--app-panel); color: var(--app-text);

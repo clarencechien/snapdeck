@@ -179,6 +179,18 @@ notes;two-col 僅限素材本身是左右對照、整份 ≤1 頁、大數字絕
 emphasis 整份 1–2 處;fit 只給拆不開的密集表格。修正後 Gemini 重跑
 同素材,two-col 濫用消失,輸出一次合規(Phase 1 以此結案)。
 
+## D21:零知識短連結(v0.5)
+
+長連結(數千字元)會被通訊軟體與 bit.ly 類服務截斷;更換壓縮演算法
+(Brotli WASM)僅省 15–25%,救不了場景。裁決:採 PrivateBin 模式——
+瀏覽器內 AES-GCM 加密,KV 只存密文,金鑰放 URL fragment(不隨請求
+送出),伺服器與營運者皆無法解密,守住「內容不給出去」;連結 ~60 字元。
+邊界:密文 180 天過期(長連結永久有效且離線可解)、上限 100KB、
+未做限流(公開部署可加 Cloudflare rate limiting)。部署為選配:
+未綁 KV 時 API 回 503,前端自動退回 `#s=` 長連結,既有部署不受影響;
+啟用步驟見 docs/SHORTLINK.md。壓縮天花板說明一併記錄:deflate-raw
+已是瀏覽器原生最緊,base64 33% 膨脹是 URL 字元集固定成本。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值
