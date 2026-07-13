@@ -12,8 +12,8 @@
     "not_found_handling": "single-page-application",
     "binding": "ASSETS"
   }
-  // 啟用短連結時取消註解:
-  // ,"kv_namespaces": [
-  //   { "binding": "LINKS", "id": "<你的 KV namespace id>" }
-  // ]
+  //啟用短連結時取消註解:
+  ,"kv_namespaces": [
+     { "binding": "LINKS", "id": "snapdeck.kv" }
+   ]
 }
