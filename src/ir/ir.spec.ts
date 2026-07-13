@@ -94,6 +94,21 @@ describe("design rules", () => {
     expect(doc.slides[0].blocks.find((b) => b.kind === "stat")).toBeUndefined();
   });
 
+  it("rule 5(v3):+ 與單位進大字(value),逗號後為標籤", () => {
+    const doc = ir("## 頁\n\n10,000+ 小時,喜劇內容與旅遊節目總時數");
+    const stat = doc.slides[0].blocks.find((b) => b.kind === "stat");
+    expect(stat && stat.kind === "stat" && stat.value).toBe("10,000+ 小時");
+    expect(stat && stat.kind === "stat" && stat.label).toBe("喜劇內容與旅遊節目總時數");
+    expect(doc.slides[0].layout).toBe("big-stat");
+  });
+
+  it("rule 5(v3):單位後綴 + 也進大字", () => {
+    const doc = ir("## 頁\n\n90 萬+,App 會員數");
+    const stat = doc.slides[0].blocks.find((b) => b.kind === "stat");
+    expect(stat && stat.kind === "stat" && stat.value).toBe("90 萬+");
+    expect(stat && stat.kind === "stat" && stat.label).toBe("App 會員數");
+  });
+
   it("dashboard:連續 ≥2 段數字短句 → 多 stat + big-stat layout", () => {
     const doc = ir("## 頁\n\n2.84 億,季營收,年增 18%\n\n187 家,門市總數\n\n61%,會員貢獻營收");
     const stats = doc.slides[0].blocks.filter((b) => b.kind === "stat");
