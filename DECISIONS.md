@@ -137,6 +137,20 @@ PRD §9「分享基礎設施」的短連結仍留待 Phase 4。
   單一自含 HTML(零外部請求)。教訓:React 18 createRoot 的 commit
   是非同步,序列化前必須等 `.sd-page` 出現,否則拿到空 body。
 
+## D17:prompt.md 重寫為 few-shot 教材式(v0.4)
+
+原 prompt 是純規則清單,非 thinking 模型產出品質差(使用者實測回饋)。
+重寫原則(對齊 SKILL.md 的教法):
+- **Do/Don't 對照**覆蓋實測常見失敗:數字埋段落、一頁塞爆、講稿進正文、
+  手打「•」與 HTML、章節頁塞內容。
+- **完整輸入→輸出範例**(few-shot):一段口語素材 → 整份合規輸出,
+  對非 thinking 模型比規則更有效。範例經自家 parser/linter 驗證
+  (lint PASS;觸發 title/section/big-stat 看板/cards/steps)。
+- **輸出格式規則放最前且重複於結尾**(「第一行必須是 ---」「不要
+  code fence 包住」),弱模型最常在這兩點翻車。
+- 檔頭使用說明以 `<!-- PROMPT-START -->` 隔開,站內按鈕只複製本體,
+  雜訊不進剪貼簿。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值
