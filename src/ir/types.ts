@@ -36,7 +36,7 @@ export type Block =
   | { kind: "table"; header: InlineText[]; rows: InlineText[][]; emphasis?: boolean }
   | { kind: "image"; url: string; alt?: string; emphasis?: boolean }
   | { kind: "diagram"; engine: "mermaid"; source: string; svg?: string; emphasis?: boolean }
-  | { kind: "stat"; value: string; label: string; emphasis?: boolean };
+  | { kind: "stat"; value: string; label: string; caption?: string; emphasis?: boolean };
 
 export type LayoutIntent =
   | "title"

@@ -192,6 +192,7 @@ export function BlockView({
         <div className={`sd-stat${emphasisCls}`}>
           <div className="sd-stat-value">{block.value}</div>
           <div className="sd-stat-label">{block.label}</div>
+          {block.caption ? <div className="sd-stat-caption">{block.caption}</div> : null}
         </div>
       );
     default:

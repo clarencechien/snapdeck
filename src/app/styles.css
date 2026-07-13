@@ -221,6 +221,14 @@ button { font-family: inherit; }
   display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 
+/* 稀疏頁/圖表頁:內容垂直置中(避免內容少時全部擠在頂端)。
+   注意不可加 align-items:center——flex column 下會讓 .sd-diagram
+   失去 stretch 而縮成 shrink-to-fit,SVG 變迷你。 */
+.sd-body-center {
+  display: flex; flex-direction: column; justify-content: center;
+}
+.sd-body-center > * { width: 100%; }
+
 /* blocks */
 .sd-para { margin: 0 0 0.6em; }
 .sd-list { margin: 0 0 0.6em; padding-left: 1.2em; }
@@ -282,6 +290,45 @@ code { font-family: var(--sd-font-mono); font-size: 0.92em; background: rgba(127
   font-size: 0.8em; margin-top: 0.35em;
   color: color-mix(in srgb, var(--sd-slide-fg) 62%, transparent);
 }
+.sd-stat-caption {
+  font-size: 0.58em; margin-top: 0.3em;
+  color: color-mix(in srgb, var(--sd-slide-fg) 48%, transparent);
+}
+
+/* KPI 看板:連續多個數字段落自動排成 stat tiles */
+.sd-stats-grid {
+  display: grid; gap: 0.7em; grid-template-columns: repeat(3, 1fr);
+  margin: 0.3em 0; width: 100%;
+}
+.sd-stats-grid[data-count="2"] { grid-template-columns: repeat(2, 1fr); }
+.sd-stats-grid[data-count="4"] { grid-template-columns: repeat(2, 1fr); }
+.sd-stat-tile {
+  background: color-mix(in srgb, var(--sd-surface) 50%, white);
+  border: 1px solid color-mix(in srgb, var(--sd-slide-fg) 14%, transparent);
+  border-radius: 16px; padding: 0.75em 0.8em 0.7em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.06);
+}
+.sd-stat-tile::before {
+  content: ""; display: block; width: 1.6em; height: 5px;
+  background: var(--sd-accent); border-radius: 3px; margin-bottom: 0.5em;
+}
+.sd-stat-tile-value {
+  font-family: var(--sd-font-display); font-weight: 800;
+  font-size: 1.7em; line-height: 1.1; color: var(--sd-primary);
+  font-variant-numeric: tabular-nums;
+}
+.sd-stat-tile-label {
+  font-size: 0.66em; margin-top: 0.4em; font-weight: 600;
+  color: color-mix(in srgb, var(--sd-slide-fg) 82%, transparent);
+}
+.sd-stat-tile-caption {
+  font-size: 0.55em; margin-top: 0.2em; line-height: 1.5;
+  color: color-mix(in srgb, var(--sd-slide-fg) 52%, transparent);
+}
+.sd-page .sd-stats-grid { grid-template-columns: repeat(2, 1fr); }
+.sd-page .sd-stat-tile-value { font-size: 30px; }
+.sd-page .sd-stat-tile-label { font-size: 14px; }
+.sd-page .sd-stat-tile-caption { font-size: 12.5px; }
 
 .sd-cards { display: grid; gap: 0.7em; grid-template-columns: repeat(3, 1fr); margin: 0.3em 0; }
 .sd-cards[data-count="2"] { grid-template-columns: repeat(2, 1fr); }

@@ -1110,8 +1110,8 @@ exports[`buildIR — golden samples > IR snapshot: 01-mdshare-product.md 1`] = `
         },
         {
           "kind": "stat",
-          "label": "內,從貼上到開始簡報。",
-          "value": "10 秒",
+          "label": "從貼上到開始簡報。",
+          "value": "10 秒內",
         },
       ],
       "headingPath": [
@@ -1485,8 +1485,9 @@ exports[`buildIR — golden samples > IR snapshot: 02-production-monthly.md 1`] 
           ],
         },
         {
+          "caption": "創產線改線以來新高",
           "kind": "stat",
-          "label": "直通率,創產線改線以來新高",
+          "label": "直通率",
           "value": "94.1%",
         },
       ],
@@ -1985,24 +1986,66 @@ exports[`buildIR — golden samples > IR snapshot: 03-sales-quarterly.md 1`] = `
           "kind": "heading",
           "text": [
             {
+              "text": "一眼看板",
+            },
+          ],
+        },
+        {
+          "caption": "年增 18%",
+          "kind": "stat",
+          "label": "季營收",
+          "value": "2.84 億",
+        },
+        {
+          "caption": "本季淨增 10 家",
+          "kind": "stat",
+          "label": "門市總數",
+          "value": "187 家",
+        },
+        {
+          "caption": "滲透率 34%",
+          "kind": "stat",
+          "label": "App 會員數",
+          "value": "90 萬",
+        },
+        {
+          "caption": "連四季上升",
+          "kind": "stat",
+          "label": "會員貢獻營收",
+          "value": "61%",
+        },
+      ],
+      "headingPath": [
+        "整體表現",
+        "一眼看板",
+      ],
+      "layout": "big-stat",
+      "layoutSource": "inferred",
+      "notes": "四個數字卡是給高層的 30 秒版本,後面每頁展開一個",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
               "text": "最亮眼的數字",
             },
           ],
         },
         {
-          "kind": "para",
-          "text": [
-            {
-              "text": "61% 營收來自 App 會員,首次過半後持續攀升",
-            },
-          ],
+          "caption": "首次過半後持續攀升",
+          "kind": "stat",
+          "label": "營收來自 App 會員",
+          "value": "61%",
         },
       ],
       "headingPath": [
         "整體表現",
         "最亮眼的數字",
       ],
-      "layout": "content",
+      "layout": "big-stat",
       "layoutSource": "inferred",
       "notes": "去年同期 44%,一年拉升 17 個百分點,行銷預算重分配奏效",
     },
@@ -2575,18 +2618,16 @@ exports[`buildIR — golden samples > IR snapshot: 04-hr-halfyear.md 1`] = `
           ],
         },
         {
-          "kind": "para",
-          "text": [
-            {
-              "text": "52 天,資深工程師平均到職週期,是全職類最長",
-            },
-          ],
+          "caption": "是全職類最長",
+          "kind": "stat",
+          "label": "資深工程師平均到職週期",
+          "value": "52 天",
         },
       ],
       "headingPath": [
         "最需要正視的數字",
       ],
-      "layout": "content",
+      "layout": "big-stat",
       "layoutSource": "inferred",
       "notes": "同業約 45 天;瓶頸在主管面談排程,不在候選人數量",
     },
@@ -3724,8 +3765,9 @@ exports[`buildIR — golden samples > IR snapshot: 06-finance-annual.md 1`] = `
           ],
         },
         {
+          "caption": "原物料上漲吃掉的毛利",
           "kind": "stat",
-          "label": "個百分點,原物料上漲吃掉的毛利",
+          "label": "個百分點",
           "value": "1.8",
         },
       ],

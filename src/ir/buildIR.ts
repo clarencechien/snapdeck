@@ -93,16 +93,30 @@ export function toInline(nodes: PhrasingContent[]): InlineText {
 
 const STAT_START_RE = /^(?:約|近|逾|超過)?\s*(?:NT\$|US\$|[$€£¥])?\d/;
 const STAT_VALUE_RE =
-  /^((?:約|近|逾|超過)?\s*(?:NT\$|US\$|[$€£¥])?\d[\d,.]*(?:\s*(?:%|萬|億|兆|k|K|M|B|倍|x|X|ms|s|hr|小時|天|週|個月|月|年|台|人|件|次|元|千元|萬元|分鐘|秒))?)\s*[,,::]?\s*([\s\S]*)$/;
+  /^((?:約|近|逾|超過)?\s*(?:NT\$|US\$|[$€£¥])?\d[\d,.]*(?:\s*(?:%|萬|億|兆|k|K|M|B|倍|x|X|ms|s|hr|小時|天|週|個月|月|年|台|人|件|次|元|千元|萬元|分鐘|分|秒|家|店|間|支|筆|名|位|場|座|款)(?:以?[內上下])?)?)\s*[,,::]?\s*([\s\S]*)$/;
 
-/** design rule 5:數字/百分比/金額開頭且全段 ≤ 20 字 → stat */
-function detectStat(text: InlineText): { value: string; label: string } | null {
+/** design rule 5(v2):數字開頭段落 → stat(value + label + 選配 caption)。
+    無逗號:全段 ≤ 20 字成大數字。
+    有逗號:第一子句為標籤(value+label ≤ 20 字)、其餘為補充說明,全段 ≤ 40 字。
+    超出上限 → 維持一般段落(graceful degradation)。 */
+function detectStat(text: InlineText): { value: string; label: string; caption?: string } | null {
   const plain = plainText(text).trim();
   if (!STAT_START_RE.test(plain)) return null;
-  if ([...plain.replace(/\s/g, "")].length > 20) return null;
+  const len = (s: string) => [...s.replace(/\s/g, "")].length;
+  if (len(plain) > 40) return null;
   const m = STAT_VALUE_RE.exec(plain);
   if (!m) return null;
-  return { value: m[1].trim(), label: m[2].trim() };
+  const value = m[1].trim();
+  const rest = m[2].trim();
+  const commaIdx = rest.search(/[,,;;]/);
+  if (commaIdx === -1) {
+    if (len(plain) > 20) return null;
+    return { value, label: rest };
+  }
+  const label = rest.slice(0, commaIdx).trim();
+  const caption = rest.slice(commaIdx + 1).trim();
+  if (len(value + label) > 20) return null;
+  return { value, label, ...(caption ? { caption } : {}) };
 }
 
 /** design rule 4:cards / steps 清單形狀偵測 */
@@ -197,7 +211,13 @@ export function nodeToBlock(node: RootContent): Block | null {
       }
       const text = toInline(p.children as PhrasingContent[]);
       const stat = detectStat(text);
-      if (stat) return { kind: "stat", value: stat.value, label: stat.label };
+      if (stat)
+        return {
+          kind: "stat",
+          value: stat.value,
+          label: stat.label,
+          ...(stat.caption ? { caption: stat.caption } : {}),
+        };
       return { kind: "para", text };
     }
     case "list": {
