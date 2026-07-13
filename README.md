@@ -1,1 +1,85 @@
-# snapdeck
+# SnapDeck
+
+**寫作即排版,貼上即上台。**
+
+SnapDeck 是 Markdown 的「分享與簡報層」,不是編輯器。貼上一份「類通用 Markdown」,十秒內得到:
+
+- 有設計感的**網頁 view**(Notion page 質感)
+- 可全螢幕簡報的 **HTML slide mode**(鍵盤翻頁、speaker notes、深連結)
+- 套用 template、**文字可編輯**的 **pptx 下載**
+
+全程純前端:解析、渲染、pptx 產出都在瀏覽器完成,**文件內容不離開瀏覽器**、零網路呼叫(mermaid 等函式庫打包進 bundle)。
+
+## 快速開始
+
+```bash
+npm install
+npm run dev        # 開發模式
+npm run build      # 產出單一靜態站到 dist/
+npx serve dist     # 任何靜態伺服器皆可
+```
+
+測試與 lint:
+
+```bash
+npm test               # IR snapshot、linter、pptx 結構斷言
+npm run lint:samples   # 10 份黃金樣本過 profile linter
+npm run typecheck
+```
+
+## 部署到 Cloudflare Pages(連動 GitHub)
+
+本專案是純靜態站,Cloudflare Pages 直連 GitHub 即可交付:
+
+1. 進 Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**。
+2. 選這個 GitHub repo 與要部署的分支。
+3. Build 設定:
+   - **Framework preset**:Vite
+   - **Build command**:`npm run build`
+   - **Build output directory**:`dist`
+4. Save and Deploy。之後每次 push 自動重新部署;PR 會有 preview URL。
+
+不需要任何環境變數或 server;也可自架:`npm run build` 後把 `dist/` 丟任何內網 web server。
+
+## 怎麼寫(MD Profile v1)
+
+規格全文見 [`spec/PROFILE.md`](spec/PROFILE.md)(唯一合約)。重點:
+
+- 文件在 GitHub/Obsidian 打開必須是**正常 Markdown**;專屬資訊只放 YAML frontmatter 與 HTML 註解 directive(共 6 個:`layout` `split` `notes` `emphasis` `fit` `skip`)。
+- **一個 H2 = 一頁**;單獨 H1 = 章節頁;`---` 強制分頁。
+- **先靠形狀,後靠 directive**:「**粗體詞**:說明」×3 → 卡片;有序清單 ≤5 → 步驟條;數字開頭短段落 → 大數字頁;blockquote → 引言頁;```mermaid → 圖表頁。
+
+讓 LLM 代寫:站內「✨ AI 產生」按鈕會複製 [`prompt.md`](prompt.md),貼給任何 LLM 即可產出合規 MD;skill 版見 [`skill/SKILL.md`](skill/SKILL.md)。
+
+## 專案結構
+
+```
+src/
+  parser/        # remark pipeline、directive 解析、profile linter、分頁切塊
+  ir/            # SlideDoc IR、buildIR、design rules(純函式)
+  render-html/   # 頁面 view、slide runtime、溢版量測降級、mermaid
+  render-pptx/   # pptxgenjs generator
+  templates/     # clean-light、midnight、schema
+  app/           # 編輯器 UI、export 流程
+spec/PROFILE.md  # MD Profile v1(唯一合約)
+skill/SKILL.md   # LLM 產出技能
+prompt.md        # 「AI 產生」按鈕複製的 prompt
+examples/        # 10 份黃金樣本(= 測試 fixtures)
+docs/            # HANDOFF、DEMO 腳本
+DECISIONS.md     # 實作期間的裁決記錄
+```
+
+## 簡報模式操作
+
+| 按鍵 | 動作 |
+|---|---|
+| →/↓/Space/Enter | 下一頁 |
+| ←/↑/Backspace | 上一頁 |
+| Home / End | 第一頁 / 最後一頁 |
+| `s` | speaker notes 面板 |
+| Esc | 離開 |
+| 網址 `?p=N` | 深連結到第 N 頁 |
+
+## 非目標(v1)
+
+協作編輯、帳號/登入、雲端儲存、分享短連結、reveal.js、企業 .potx 萃取(Phase 2)、runtime 呼叫 LLM、動畫轉場。
