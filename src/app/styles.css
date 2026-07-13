@@ -70,6 +70,29 @@ button { font-family: inherit; }
 .lint-btn.lint-warn { color: #e3c06a; }
 .lint-btn.lint-err { color: #eb9a83; }
 
+/* 分享選單 */
+.share-wrap { position: relative; }
+.share-menu {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
+  background: var(--app-ink-2); border: 1px solid #4a453a; border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45); padding: 6px; min-width: 240px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.share-menu button {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  background: transparent; border: 0; border-radius: 7px;
+  padding: 8px 10px; cursor: pointer; text-align: left;
+}
+.share-menu button:hover { background: #38342a; }
+.share-menu b { color: #f3efe7; font-size: 13px; }
+.share-menu span { color: #a89e8d; font-size: 11.5px; }
+
+.mini-btn {
+  border: 1px solid var(--app-line); background: var(--app-panel); color: var(--app-text);
+  border-radius: 6px; font-size: 11.5px; padding: 3px 8px; cursor: pointer; margin-right: 10px;
+}
+.mini-btn:hover { background: var(--app-well); }
+
 .lint-panel {
   background: var(--app-ink-2); color: #cfc8ba; font-size: 12.5px; max-height: 170px;
   overflow: auto; padding: 10px 20px; border-bottom: 1px solid #4a453a;
@@ -402,7 +425,14 @@ code { font-family: var(--sd-font-mono); font-size: 0.92em; background: rgba(127
 .sd-present-hint {
   position: absolute; left: 50%; transform: translateX(-50%); bottom: 10px;
   color: rgba(255,255,255,0.32); font-size: 12px; pointer-events: none;
+  display: flex; align-items: center; gap: 12px;
 }
+.sd-present-share {
+  pointer-events: auto; border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+  border-radius: 999px; font-size: 11.5px; padding: 3px 10px; cursor: pointer;
+}
+.sd-present-share:hover { background: rgba(255,255,255,0.18); color: #fff; }
 .sd-present-empty {
   position: fixed; inset: 0; background: #0c0b09; color: #fff;
   display: flex; align-items: center; justify-content: center; z-index: 50;
@@ -461,6 +491,40 @@ code { font-family: var(--sd-font-mono); font-size: 0.92em; background: rgba(127
 }
 .sd-page .sd-steps .sd-step-text { font-size: 15.5px; }
 .sd-page .sd-diagram svg { max-height: 480px; }
+
+/* ---------- 全版閱讀(blog 式)---------- */
+.sd-reader {
+  position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column;
+  background: color-mix(in srgb, var(--sd-surface) 55%, #ffffff);
+}
+.reader-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 18px; background: var(--app-ink); color: #f3efe7;
+  border-bottom: 3px solid var(--sd-accent); flex: 0 0 auto;
+}
+.reader-bar .brand-name { font-size: 14px; }
+.reader-actions { display: flex; gap: 8px; align-items: center; }
+.reader-scroll { flex: 1; overflow: auto; padding: 44px 16px 80px; }
+.reader-foot {
+  max-width: 780px; margin: 26px auto 0; text-align: center;
+  font-size: 12.5px; color: var(--sd-muted);
+}
+
+/* blog 式舒適排版:閱讀情境的字級/行高/間距全面放大 */
+.sd-reader .sd-page,
+.sd-export-root .sd-page {
+  max-width: 780px; padding: 64px 76px 84px;
+  font-size: 17.5px; line-height: 1.85;
+}
+.sd-reader .sd-page-title { font-size: 44px; }
+.sd-reader .sd-page .sd-h1 { font-size: 31px; margin-top: 56px; }
+.sd-reader .sd-page .sd-h2 { font-size: 24px; margin: 34px 0 12px; }
+.sd-reader .sd-page-section { margin: 34px 0; }
+.sd-reader .sd-page .sd-list li { margin: 0.5em 0; }
+@media (max-width: 840px) {
+  .sd-reader .sd-page { padding: 36px 24px 56px; border-radius: 0; }
+  .reader-scroll { padding: 0 0 64px; }
+}
 
 .toast {
   position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%);

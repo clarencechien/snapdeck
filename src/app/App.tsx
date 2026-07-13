@@ -12,6 +12,8 @@ import { ScaledSlide, computeSectionNos } from "../render-html/SlideView";
 import { renderPptx } from "../render-pptx/renderPptx";
 import { renderMermaid, svgToPngDataUrl } from "../render-html/mermaid";
 import { buildShareUrl, decodeShare, readShareHash, clearShareHash } from "./share";
+import type { ShareView } from "./share";
+import { exportHtml, downloadHtml } from "./exportHtml";
 import promptText from "../../prompt.md?raw";
 
 const exampleModules = import.meta.glob("../../examples/*.md", {
@@ -58,14 +60,20 @@ function useDebounced<T>(value: T, ms: number): T {
   return v;
 }
 
+function safeFilename(title: string | undefined, ext: string): string {
+  return `${(title ?? "snapdeck").replace(/[\\/:*?"<>|]/g, "_")}.${ext}`;
+}
+
 export default function App() {
   const [md, setMd] = useState<string>(loadInitialMd);
   const [templateOverride, setTemplateOverride] = useState<string | "auto">(loadInitialTemplate);
   const [previewMode, setPreviewMode] = useState<"page" | "slides">("slides");
   const [presenting, setPresenting] = useState(false);
+  const [reader, setReader] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [lintOpen, setLintOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const debouncedMd = useDebounced(md, 200);
 
@@ -94,7 +102,7 @@ export default function App() {
     templateOverride === "auto" ? doc.meta.template : templateOverride
   );
 
-  // ---- CodeMirror(常駐掛載;簡報模式是 overlay,不卸載 editor)----
+  // ---- CodeMirror(常駐掛載;簡報/閱讀模式是 overlay,不卸載 editor)----
   const editorHost = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   useEffect(() => {
@@ -125,18 +133,18 @@ export default function App() {
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
-    setTimeout(() => setToast(null), 2500);
+    setTimeout(() => setToast(null), 2800);
   }, []);
 
-  // ---- share link:開啟 #s=… 連結時載入分享的 MD + template。
-  //      監聽 hashchange:已開啟的分頁貼上分享網址(同頁 hash 變更、
-  //      不觸發 reload)也要能載入。 ----
+  // ---- share link:開啟 #s=… 連結時載入 MD + template,並依 v/p 進入
+  //      對應檢視(閱讀頁/簡報)。監聽 hashchange:已開啟的分頁貼上分享
+  //      網址(同頁 hash 變更、不觸發 reload)也要能載入。 ----
   useEffect(() => {
     let alive = true;
     const tryLoad = () => {
-      const encoded = readShareHash();
-      if (!encoded) return;
-      decodeShare(encoded).then((payload) => {
+      const hash = readShareHash();
+      if (!hash) return;
+      decodeShare(hash.encoded).then((payload) => {
         if (!alive) return;
         clearShareHash();
         if (!payload) {
@@ -145,6 +153,17 @@ export default function App() {
         }
         loadExample(payload.md);
         setTemplateOverride(payload.template);
+        if (hash.view === "present") {
+          const url = new URL(window.location.href);
+          url.searchParams.set("p", String(hash.presentPage ?? 1));
+          window.history.replaceState(null, "", url.toString());
+          setReader(false);
+          setPresenting(true);
+        } else if (hash.view === "page") {
+          setReader(true);
+          showToast("已開啟分享的閱讀頁");
+          return;
+        }
         showToast("已載入分享的內容");
       });
     };
@@ -156,20 +175,29 @@ export default function App() {
     };
   }, [loadExample, showToast]);
 
-  const copyShareLink = useCallback(async () => {
-    try {
-      const url = await buildShareUrl({ md, template: templateOverride });
-      if (url.length > 32000) {
-        showToast(`內容過長(連結 ${Math.round(url.length / 1000)}k 字元),部分通訊軟體可能截斷`);
+  const copyShareLink = useCallback(
+    async (view: ShareView, presentPage?: number) => {
+      setShareOpen(false);
+      try {
+        const url = await buildShareUrl(
+          { md, template: templateOverride },
+          { view, presentPage }
+        );
+        if (url.length > 32000) {
+          showToast(`內容過長(連結 ${Math.round(url.length / 1000)}k 字元),部分通訊軟體可能截斷`);
+        }
+        await navigator.clipboard.writeText(url);
+        const what =
+          view === "page" ? "閱讀頁連結" : view === "present" ? `簡報連結(第 ${presentPage ?? 1} 頁)` : "編輯連結";
+        showToast(`${what}已複製(${(url.length / 1000).toFixed(1)}k 字元,內容僅存在連結中)`);
+      } catch (e) {
+        showToast(`產生分享連結失敗:${(e as Error).message}`);
       }
-      await navigator.clipboard.writeText(url);
-      showToast(`分享連結已複製(${(url.length / 1000).toFixed(1)}k 字元,內容僅存在連結中)`);
-    } catch (e) {
-      showToast(`產生分享連結失敗:${(e as Error).message}`);
-    }
-  }, [md, templateOverride, showToast]);
+    },
+    [md, templateOverride, showToast]
+  );
 
-  // ---- export ----
+  // ---- exports ----
   const exportPptx = useCallback(async () => {
     setExporting(true);
     try {
@@ -183,9 +211,21 @@ export default function App() {
           }
         },
       });
-      const name = (doc.meta.title ?? "snapdeck").replace(/[\\/:*?"<>|]/g, "_");
-      await pres.writeFile({ fileName: `${name}.pptx` });
+      await pres.writeFile({ fileName: safeFilename(doc.meta.title, "pptx") });
       showToast("pptx 已下載");
+    } catch (e) {
+      showToast(`匯出失敗:${(e as Error).message}`);
+    } finally {
+      setExporting(false);
+    }
+  }, [doc, template, showToast]);
+
+  const exportHtmlFile = useCallback(async () => {
+    setExporting(true);
+    try {
+      const html = await exportHtml(doc, template);
+      downloadHtml(html, safeFilename(doc.meta.title, "html"));
+      showToast("HTML 已下載(單一檔案,可直接寄出或放任何靜態空間)");
     } catch (e) {
       showToast(`匯出失敗:${(e as Error).message}`);
     } finally {
@@ -237,13 +277,31 @@ export default function App() {
           <button className="ctrl ghost" onClick={copyPrompt} title="複製給 LLM 的產生指令,貼給任何模型即可產出合規 MD">
             ✦ AI 產生
           </button>
-          <button
-            className="ctrl ghost"
-            onClick={copyShareLink}
-            title="把目前的 MD + template 壓縮進網址(仿 PlantUML),對方開連結即還原;內容只存在連結中、不經任何伺服器"
-          >
-            ⛓ 分享
-          </button>
+          <div className="share-wrap">
+            <button
+              className="ctrl ghost"
+              onClick={() => setShareOpen((v) => !v)}
+              title="把目前的 MD + template 壓縮進網址(仿 PlantUML);內容只存在連結中、不經任何伺服器"
+            >
+              ⛓ 分享 ▾
+            </button>
+            {shareOpen && (
+              <div className="share-menu" onMouseLeave={() => setShareOpen(false)}>
+                <button onClick={() => copyShareLink("editor")}>
+                  <b>編輯連結</b>
+                  <span>對方開啟後進編輯器,可續改</span>
+                </button>
+                <button onClick={() => copyShareLink("page")}>
+                  <b>閱讀頁連結</b>
+                  <span>開啟即是 blog 式全版閱讀頁</span>
+                </button>
+                <button onClick={() => copyShareLink("present", 1)}>
+                  <b>簡報連結</b>
+                  <span>開啟直接進入全螢幕簡報</span>
+                </button>
+              </div>
+            )}
+          </div>
           <button
             className={`ctrl ghost lint-btn ${errors.length ? "lint-err" : warnings.length ? "lint-warn" : "lint-ok"}`}
             onClick={() => setLintOpen((v) => !v)}
@@ -260,7 +318,10 @@ export default function App() {
             ▶ 簡報
           </button>
           <button className="ctrl primary outline" onClick={exportPptx} disabled={exporting}>
-            {exporting ? "匯出中…" : "↓ 匯出 pptx"}
+            {exporting ? "匯出中…" : "↓ pptx"}
+          </button>
+          <button className="ctrl primary outline" onClick={exportHtmlFile} disabled={exporting}>
+            ↓ HTML
           </button>
         </div>
       </header>
@@ -330,6 +391,11 @@ export default function App() {
               ))}
             </div>
             <span className="pane-note">
+              {previewMode === "page" ? (
+                <button className="mini-btn" onClick={() => setReader(true)} title="全版閱讀(blog 式)">
+                  ⤢ 全版閱讀
+                </button>
+              ) : null}
               {presentableSlides.length} 頁
               {doc.slides.length !== presentableSlides.length
                 ? ` +${doc.slides.length - presentableSlides.length} 附錄`
@@ -364,9 +430,58 @@ export default function App() {
         </section>
       </main>
 
+      {/* 全版閱讀(blog 式)— overlay,editor 不卸載 */}
+      {reader ? (
+        <div className="sd-reader" style={templateCssVars(template) as React.CSSProperties}>
+          <div className="reader-bar">
+            <div className="brand">
+              <span className="brand-mark" aria-hidden>
+                <svg width="18" height="18" viewBox="0 0 100 100">
+                  <rect width="100" height="100" rx="22" fill="currentColor" opacity="0.14" />
+                  <path d="M36 27 L76 50 L36 73 Z" fill="currentColor" />
+                </svg>
+              </span>
+              <span className="brand-name">SnapDeck</span>
+            </div>
+            <div className="reader-actions">
+              <button className="ctrl ghost" onClick={() => copyShareLink("page")}>
+                ⛓ 分享此頁
+              </button>
+              <button className="ctrl ghost" onClick={exportHtmlFile} disabled={exporting}>
+                ↓ HTML
+              </button>
+              <button
+                className="ctrl primary"
+                onClick={() => {
+                  setReader(false);
+                  setPresenting(true);
+                }}
+                disabled={!presentableSlides.length}
+              >
+                ▶ 簡報
+              </button>
+              <button className="ctrl ghost" onClick={() => setReader(false)}>
+                ✎ 編輯
+              </button>
+            </div>
+          </div>
+          <div className="reader-scroll">
+            <PageView doc={doc} template={template} />
+            <div className="reader-foot">
+              以 SnapDeck 製作 — 寫作即排版,貼上即上台
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       {/* 簡報模式是 overlay:editor 不卸載,內容不會消失 */}
       {presenting ? (
-        <SlideMode doc={doc} template={template} onExit={() => setPresenting(false)} />
+        <SlideMode
+          doc={doc}
+          template={template}
+          onExit={() => setPresenting(false)}
+          onShare={(pageNo) => copyShareLink("present", pageNo)}
+        />
       ) : null}
 
       {toast && <div className="toast">{toast}</div>}

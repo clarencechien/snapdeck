@@ -1,7 +1,12 @@
 // Share link:仿 PlantUML 的 URL 編碼 —— MD + template 壓縮後放進
 // URL hash fragment(#s=…)。fragment 不會送到伺服器、不進 access log,
 // 維持「文件內容不出瀏覽器」;解碼端也完全在瀏覽器內完成。
-// 格式:#s=1.<base64url(deflate-raw(JSON{m,t}))>,前綴 1 為版本號。
+//
+// 格式 v2(現行):#s=2.<base64url(deflate-raw(template + "\0" + md))>
+//   — 不經 JSON(JSON 會把每個換行轉義成兩字元、加引號括號,MD 換行多,
+//     拆掉可再省一點)。NUL 作分隔符,不會出現在合法 MD 中。
+// 格式 v1(相容讀取):#s=1.<base64url(deflate-raw(JSON{m,t}))>
+// 可附加簡報深連結:#s=<payload>&p=<頁碼> → 開啟即進簡報模式該頁。
 
 export type SharePayload = {
   md: string;
@@ -9,7 +14,7 @@ export type SharePayload = {
   template: string;
 };
 
-const VERSION = "1";
+const VERSION = "2";
 
 function bytesToBase64Url(bytes: Uint8Array): string {
   let bin = "";
@@ -39,9 +44,9 @@ async function pipeThrough(
 }
 
 export async function encodeShare(payload: SharePayload): Promise<string> {
-  const json = JSON.stringify({ m: payload.md, t: payload.template });
+  const raw = `${payload.template}\u0000${payload.md}`;
   const compressed = await pipeThrough(
-    new TextEncoder().encode(json),
+    new TextEncoder().encode(raw),
     new CompressionStream("deflate-raw")
   );
   return `${VERSION}.${bytesToBase64Url(compressed)}`;
@@ -50,29 +55,57 @@ export async function encodeShare(payload: SharePayload): Promise<string> {
 export async function decodeShare(encoded: string): Promise<SharePayload | null> {
   try {
     const dot = encoded.indexOf(".");
-    if (dot === -1 || encoded.slice(0, dot) !== VERSION) return null;
+    if (dot === -1) return null;
+    const version = encoded.slice(0, dot);
     const bytes = base64UrlToBytes(encoded.slice(dot + 1));
-    const json = await pipeThrough(bytes, new DecompressionStream("deflate-raw"));
-    const obj = JSON.parse(new TextDecoder().decode(json)) as { m?: unknown; t?: unknown };
-    if (typeof obj.m !== "string") return null;
-    return { md: obj.m, template: typeof obj.t === "string" ? obj.t : "auto" };
+    const text = new TextDecoder().decode(
+      await pipeThrough(bytes, new DecompressionStream("deflate-raw"))
+    );
+    if (version === "2") {
+      const nul = text.indexOf("\u0000");
+      if (nul === -1) return null;
+      return { template: text.slice(0, nul) || "auto", md: text.slice(nul + 1) };
+    }
+    if (version === "1") {
+      const obj = JSON.parse(text) as { m?: unknown; t?: unknown };
+      if (typeof obj.m !== "string") return null;
+      return { md: obj.m, template: typeof obj.t === "string" ? obj.t : "auto" };
+    }
+    return null;
   } catch {
     return null;
   }
 }
 
-export async function buildShareUrl(payload: SharePayload): Promise<string> {
+export type ShareView = "editor" | "page" | "present";
+
+export async function buildShareUrl(
+  payload: SharePayload,
+  opts: { view?: ShareView; presentPage?: number } = {}
+): Promise<string> {
   const encoded = await encodeShare(payload);
   const url = new URL(window.location.href);
   url.search = "";
-  url.hash = `s=${encoded}`;
+  let hash = `s=${encoded}`;
+  if (opts.view === "page") hash += "&v=page";
+  if (opts.view === "present") hash += `&p=${opts.presentPage ?? 1}`;
+  url.hash = hash;
   return url.toString();
 }
 
-/** 讀取並清除網址上的分享 payload(留下乾淨網址) */
-export function readShareHash(): string | null {
-  const m = /^#s=(.+)$/.exec(window.location.hash);
-  return m ? m[1] : null;
+export type ShareHash = { encoded: string; view: ShareView; presentPage?: number };
+
+/** 讀取網址上的分享 payload(含選配的檢視模式/簡報頁碼) */
+export function readShareHash(): ShareHash | null {
+  const hash = window.location.hash.slice(1);
+  if (!hash.startsWith("s=")) return null;
+  const params = new URLSearchParams(hash);
+  const encoded = params.get("s");
+  if (!encoded) return null;
+  const p = parseInt(params.get("p") ?? "", 10);
+  if (Number.isFinite(p) && p >= 1) return { encoded, view: "present", presentPage: p };
+  if (params.get("v") === "page") return { encoded, view: "page" };
+  return { encoded, view: "editor" };
 }
 
 export function clearShareHash(): void {

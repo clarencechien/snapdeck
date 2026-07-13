@@ -121,6 +121,22 @@ pieLegendTextColor(深色)與 pieSectionTextColor(依切片深淺),並給
   URL 自含式分享,不衝突——長文件連結會變長(UI 超過 32k 字元時提示)。
 PRD §9「分享基礎設施」的短連結仍留待 Phase 4。
 
+## D16:share v2 緊湊格式、三種檢視模式、閱讀頁與 HTML 匯出(v0.4)
+
+- **v2 格式**:`#s=2.<base64url(deflate-raw(template + "\\u0000" + md))>`,
+  拆掉 v1 的 JSON 層(JSON 會把每個換行轉義成兩字元、加引號括號)。
+  v1 連結仍可解碼,不失效。長度極限說明:壓縮已是瀏覽器原生 deflate 最緊,
+  base64 的 33% 膨脹是 URL 安全字元集的固定成本;再縮只能上後端短連結
+  (Phase 4)。
+- **檢視模式**:`&v=page` 開啟即 blog 式全版閱讀頁;`&p=N` 開啟直接進
+  全螢幕簡報第 N 頁(簡報中的「分享此頁」帶當前頁碼)。無參數 = 編輯器。
+- **全版閱讀(reader)**:overlay 呈現(editor 不卸載),blog 式排版
+  (窄欄 780px、17.5px/1.85 行高、放大標題階層)。
+- **HTML 匯出**:離螢幕 render PageView → 等 React commit 與 mermaid
+  SVG 到齊 → 序列化 DOM + 內嵌全部 bundle CSS + template 色票,產出
+  單一自含 HTML(零外部請求)。教訓:React 18 createRoot 的 commit
+  是非同步,序列化前必須等 `.sd-page` 出現,否則拿到空 body。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值
