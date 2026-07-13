@@ -36,7 +36,34 @@
 
 3. push(或 `npx wrangler deploy`)。完成。
 
+   ⚠ **`id` 要填 32 碼十六進位的 namespace ID,不是名稱**。填成名稱
+   (如 `snapdeck.kv`)部署會失敗,錯誤碼 10042。ID 查法:
+   `npx wrangler kv namespace list`,或 Dashboard → Storage & Databases
+   → KV → 該 namespace 列的 ID 欄。
+
 未啟用時一切照舊:API 回 503,前端自動退回 `#s=` 長連結,不會壞。
+
+## 怎麼確認 worker 部署到哪一版
+
+開 `https://<host>/api/health`:
+
+| 回應 | 意義 |
+|---|---|
+| `{"worker":true,"kv":true,...}` | worker 已部署且 KV 已綁定,短連結可用 |
+| `{"worker":true,"kv":false,...}` | worker 已部署,但 KV 未綁定(API 回 503,前端退長連結) |
+| 回到 HTML(SnapDeck 頁面) | 線上還是舊版 assets-only 部署,worker 沒上去 |
+
+**部署失敗 = 線上維持上一版**(Cloudflare 不會半套上線)。build log 最後
+必須看到 deploy 成功而非 `Failed`;失敗時前一版繼續服務,不影響網站。
+
+## 疑難排解
+
+- **`KV namespace '…' is not valid [code: 10042]`**:`id` 填到名稱了,
+  換成 32 碼 hex ID(見上)。
+- **health 顯示 kv:false 但已填 id**:確認 id 屬於同一個 Cloudflare
+  帳號、`kv_namespaces` 區塊在 JSON 中有效(注意前導逗號)。
+- **勾了短連結仍複製出長連結**:toast 會註明「短連結服務未啟用」;
+  先看 /api/health。
 
 ## 使用
 

@@ -20,6 +20,12 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // 部署狀態探針:worker 有部署就回 JSON;kv=true 代表短連結已啟用。
+    // 舊版(assets-only)會回 index.html —— 一眼分辨部署到哪一版。
+    if (url.pathname === "/api/health") {
+      return Response.json({ worker: true, kv: Boolean(env.LINKS), version: "0.5" });
+    }
+
     if (url.pathname === "/api/s" || url.pathname.startsWith("/api/s/")) {
       if (!env.LINKS) {
         return new Response("shortlink storage not configured", { status: 503 });
