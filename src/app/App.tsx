@@ -234,8 +234,10 @@ export default function App() {
   }, [doc, template, showToast]);
 
   const copyPrompt = useCallback(async () => {
-    await navigator.clipboard.writeText(promptText);
-    showToast("AI 產生 prompt 已複製,貼給任何 LLM 即可");
+    // 只複製 prompt 本體(PROMPT-START 之後),檔頭使用說明不進剪貼簿
+    const body = promptText.split("<!-- PROMPT-START -->")[1]?.trim() ?? promptText;
+    await navigator.clipboard.writeText(body);
+    showToast("AI 產生 prompt 已複製,貼給任何 LLM、換上你的素材即可");
   }, [showToast]);
 
   const errors = lintResult.messages.filter((m) => m.severity === "error");
