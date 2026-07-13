@@ -87,7 +87,7 @@ spec/PROFILE.md  # MD Profile v1(唯一合約)
 skill/SKILL.md   # LLM 產出技能
 prompt.md        # 「AI 產生」按鈕複製的 prompt
 examples/        # 6 份黃金樣本:產、銷、人、發、財 + 產品規劃(= 測試 fixtures)
-docs/            # HANDOFF、DEMO 腳本
+docs/            # HANDOFF、DEMO 腳本、STATUS(結案狀態)、SHORTLINK(短連結啟用)
 DECISIONS.md     # 實作期間的裁決記錄
 ```
 
@@ -104,4 +104,4 @@ DECISIONS.md     # 實作期間的裁決記錄
 
 ## 非目標(v1)
 
-協作編輯、帳號/登入、雲端儲存、需要後端的短連結服務(URL 自含式分享已內建)、reveal.js、企業 .potx 萃取(Phase 2)、runtime 呼叫 LLM、動畫轉場。
+協作編輯、帳號/登入、雲端文件儲存(零知識短連結只存密文,不算)、reveal.js、企業 .potx 萃取(Phase 2)、Kroki/PlantUML(Phase 4)、runtime 呼叫 LLM、動畫轉場。

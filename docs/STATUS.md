@@ -12,7 +12,7 @@
 | mermaid 三種輸出正確、配色跟隨 template | ✅ | flowchart/sequence/gantt/pie 實測(D4/D14) |
 | 溢版偵測 + 自動降級 + 警示 badge | ✅ | HTML DOM 量測;pptx 確定性估算(D3) |
 | profile linter(站內即時 + CLI) | ✅ | mermaid 語法檢查僅站內(D5) |
-| 全程無網路呼叫(函式庫進 bundle) | ✅ | 分享連結亦不經伺服器(D15) |
+| 全程無網路呼叫(函式庫進 bundle) | ✅ | `#s=` 分享連結不經伺服器(D15);選配短連結只上傳密文(D21) |
 | `npm run build` 單一靜態站 | ✅ | wrangler.jsonc assets-only |
 | 貼上→可簡報 <10s、→pptx <30s | ✅ | 實測皆秒級 |
 
@@ -32,8 +32,8 @@
 - pptx 冒煙測試(soffice 轉 PDF)未進 CI:開發容器 LibreOffice 損壞,現以 JSZip 結構斷言 + xmllint 驗證(D6)
 - CLI linter 不驗 mermaid 語法,站內即時檢查代替(D5)
 - 企業 template 萃取(.pptx/.potx onboarding)= Phase 2
-- 後端短連結、Kroki、.potx 高保真填充 = Phase 4
+- Kroki/PlantUML、.potx 高保真填充 = Phase 4(短連結已以零知識模式內建,D21)
 
 ## 測試
 
-`npm test`:56 tests(IR snapshot、design rules、linter、pptx 結構、share 編碼、貼上正規化);`npm run lint:samples`:6/6。
+`npm test`:64 tests(IR snapshot、design rules、linter、pptx 結構、share 編碼、貼上正規化、短連結加密);`npm run lint:samples`:6/6。

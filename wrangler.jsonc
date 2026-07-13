@@ -1,7 +1,9 @@
 // Cloudflare Workers(GitHub 連動)部署設定。
 // Build command: npm run build / Deploy command: npx wrangler deploy
 // worker/index.js 提供零知識短連結 API(/api/s);未綁定 KV 時回 503,
-// 前端自動退回長連結。啟用短連結:見 docs/SHORTLINK.md。
+// 前端自動退回長連結。詳見 docs/SHORTLINK.md。
+// 注意:kv_namespaces 的 "id" 必須是 32 碼十六進位 namespace ID
+//(`npx wrangler kv namespace list` 可查),填名稱會得到部署錯誤 10042。
 {
   "name": "snapdeck",
   "compatibility_date": "2026-07-13",
@@ -10,13 +12,8 @@
     "directory": "./dist",
     "not_found_handling": "single-page-application",
     "binding": "ASSETS"
-  }
-  // 啟用短連結時取消註解。
-  // ⚠ "id" 必須是 32 碼十六進位的 namespace ID,不是名稱!
-  //   查法:`npx wrangler kv namespace list`(欄位 id),
-  //   或 Cloudflare Dashboard → Storage & Databases → KV → 該列的 ID。
-  //   填成名稱(如 "snapdeck.kv")會得到部署錯誤 code 10042。
-  ,"kv_namespaces": [
-     { "binding": "LINKS", "id": "1dd64f786c2547beb2971a5600c64b90" }
-   ]
+  },
+  "kv_namespaces": [
+    { "binding": "LINKS", "id": "1dd64f786c2547beb2971a5600c64b90" }
+  ]
 }

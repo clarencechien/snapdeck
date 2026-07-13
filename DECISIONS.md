@@ -188,7 +188,9 @@ emphasis 整份 1–2 處;fit 只給拆不開的密集表格。修正後 Gemini 
 邊界:密文 180 天過期(長連結永久有效且離線可解)、上限 100KB、
 未做限流(公開部署可加 Cloudflare rate limiting)。部署為選配:
 未綁 KV 時 API 回 503,前端自動退回 `#s=` 長連結,既有部署不受影響;
-啟用步驟見 docs/SHORTLINK.md。壓縮天花板說明一併記錄:deflate-raw
+啟用步驟見 docs/SHORTLINK.md;/api/health 探針回 {worker,kv} 供確認
+部署版本與 KV 綁定(實測使用者把 KV「名稱」填進 id 欄位 → 部署失敗
+10042,config 與文件已加防呆)。壓縮天花板說明一併記錄:deflate-raw
 已是瀏覽器原生最緊,base64 33% 膨脹是 URL 字元集固定成本。
 
 ## D8:表格 pptx 高度交給 addTable 自動配置
