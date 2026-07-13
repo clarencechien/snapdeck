@@ -151,6 +151,26 @@ PRD §9「分享基礎設施」的短連結仍留待 Phase 4。
 - 檔頭使用說明以 `<!-- PROMPT-START -->` 隔開,站內按鈕只複製本體,
   雜訊不進剪貼簿。
 
+## D18:fence 包裹策略反轉 + 貼上正規化(v0.4)
+
+D17 的 prompt 要求「不要用 code fence 包住輸出」——在 raw API 情境正確,
+但聊天介面(Gemini/ChatGPT)會把裸 Markdown 渲染成排版後的文字,使用者
+複製到的是渲染結果:frontmatter 變標題、`-` 變 `*`、結構全毀(實測回報)。
+裁決:兩端一起改——
+- prompt 要求整份輸出包在 ````markdown 區塊(聊天介面才有「一鍵複製
+  原始碼」;四個反引號因內容可能含 ```mermaid);
+- SnapDeck 貼上時自動剝掉外層 fence(parser 入口 normalizeMd:info 為
+  空/markdown/md 才剝、內層 fence 不受影響、無 fence 原樣通過),並
+  容錯 frontmatter 前的空行與 BOM。
+
+## D19:stat 規則 v3 — 單位與 + 進大字(v0.4)
+
+「10,000+ 小時,喜劇內容與旅遊節目總時數」被拆成大字 10,000、標籤
+「+ 小時」(實測回報)。修正:value 納入尾隨的 +/單位(10,000+ 小時、
+90 萬+ 整組成為大字);並修掉 value regex 吃掉「唯一逗號」導致其後
+文字誤判的問題——改為統一規則:第一個逗號前為標籤(≤16 字)、之後
+為小字補充,value ≤14 字、全段 ≤40 字,超限退化為段落。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值
