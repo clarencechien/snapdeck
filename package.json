@@ -1,7 +1,7 @@
 {
   "name": "snapdeck",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "SnapDeck — 寫作即排版,貼上即上台。Markdown 的分享與簡報層。",
   "type": "module",
   "scripts": {

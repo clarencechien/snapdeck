@@ -19,6 +19,12 @@ deflate 壓縮 + base64url 編進網址的 hash fragment(`#s=2.…`),對方開
 **閱讀頁連結**(`&v=page`,開啟即 blog 式全版閱讀頁)、**簡報連結**
 (`&p=N`,開啟直接進全螢幕簡報第 N 頁;簡報中也可一鍵分享目前頁)。
 
+**零知識短連結(選配)**:長文件的 `#s=` 連結可達數千字元,通訊軟體
+與縮址服務會截斷。分享選單勾「⚡ 產生短連結」→ 內容在瀏覽器內 AES-GCM
+加密、只上傳**密文**到 Cloudflare KV,金鑰放在 URL fragment(不會隨
+請求送出)——連結縮到約 60 字元,而**伺服器讀不到任何內容**。未設定
+KV 時自動退回長連結;啟用兩分鐘搞定,見 [`docs/SHORTLINK.md`](docs/SHORTLINK.md)。
+
 **全版閱讀與 HTML 匯出**:「⤢ 全版閱讀」進入 blog 式閱讀頁;
 「↓ HTML」把閱讀頁匯出成單一自含 HTML 檔(CSS 與 mermaid SVG 全內嵌,
 零外部依賴),可寄信、可丟任何靜態空間。
@@ -44,7 +50,7 @@ npm run typecheck
 
 ## 部署到 Cloudflare(連動 GitHub)
 
-本專案是純靜態站,repo 已含 [`wrangler.jsonc`](wrangler.jsonc)(assets-only,無 Worker 程式碼),Cloudflare 直連 GitHub 即可交付。
+repo 已含 [`wrangler.jsonc`](wrangler.jsonc)(靜態資產 + 極薄 Worker:僅零知識短連結 API,未綁 KV 時等同純靜態站),Cloudflare 直連 GitHub 即可交付。
 
 **Workers 流程(新版 dashboard 預設)**:Workers & Pages → Create → 連 GitHub repo,Build 設定:
 

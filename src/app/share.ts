@@ -86,26 +86,53 @@ export async function buildShareUrl(
   const encoded = await encodeShare(payload);
   const url = new URL(window.location.href);
   url.search = "";
-  let hash = `s=${encoded}`;
-  if (opts.view === "page") hash += "&v=page";
-  if (opts.view === "present") hash += `&p=${opts.presentPage ?? 1}`;
-  url.hash = hash;
+  url.hash = `s=${encoded}${viewHashSuffix(opts)}`;
   return url.toString();
 }
 
-export type ShareHash = { encoded: string; view: ShareView; presentPage?: number };
+export type ShareHash =
+  | { kind: "inline"; encoded: string; view: ShareView; presentPage?: number }
+  | { kind: "stored"; id: string; key: string; view: ShareView; presentPage?: number };
+
+/** 解析分享 hash(純函式,可測試)。
+    #s=<payload>       內容直接編在網址(inline)
+    #l=<id>.<key>      零知識短連結:id 指向 KV 密文,key 只存在 fragment
+    兩者皆可附 &v=page / &p=N */
+export function parseShareHash(hash: string): ShareHash | null {
+  if (!hash.startsWith("s=") && !hash.startsWith("l=")) return null;
+  const params = new URLSearchParams(hash);
+  const p = parseInt(params.get("p") ?? "", 10);
+  const view: ShareView =
+    Number.isFinite(p) && p >= 1 ? "present" : params.get("v") === "page" ? "page" : "editor";
+  const page = view === "present" ? { presentPage: p } : {};
+
+  const stored = params.get("l");
+  if (stored) {
+    const dot = stored.indexOf(".");
+    if (dot <= 0 || dot === stored.length - 1) return null;
+    return { kind: "stored", id: stored.slice(0, dot), key: stored.slice(dot + 1), view, ...page };
+  }
+  const encoded = params.get("s");
+  if (!encoded) return null;
+  return { kind: "inline", encoded, view, ...page };
+}
 
 /** 讀取網址上的分享 payload(含選配的檢視模式/簡報頁碼) */
 export function readShareHash(): ShareHash | null {
-  const hash = window.location.hash.slice(1);
-  if (!hash.startsWith("s=")) return null;
-  const params = new URLSearchParams(hash);
-  const encoded = params.get("s");
-  if (!encoded) return null;
-  const p = parseInt(params.get("p") ?? "", 10);
-  if (Number.isFinite(p) && p >= 1) return { encoded, view: "present", presentPage: p };
-  if (params.get("v") === "page") return { encoded, view: "page" };
-  return { encoded, view: "editor" };
+  return parseShareHash(window.location.hash.slice(1));
+}
+
+export function viewHashSuffix(opts: { view?: ShareView; presentPage?: number }): string {
+  if (opts.view === "page") return "&v=page";
+  if (opts.view === "present") return `&p=${opts.presentPage ?? 1}`;
+  return "";
+}
+
+export function bytesToB64Url(bytes: Uint8Array): string {
+  return bytesToBase64Url(bytes);
+}
+export function b64UrlToBytes(s: string): Uint8Array {
+  return base64UrlToBytes(s);
 }
 
 export function clearShareHash(): void {

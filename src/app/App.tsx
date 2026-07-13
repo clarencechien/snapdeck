@@ -11,8 +11,15 @@ import { SlideMode } from "../render-html/SlideMode";
 import { ScaledSlide, computeSectionNos } from "../render-html/SlideView";
 import { renderPptx } from "../render-pptx/renderPptx";
 import { renderMermaid, svgToPngDataUrl } from "../render-html/mermaid";
-import { buildShareUrl, decodeShare, readShareHash, clearShareHash } from "./share";
-import type { ShareView } from "./share";
+import {
+  buildShareUrl,
+  decodeShare,
+  readShareHash,
+  clearShareHash,
+  viewHashSuffix,
+} from "./share";
+import type { SharePayload, ShareView } from "./share";
+import { sealPayload, uploadSealed, resolveShortLink } from "./shortlink";
 import { exportHtml, downloadHtml } from "./exportHtml";
 import promptText from "../../prompt.md?raw";
 
@@ -74,6 +81,20 @@ export default function App() {
   const [toast, setToast] = useState<string | null>(null);
   const [lintOpen, setLintOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [shortLinks, setShortLinks] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("snapdeck:shortlinks") === "1";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("snapdeck:shortlinks", shortLinks ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+  }, [shortLinks]);
 
   const debouncedMd = useDebounced(md, 200);
 
@@ -141,31 +162,37 @@ export default function App() {
   //      網址(同頁 hash 變更、不觸發 reload)也要能載入。 ----
   useEffect(() => {
     let alive = true;
+    const apply = (payload: SharePayload | null, view: ShareView, presentPage?: number) => {
+      if (!alive) return;
+      clearShareHash();
+      if (!payload) {
+        showToast("分享連結無法解析(可能已毀損或過期)");
+        return;
+      }
+      loadExample(payload.md);
+      setTemplateOverride(payload.template);
+      if (view === "present") {
+        const url = new URL(window.location.href);
+        url.searchParams.set("p", String(presentPage ?? 1));
+        window.history.replaceState(null, "", url.toString());
+        setReader(false);
+        setPresenting(true);
+        showToast("已載入分享的內容");
+      } else if (view === "page") {
+        setReader(true);
+        showToast("已開啟分享的閱讀頁");
+      } else {
+        showToast("已載入分享的內容");
+      }
+    };
     const tryLoad = () => {
       const hash = readShareHash();
       if (!hash) return;
-      decodeShare(hash.encoded).then((payload) => {
-        if (!alive) return;
-        clearShareHash();
-        if (!payload) {
-          showToast("分享連結無法解析(可能已毀損)");
-          return;
-        }
-        loadExample(payload.md);
-        setTemplateOverride(payload.template);
-        if (hash.view === "present") {
-          const url = new URL(window.location.href);
-          url.searchParams.set("p", String(hash.presentPage ?? 1));
-          window.history.replaceState(null, "", url.toString());
-          setReader(false);
-          setPresenting(true);
-        } else if (hash.view === "page") {
-          setReader(true);
-          showToast("已開啟分享的閱讀頁");
-          return;
-        }
-        showToast("已載入分享的內容");
-      });
+      if (hash.kind === "stored") {
+        resolveShortLink(hash.id, hash.key).then((p) => apply(p, hash.view, hash.presentPage));
+      } else {
+        decodeShare(hash.encoded).then((p) => apply(p, hash.view, hash.presentPage));
+      }
     };
     tryLoad();
     window.addEventListener("hashchange", tryLoad);
@@ -178,23 +205,37 @@ export default function App() {
   const copyShareLink = useCallback(
     async (view: ShareView, presentPage?: number) => {
       setShareOpen(false);
+      const what =
+        view === "page" ? "閱讀頁連結" : view === "present" ? `簡報連結(第 ${presentPage ?? 1} 頁)` : "編輯連結";
       try {
-        const url = await buildShareUrl(
-          { md, template: templateOverride },
-          { view, presentPage }
-        );
+        const payload = { md, template: templateOverride };
+
+        if (shortLinks) {
+          // 零知識短連結:瀏覽器內加密 → 只上傳密文,金鑰留在 fragment
+          const { body, key } = await sealPayload(payload);
+          const id = await uploadSealed(body);
+          if (id) {
+            const url = new URL(window.location.href);
+            url.search = "";
+            url.hash = `l=${id}.${key}${viewHashSuffix({ view, presentPage })}`;
+            await navigator.clipboard.writeText(url.toString());
+            showToast(`${what}已複製(短連結,內容已加密、180 天有效)`);
+            return;
+          }
+          showToast("短連結服務未啟用,改用完整連結");
+        }
+
+        const url = await buildShareUrl(payload, { view, presentPage });
         if (url.length > 32000) {
           showToast(`內容過長(連結 ${Math.round(url.length / 1000)}k 字元),部分通訊軟體可能截斷`);
         }
         await navigator.clipboard.writeText(url);
-        const what =
-          view === "page" ? "閱讀頁連結" : view === "present" ? `簡報連結(第 ${presentPage ?? 1} 頁)` : "編輯連結";
         showToast(`${what}已複製(${(url.length / 1000).toFixed(1)}k 字元,內容僅存在連結中)`);
       } catch (e) {
         showToast(`產生分享連結失敗:${(e as Error).message}`);
       }
     },
-    [md, templateOverride, showToast]
+    [md, templateOverride, shortLinks, showToast]
   );
 
   // ---- exports ----
@@ -301,6 +342,20 @@ export default function App() {
                   <b>簡報連結</b>
                   <span>開啟直接進入全螢幕簡報</span>
                 </button>
+                <label
+                  className="share-short"
+                  title="內容在瀏覽器內加密後暫存 180 天;解密金鑰只在網址 fragment 中,伺服器只存亂碼、無法讀取"
+                >
+                  <input
+                    type="checkbox"
+                    checked={shortLinks}
+                    onChange={(e) => setShortLinks(e.target.checked)}
+                  />
+                  <span>
+                    <b>⚡ 產生短連結</b>
+                    <span>加密暫存,金鑰只在網址中(零知識)</span>
+                  </span>
+                </label>
               </div>
             )}
           </div>
