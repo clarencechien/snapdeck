@@ -11,6 +11,7 @@ import { SlideMode } from "../render-html/SlideMode";
 import { ScaledSlide, computeSectionNos } from "../render-html/SlideView";
 import { renderPptx } from "../render-pptx/renderPptx";
 import { renderMermaid, svgToPngDataUrl } from "../render-html/mermaid";
+import { buildShareUrl, decodeShare, readShareHash, clearShareHash } from "./share";
 import promptText from "../../prompt.md?raw";
 
 const exampleModules = import.meta.glob("../../examples/*.md", {
@@ -127,6 +128,47 @@ export default function App() {
     setTimeout(() => setToast(null), 2500);
   }, []);
 
+  // ---- share link:開啟 #s=… 連結時載入分享的 MD + template。
+  //      監聽 hashchange:已開啟的分頁貼上分享網址(同頁 hash 變更、
+  //      不觸發 reload)也要能載入。 ----
+  useEffect(() => {
+    let alive = true;
+    const tryLoad = () => {
+      const encoded = readShareHash();
+      if (!encoded) return;
+      decodeShare(encoded).then((payload) => {
+        if (!alive) return;
+        clearShareHash();
+        if (!payload) {
+          showToast("分享連結無法解析(可能已毀損)");
+          return;
+        }
+        loadExample(payload.md);
+        setTemplateOverride(payload.template);
+        showToast("已載入分享的內容");
+      });
+    };
+    tryLoad();
+    window.addEventListener("hashchange", tryLoad);
+    return () => {
+      alive = false;
+      window.removeEventListener("hashchange", tryLoad);
+    };
+  }, [loadExample, showToast]);
+
+  const copyShareLink = useCallback(async () => {
+    try {
+      const url = await buildShareUrl({ md, template: templateOverride });
+      if (url.length > 32000) {
+        showToast(`內容過長(連結 ${Math.round(url.length / 1000)}k 字元),部分通訊軟體可能截斷`);
+      }
+      await navigator.clipboard.writeText(url);
+      showToast(`分享連結已複製(${(url.length / 1000).toFixed(1)}k 字元,內容僅存在連結中)`);
+    } catch (e) {
+      showToast(`產生分享連結失敗:${(e as Error).message}`);
+    }
+  }, [md, templateOverride, showToast]);
+
   // ---- export ----
   const exportPptx = useCallback(async () => {
     setExporting(true);
@@ -194,6 +236,13 @@ export default function App() {
           </select>
           <button className="ctrl ghost" onClick={copyPrompt} title="複製給 LLM 的產生指令,貼給任何模型即可產出合規 MD">
             ✦ AI 產生
+          </button>
+          <button
+            className="ctrl ghost"
+            onClick={copyShareLink}
+            title="把目前的 MD + template 壓縮進網址(仿 PlantUML),對方開連結即還原;內容只存在連結中、不經任何伺服器"
+          >
+            ⛓ 分享
           </button>
           <button
             className={`ctrl ghost lint-btn ${errors.length ? "lint-err" : warnings.length ? "lint-warn" : "lint-ok"}`}
