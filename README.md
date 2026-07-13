@@ -27,19 +27,19 @@ npm run lint:samples   # 10 份黃金樣本過 profile linter
 npm run typecheck
 ```
 
-## 部署到 Cloudflare Pages(連動 GitHub)
+## 部署到 Cloudflare(連動 GitHub)
 
-本專案是純靜態站,Cloudflare Pages 直連 GitHub 即可交付:
+本專案是純靜態站,repo 已含 [`wrangler.jsonc`](wrangler.jsonc)(assets-only,無 Worker 程式碼),Cloudflare 直連 GitHub 即可交付。
 
-1. 進 Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**。
-2. 選這個 GitHub repo 與要部署的分支。
-3. Build 設定:
-   - **Framework preset**:Vite
-   - **Build command**:`npm run build`
-   - **Build output directory**:`dist`
-4. Save and Deploy。之後每次 push 自動重新部署;PR 會有 preview URL。
+**Workers 流程(新版 dashboard 預設)**:Workers & Pages → Create → 連 GitHub repo,Build 設定:
 
-不需要任何環境變數或 server;也可自架:`npm run build` 後把 `dist/` 丟任何內網 web server。
+- **Build command**:`npm run build`
+- **Deploy command**:`npx wrangler deploy`
+- **Non-production branch deploy command**:`npx wrangler versions upload`
+
+**經典 Pages 流程**:Framework preset 選 Vite、Build command `npm run build`、輸出目錄 `dist`。
+
+兩種流程之後每次 push 都自動重新部署。不需要任何環境變數或 server;也可自架:`npm run build` 後把 `dist/` 丟任何內網 web server。
 
 ## 怎麼寫(MD Profile v1)
 
