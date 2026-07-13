@@ -6,7 +6,7 @@
   "name": "snapdeck",
   "compatibility_date": "2026-07-13",
   "main": "worker/index.js",
-  "assets": {https://github.com/clarencechien/snapdeck/pull/14/conflicts
+  "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application",
     "binding": "ASSETS"
@@ -16,10 +16,6 @@
   //   查法:`npx wrangler kv namespace list`(欄位 id),
   //   或 Cloudflare Dashboard → Storage & Databases → KV → 該列的 ID。
   //   填成名稱(如 "snapdeck.kv")會得到部署錯誤 code 10042。
-  // ,"kv_namespaces": [
-  //   { "binding": "LINKS", "id": "0123456789abcdef0123456789abcdef" }
-  // ]
-  //啟用短連結時取消註解:
   ,"kv_namespaces": [
      { "binding": "LINKS", "id": "1dd64f786c2547beb2971a5600c64b90" }
    ]
