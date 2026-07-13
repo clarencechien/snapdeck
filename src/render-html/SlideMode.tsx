@@ -28,10 +28,13 @@ export function SlideMode({
   doc,
   template,
   onExit,
+  onShare,
 }: {
   doc: SlideDoc;
   template: TemplateConfig;
   onExit: () => void;
+  /** 複製「開啟即進簡報第 N 頁」的分享連結 */
+  onShare?: (pageNo: number) => void;
 }) {
   // skip 頁不進 slide mode(PROFILE §6)
   const slides = useMemo(() => doc.slides.filter((s) => !s.skip), [doc]);
@@ -131,7 +134,21 @@ export function SlideMode({
           <div className="sd-notes-body">{slide.notes || "(本頁無備註)"}</div>
         </div>
       ) : null}
-      <div className="sd-present-hint">←/→ 翻頁 · s 備註 · Esc 離開</div>
+      <div className="sd-present-hint">
+        ←/→ 翻頁 · s 備註 · Esc 離開
+        {onShare ? (
+          <button
+            className="sd-present-share"
+            onClick={(e) => {
+              e.stopPropagation();
+              onShare(idx + 1);
+            }}
+            title="複製分享連結:對方開啟直接進入簡報模式這一頁"
+          >
+            ⛓ 分享此頁
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
