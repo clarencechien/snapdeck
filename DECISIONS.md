@@ -79,6 +79,33 @@ big-stat、quote、table、two-col、emphasis、skip、fit、四種 mermaid),
 HANDOFF 原文的「10 份」要求以此裁決取代;docs/HANDOFF.md 保留原文
 作為歷史文件。
 
+## D12:stat 規則 v2 — 標籤 + 補充說明、KPI 看板(v0.3)
+
+原 rule 5「≤20 字」是斷崖:21 字的數字句默默退化成普通段落,作者難以
+察覺(使用者實際踩到)。裁決:
+- 無逗號:≤20 字 → 大數字頁(同 v1)。
+- 有逗號:全段 ≤40 字且「數值+標籤」≤20 字 → 逗號前為標籤、逗號後為
+  小字補充說明(caption)。
+- 連續 ≥2 段數字短句 → KPI 看板(stat tiles 並排),HTML 與 pptx 同構。
+超出上限仍退化為段落(graceful degradation 原則不變)。PROFILE §5、
+SKILL.md、prompt.md 同步更新;stat 單位表補齊常見量詞(家/店/筆/名…)。
+
+## D13:稀疏頁與圖表頁垂直置中(v0.3)
+
+內容量(contentWeight)≤7 的內容頁、big-stat 頁、整頁單張 diagram,
+內容改為安全區垂直置中,避免「上重下空」。HTML 用 flex(注意不可加
+align-items:center,會令 diagram 失去 stretch 縮成迷你圖——已踩過);
+pptx 用與排版常數一致的高度估算把起始 y 置中。門檻與估算皆確定性。
+
+## D14:mermaid 頁面層文字色與 pie 色盤(v0.3)
+
+診斷:diagram 一律渲染在淺色 content 頁上,但深色系 template 的
+primaryTextColor(節點內文字)是近白色,mermaid 的 pie 標題/圖例等
+「畫在頁面背景上的文字」預設繼承它 → 白字隱形(使用者回報)。裁決:
+五套 template 的 mermaidTheme 顯式補齊 textColor / pieTitleTextColor /
+pieLegendTextColor(深色)與 pieSectionTextColor(依切片深淺),並給
+每套 template 一組 pie1–pie6 專屬色盤,切片不再單色糊成一團。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值

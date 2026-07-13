@@ -50,40 +50,41 @@ function inlineToRuns(text: InlineText, baseColor: string): TextRun[] {
   }));
 }
 
-/** 確定性溢版估算:依內容量選字級縮放(見 DECISIONS.md D3) */
-export function estimateFontScale(slide: Slide): number {
-  let weight = 0;
-  for (const b of slide.blocks) {
-    switch (b.kind) {
-      case "heading":
-        break;
-      case "para":
-        weight += Math.ceil(plainText(b.text).length / 40) + 1;
-        break;
-      case "list":
-        weight += b.items.length * 1.5;
-        break;
-      case "table":
-        weight += (b.rows.length + 1) * 1.2;
-        break;
-      case "code":
-        weight += b.value.split("\n").length;
-        break;
-      case "quote":
-        weight += 3;
-        break;
-      case "stat":
-        weight += 4;
-        break;
-      case "diagram":
-      case "image":
-        weight += 8;
-        break;
+export { estimateFontScale } from "../ir/weight";
+import { estimateFontScale, isSparse } from "../ir/weight";
+
+/** 與 addBlocks 的實際排版常數一致的高度估算(供稀疏頁垂直置中用) */
+function estimateBlockHeight(block: Block, scale: number): number {
+  switch (block.kind) {
+    case "heading":
+      return 0;
+    case "para": {
+      const lines = Math.max(1, Math.ceil(plainText(block.text).length / 55));
+      const h = 0.34 * lines * scale + 0.15;
+      return ("emphasis" in block && block.emphasis ? h + 0.3 : h) + 0.25;
     }
+    case "list": {
+      const lineCount = block.items.reduce(
+        (n, it) => n + (it.term ? 2 : 1) + (it.children?.length ?? 0),
+        0
+      );
+      return lineCount * 0.34 * scale + 0.2 + 0.2;
+    }
+    case "quote":
+      return 1.7 + 0.25;
+    case "code":
+      return block.value.split("\n").length * 0.24 * scale + 0.3 + 0.25;
+    case "table":
+      return (block.rows.length + 1) * 0.34 + 0.2 + 0.2;
+    case "stat":
+      return 2.6 + 0.2;
+    case "image":
+      return 3.5 + 0.2;
+    case "diagram":
+      return 3.4 + 0.2;
+    default:
+      return 0.5;
   }
-  if (weight > 22) return 0.72;
-  if (weight > 15) return 0.85;
-  return 1;
 }
 
 type Ctx = {
@@ -228,13 +229,83 @@ function listToRuns(
   return runs;
 }
 
+import { groupStatRuns } from "../ir/group";
+import type { StatBlock } from "../ir/group";
+
+const STAT_GRID_H = 2.1;
+
+function addStatGrid(
+  s: pptxgen.Slide,
+  stats: StatBlock[],
+  box: { x: number; y: number; w: number },
+  ctx: Ctx,
+  spec: LayoutSpec,
+  scale: number
+) {
+  const t = ctx.template;
+  const bg = colorOf(t, spec.bg);
+  const fg = colorOf(t, spec.fg);
+  const n = stats.length;
+  const cols = Math.min(n, n === 4 ? 2 : 3);
+  const rows = Math.ceil(n / cols);
+  const gap = 0.3;
+  const tileW = (box.w - gap * (cols - 1)) / cols;
+  const tileH = STAT_GRID_H / rows - (rows > 1 ? gap / 2 : 0);
+  stats.forEach((st, i) => {
+    const cx = box.x + (i % cols) * (tileW + gap);
+    const cy = box.y + Math.floor(i / cols) * (tileH + gap);
+    s.addShape("roundRect", {
+      x: cx,
+      y: cy,
+      w: tileW,
+      h: tileH,
+      rectRadius: 0.07,
+      fill: { color: mixHex(bg, "FFFFFF", 0.5) },
+      line: { color: mixHex(bg, fg, 0.14), width: 1 },
+    });
+    s.addShape("rect", {
+      x: cx + 0.22,
+      y: cy + 0.22,
+      w: 0.45,
+      h: 0.055,
+      fill: { color: t.colors.accent },
+    });
+    s.addText(st.value, {
+      x: cx + 0.2,
+      y: cy + 0.3,
+      w: tileW - 0.4,
+      h: tileH * 0.52,
+      fontSize: Math.round(38 * scale),
+      fontFace: pptFont(t.fonts.display),
+      bold: true,
+      color: t.colors.primary,
+      align: "left",
+      valign: "bottom",
+      margin: 0,
+    });
+    s.addText(st.label + (st.caption ? `\n${st.caption}` : ""), {
+      x: cx + 0.2,
+      y: cy + tileH * 0.56 + 0.28,
+      w: tileW - 0.4,
+      h: tileH * 0.44 - 0.3,
+      fontSize: Math.round(12.5 * scale),
+      fontFace: pptFont(t.fonts.body),
+      color: mixHex(bg, fg, 0.66),
+      align: "left",
+      valign: "top",
+      margin: 0,
+    });
+  });
+}
+
 async function addBlocks(
   s: pptxgen.Slide,
   blocks: Block[],
   box: { x: number; y: number; w: number; h: number },
   spec: LayoutSpec,
   ctx: Ctx,
-  scale: number
+  scale: number,
+  center = false
 ) {
   const t = ctx.template;
   const bg = colorOf(t, spec.bg);
@@ -246,10 +317,27 @@ async function addBlocks(
   const bodyPt = Math.round(spec.bodyFontPt * scale);
   const bodyFont = pptFont(t.fonts.body);
 
-  let y = box.y;
-  const each = blocks.filter((b) => b.kind !== "heading");
+  const items = groupStatRuns(blocks.filter((b) => b.kind !== "heading"));
 
-  for (const block of each) {
+  let y = box.y;
+  // 稀疏頁垂直置中:估算總高,置於安全區中央
+  if (center) {
+    const total = items.reduce(
+      (sum, it) =>
+        sum + (it.type === "stat-grid" ? STAT_GRID_H + 0.2 : estimateBlockHeight(it.block, scale)),
+      0
+    );
+    if (total < box.h * 0.85) y = box.y + (box.h - total) / 2;
+  }
+
+  for (const item of items) {
+    if (item.type === "stat-grid") {
+      if (y >= box.y + box.h - 0.3) break;
+      addStatGrid(s, item.stats, { x: box.x, y, w: box.w }, ctx, spec, scale);
+      y += STAT_GRID_H + 0.2;
+      continue;
+    }
+    const block = item.block;
     if (y >= box.y + box.h - 0.3) break;
     const remaining = box.y + box.h - y;
 
@@ -424,7 +512,7 @@ async function addBlocks(
           x: box.x,
           y,
           w: box.w,
-          h: h * 0.58,
+          h: h * 0.55,
           fontSize: Math.round(72 * scale),
           fontFace: pptFont(t.fonts.display),
           bold: true,
@@ -435,23 +523,38 @@ async function addBlocks(
         });
         s.addShape("rect", {
           x: box.x + box.w / 2 - 0.7,
-          y: y + h * 0.62,
+          y: y + h * 0.59,
           w: 1.4,
           h: 0.06,
           fill: { color: accent },
         });
-        s.addText(block.label, {
-          x: box.x,
-          y: y + h * 0.68,
-          w: box.w,
-          h: h * 0.32,
-          fontSize: Math.round(20 * scale),
-          fontFace: bodyFont,
-          color: muted,
-          align: "center",
-          valign: "top",
-          margin: 0,
-        });
+        s.addText(
+          [
+            { text: block.label, options: { color: muted } },
+            ...(block.caption
+              ? [
+                  {
+                    text: `\n${block.caption}`,
+                    options: {
+                      color: mixHex(bg, fg, 0.48),
+                      fontSize: Math.round(14 * scale),
+                    },
+                  },
+                ]
+              : []),
+          ] as never,
+          {
+            x: box.x,
+            y: y + h * 0.65,
+            w: box.w,
+            h: h * 0.35,
+            fontSize: Math.round(20 * scale),
+            fontFace: bodyFont,
+            align: "center",
+            valign: "top",
+            margin: 0,
+          }
+        );
         y += h + 0.2;
         break;
       }
@@ -494,14 +597,17 @@ async function addBlocks(
                 hh = h;
                 w = hh * ratio;
               }
+              // 整頁只有這張圖 → 垂直置中於安全區
+              const lone = items.length === 1;
+              const yPos = lone ? box.y + Math.max(0, (box.h - hh) / 2) : y;
               s.addImage({
                 data: png.dataUrl,
                 x: box.x + (box.w - w) / 2,
-                y,
+                y: yPos,
                 w,
                 h: hh,
               });
-              y += hh + 0.2;
+              y = yPos + hh + 0.2;
               placed = true;
             }
           } catch {
@@ -839,9 +945,10 @@ async function renderSlide(
       break;
     }
     default: {
-      // content / big-stat / diagram 共用縱向排版
+      // content / big-stat / diagram 共用縱向排版;稀疏頁與大數字頁垂直置中
       addHeading(s, slide, spec, t, scale);
-      await addBlocks(s, slide.blocks, spec.bodyBox, spec, ctx, scale);
+      const center = slide.layout === "big-stat" || isSparse(slide);
+      await addBlocks(s, slide.blocks, spec.bodyBox, spec, ctx, scale, center);
       break;
     }
   }

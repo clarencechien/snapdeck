@@ -2,9 +2,42 @@
 // 溢版偵測與降級(design rule 8):字級縮一級 → 再縮 → 警示 badge。
 
 import { useLayoutEffect, useRef, useState } from "react";
-import type { Slide } from "../ir/types";
+import type { Block, Slide } from "../ir/types";
 import type { TemplateConfig } from "../templates";
 import { BlockView } from "./blocks";
+import { groupStatRuns } from "../ir/group";
+import { isSparse } from "../ir/weight";
+
+/** stat 連段 → KPI 看板;其餘逐塊渲染。頁面 view 與 slide 共用。 */
+export function BodyBlocks({
+  blocks,
+  template,
+  context = "slide",
+}: {
+  blocks: Block[];
+  template: TemplateConfig;
+  context?: "page" | "slide";
+}) {
+  return (
+    <>
+      {groupStatRuns(blocks).map((item, i) =>
+        item.type === "stat-grid" ? (
+          <div className="sd-stats-grid" data-count={item.stats.length} key={i}>
+            {item.stats.map((st, j) => (
+              <div className="sd-stat-tile" key={j}>
+                <div className="sd-stat-tile-value">{st.value}</div>
+                <div className="sd-stat-tile-label">{st.label}</div>
+                {st.caption ? <div className="sd-stat-tile-caption">{st.caption}</div> : null}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <BlockView key={i} block={item.block} template={template} context={context} />
+        )
+      )}
+    </>
+  );
+}
 
 const FONT_SCALES = [1, 0.85, 0.72];
 
@@ -98,22 +131,25 @@ export function SlideSurface({
           <BlockView block={heading} template={template} context="slide" />
         </div>
       ) : null}
-      <div className="sd-slide-body" ref={bodyRef}>
+      <div
+        className={`sd-slide-body${
+          slide.layout === "diagram" || slide.layout === "big-stat" || isSparse(slide)
+            ? " sd-body-center"
+            : ""
+        }`}
+        ref={bodyRef}
+      >
         {slide.layout === "two-col" && slide.columns ? (
           <div className="sd-two-col">
             <div className="sd-col">
-              {slide.columns[0].map((b, i) => (
-                <BlockView key={i} block={b} template={template} context="slide" />
-              ))}
+              <BodyBlocks blocks={slide.columns[0]} template={template} />
             </div>
             <div className="sd-col">
-              {slide.columns[1].map((b, i) => (
-                <BlockView key={i} block={b} template={template} context="slide" />
-              ))}
+              <BodyBlocks blocks={slide.columns[1]} template={template} />
             </div>
           </div>
         ) : (
-          body.map((b, i) => <BlockView key={i} block={b} template={template} context="slide" />)
+          <BodyBlocks blocks={body} template={template} />
         )}
       </div>
       {showBadge ? <div className="sd-overflow-badge">內容過多,建議用 --- 拆頁</div> : null}

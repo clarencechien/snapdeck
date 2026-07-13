@@ -65,19 +65,44 @@ describe("design rules", () => {
     expect(list && list.kind === "list" && list.shape).toBe("steps");
   });
 
-  it("rule 5:數字開頭 ≤20 字段落 → stat / big-stat", () => {
-    const doc = ir("## 頁\n\n96% 試產良率,高於量產門檻");
+  it("rule 5:數字開頭短段落 → stat / big-stat", () => {
+    const doc = ir("## 頁\n\n96% 試產良率");
     const slide = doc.slides[0];
     expect(slide.layout).toBe("big-stat");
     const stat = slide.blocks.find((b) => b.kind === "stat");
     expect(stat && stat.kind === "stat" && stat.value).toBe("96%");
   });
 
-  it("rule 5:長段落不升格 stat", () => {
+  it("rule 5(v2):≤40 字含逗號 → 標籤 + 補充說明", () => {
+    const doc = ir("## 頁\n\n61% 營收來自 App 會員,首次過半後持續攀升");
+    const stat = doc.slides[0].blocks.find((b) => b.kind === "stat");
+    expect(stat && stat.kind === "stat" && stat.value).toBe("61%");
+    expect(stat && stat.kind === "stat" && stat.label).toBe("營收來自 App 會員");
+    expect(stat && stat.kind === "stat" && stat.caption).toBe("首次過半後持續攀升");
+    expect(doc.slides[0].layout).toBe("big-stat");
+  });
+
+  it("rule 5:超過 40 字不升格 stat(graceful degradation)", () => {
     const doc = ir(
-      "## 頁\n\n42% 的成本來自閒置節點,但這句話實在太長了所以不應該被升格成大數字版面才對"
+      "## 頁\n\n42% 的成本來自閒置節點,但這句話實在太長太長了所以完全不應該被升格成大數字版面,應該維持一般段落呈現才對"
     );
     expect(doc.slides[0].blocks.find((b) => b.kind === "stat")).toBeUndefined();
+  });
+
+  it("rule 5:無逗號且 >20 字不升格 stat", () => {
+    const doc = ir("## 頁\n\n42% 的季度成本全部來自那些閒置太久的邊緣節點群");
+    expect(doc.slides[0].blocks.find((b) => b.kind === "stat")).toBeUndefined();
+  });
+
+  it("dashboard:連續 ≥2 段數字短句 → 多 stat + big-stat layout", () => {
+    const doc = ir("## 頁\n\n2.84 億,季營收,年增 18%\n\n187 家,門市總數\n\n61%,會員貢獻營收");
+    const stats = doc.slides[0].blocks.filter((b) => b.kind === "stat");
+    expect(stats).toHaveLength(3);
+    expect(doc.slides[0].layout).toBe("big-stat");
+    const first = stats[0];
+    expect(first.kind === "stat" && first.value).toBe("2.84 億");
+    expect(first.kind === "stat" && first.label).toBe("季營收");
+    expect(first.kind === "stat" && first.caption).toBe("年增 18%");
   });
 
   it("rule 6:整頁只有 quote → quote layout,含出處", () => {
