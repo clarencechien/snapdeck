@@ -6,6 +6,7 @@
 ## 1. 基底語法
 
 - CommonMark + GFM(表格、刪除線、task list)。
+- 貼上容錯(app 行為,非文件合法性的一部分):包住整份文件的外層 code fence、frontmatter 前的空行/BOM,貼上時自動剝除。
 - 專屬資訊只允許存在於兩處:**YAML frontmatter** 與 **HTML 註解 directive**。兩者在一般 viewer 中皆為隱形或無害。
 - 禁止:自創語法、行內 HTML(註解除外)、依賴縮排的排版技巧。
 

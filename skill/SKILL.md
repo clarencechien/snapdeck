@@ -1,11 +1,11 @@
 ---
 name: mdshare-authoring
-description: 產出符合「MD Share & Present」Profile v1 的類通用 Markdown。當使用者要求產生可用於該工具的簡報/分享文件、或要求「轉成可簡報的 MD」時使用。輸出必須在任何標準 Markdown viewer 中呈現為正常文件,同時攜帶隱形的版面資訊。
+description: 產出符合 SnapDeck(MD Share & Present)Profile v1 的類通用 Markdown。當使用者要求產生可用於該工具的簡報/分享文件、或要求「轉成可簡報的 MD」時使用。輸出必須在任何標準 Markdown viewer 中呈現為正常文件,同時攜帶隱形的版面資訊。
 ---
 
-# MD Share & Present 撰寫技能
+# SnapDeck(MD Share & Present)撰寫技能
 
-你要產出的是一份**類通用 Markdown**:在 GitHub/Obsidian 打開是正常文件,貼進 MD Share & Present 後自動變成有設計感的頁面、slide 與 pptx。
+你要產出的是一份**類通用 Markdown**:在 GitHub/Obsidian 打開是正常文件,貼進 SnapDeck 後自動變成有設計感的頁面、slide 與 pptx。
 
 ## 核心規則(依序,違反前面的規則即失敗)
 
@@ -20,8 +20,8 @@ description: 產出符合「MD Share & Present」Profile v1 的類通用 Markdow
 |---|---|
 | 卡片(3–4 張) | 清單,每項 `**粗體詞**:一句話說明`,恰好 3–4 項 |
 | 步驟條 | 有序清單 1.–5.,每項一短句 |
-| 大數字頁 | 一段以數字/百分比開頭的話:20 字內直接成頁;40 字內用逗號斷開——逗號前是標籤、逗號後變小字補充 |
-| KPI 看板 | 連續 2–4 段數字短句,各自成段(段間空行),自動排成並列數字卡 |
+| 大數字頁 | 獨立一段,固定格式 `數值,標籤,補充(可省)`:數值可帶單位與 +(`10,000+ 小時`)整組成大字;標籤 ≤16 字;全段 ≤40 字 |
+| KPI 看板 | 連續 2–4 段上述三欄位格式,各自成段(段間空行),自動排成並列數字卡 |
 | 引言頁 | blockquote,尾行 `— 出處` |
 | 圖表頁 | ```` ```mermaid ```` code block(flowchart/sequence/gantt) |
 | 章節頁 | 單獨一個 H1 |
@@ -74,6 +74,16 @@ lang: zh-TW
 
 (三項粗體詞清單 → 自動變三張卡片,零 directive。)
 
+```markdown
+## 兩個關鍵數字
+
+12 萬,新增會員
+
+78%,新戶留存率,較上季 71% 明顯提升
+```
+
+(連續三欄位數字段 → 自動排成 KPI 看板;單獨一段則成大數字頁。)
+
 ## 反例(不要這樣寫)
 
 ```markdown
@@ -91,3 +101,4 @@ lang: zh-TW
 - [ ] 只用了詞彙表內的 6 個 directive?
 - [ ] `split` 只出現在 `layout: two-col` 的頁?
 - [ ] 講稿放 `notes` 而不是正文?
+- [ ] 關鍵數據用了 `數值,標籤,補充` 三欄位格式,而不是埋在段落裡?
