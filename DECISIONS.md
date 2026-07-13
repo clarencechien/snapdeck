@@ -106,6 +106,21 @@ primaryTextColor(節點內文字)是近白色,mermaid 的 pie 標題/圖例等
 pieLegendTextColor(深色)與 pieSectionTextColor(依切片深淺),並給
 每套 template 一組 pie1–pie6 專屬色盤,切片不再單色糊成一團。
 
+## D15:share link 走 URL hash fragment(v0.4)
+
+仿 PlantUML 的內容進網址:`#s=1.<base64url(deflate-raw(JSON{m,t}))>`。
+裁決要點:
+- 用 **hash fragment 而非 query string**——fragment 不會隨請求送到
+  伺服器、不進 access log,守住「內容不出瀏覽器」;也避開 server 端
+  URL 長度限制。
+- 壓縮用瀏覽器原生 CompressionStream("deflate-raw"),零依賴;版本
+  前綴 `1.` 留升級空間;解不開回傳 null(顯示毀損提示,不丟例外)。
+- 載入端同時處理「開新連結」與「已開啟分頁貼網址」(hashchange 不觸發
+  reload,需監聽);載入後清掉 hash,留乾淨網址。
+- PRD 把「分享短連結」列為 Phase 4(需要後端);此功能是無後端的
+  URL 自含式分享,不衝突——長文件連結會變長(UI 超過 32k 字元時提示)。
+PRD §9「分享基礎設施」的短連結仍留待 Phase 4。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值

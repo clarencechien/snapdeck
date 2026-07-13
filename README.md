@@ -12,6 +12,11 @@ SnapDeck 是 Markdown 的「分享與簡報層」,不是編輯器。貼上一份
 preview 頂欄色點一鍵切換,HTML、slide、pptx、mermaid 配色同步生效。
 貼上的內容自動存在瀏覽器 localStorage(僅本機),重新整理不遺失。
 
+**分享連結(仿 PlantUML)**:「⛓ 分享」把目前的 MD + template 以
+deflate 壓縮 + base64url 編進網址的 hash fragment(`#s=1.…`),對方開
+連結即還原內容。fragment 不會送出到伺服器、不進 access log——內容
+只存在連結本身,沒有任何後端儲存。
+
 全程純前端:解析、渲染、pptx 產出都在瀏覽器完成,**文件內容不離開瀏覽器**、零網路呼叫(mermaid 等函式庫打包進 bundle)。
 
 ## 快速開始
