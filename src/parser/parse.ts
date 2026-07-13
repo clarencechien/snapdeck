@@ -7,6 +7,7 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import { parse as parseYaml } from "yaml";
 import type { Root, RootContent } from "mdast";
+import { normalizeMd } from "./normalize";
 
 export const DIRECTIVE_KEYWORDS = [
   "layout",
@@ -76,7 +77,8 @@ export function parseDirectiveComment(raw: string, line?: number):
 }
 
 export function parseMarkdown(md: string): ParsedDoc {
-  const tree = processor.parse(md) as Root;
+  // 貼上容錯:剝掉 LLM 聊天介面的外層 code fence、frontmatter 前空行
+  const tree = processor.parse(normalizeMd(md)) as Root;
 
   let frontmatter: Record<string, unknown> = {};
   let frontmatterError: string | undefined;
