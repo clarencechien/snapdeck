@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SlideDoc } from "../ir/types";
 import type { TemplateConfig } from "../templates";
-import { ScaledSlide } from "./SlideView";
+import { ScaledSlide, computeSectionNos } from "./SlideView";
 
 function readDeepLink(): number {
   const p = new URLSearchParams(window.location.search).get("p");
@@ -35,6 +35,7 @@ export function SlideMode({
 }) {
   // skip 頁不進 slide mode(PROFILE §6)
   const slides = useMemo(() => doc.slides.filter((s) => !s.skip), [doc]);
+  const sectionNos = useMemo(() => computeSectionNos(slides), [slides]);
   const [idx, setIdx] = useState(() => Math.min(readDeepLink(), Math.max(0, slides.length - 1)));
   const [showNotes, setShowNotes] = useState(false);
 
@@ -115,7 +116,14 @@ export function SlideMode({
           go(e.clientX - rect.left > rect.width / 2 ? idx + 1 : idx - 1);
         }}
       >
-        <ScaledSlide slide={slide} template={template} pageNo={idx + 1} total={slides.length} />
+        <ScaledSlide
+          slide={slide}
+          template={template}
+          pageNo={idx + 1}
+          total={slides.length}
+          sectionNo={sectionNos[idx]}
+          docTitle={doc.meta.title}
+        />
       </div>
       {showNotes ? (
         <div className="sd-notes-panel">
