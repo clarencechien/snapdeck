@@ -29,12 +29,15 @@ description: 產出符合 SnapDeck(MD Share & Present)Profile v1 的類通用 Ma
 ## Directive 詞彙表(只有這 6 個,不可自創)
 
 ```
-<!-- layout: two-col -->   覆蓋版面(title/section/content/two-col/big-stat/quote/cards/diagram)
+<!-- notes: ... -->        講者備註(不會出現在畫面上)— 每頁建議
+<!-- layout: two-col -->   兩欄對照 — 只有素材本身是左右對照(方案A/B、
+                           做/不做)才用,整份 ≤1 頁;大數字絕不放欄內
 <!-- split -->             two-col 頁的左右欄分界(只能出現在 two-col 頁)
-<!-- notes: ... -->        講者備註(不會出現在畫面上)
-<!-- emphasis -->          下一個區塊視覺強調
-<!-- fit -->               本頁允許縮字級塞入
+<!-- emphasis -->          下一個區塊視覺強調 — 整份最多 1–2 處
+<!-- fit -->               本頁允許縮字級塞入 — 只給拆不開的密集表格
 <!-- skip -->              本頁不進 slide/pptx(附錄用)
+<!-- layout: X -->         覆蓋版面推斷(title/section/content/two-col/
+                           big-stat/quote/cards/diagram)— 推斷錯了才用
 ```
 
 ## 輸出骨架
