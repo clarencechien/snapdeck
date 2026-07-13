@@ -8,16 +8,29 @@ import { BlockView } from "./blocks";
 
 const FONT_SCALES = [1, 0.85, 0.72];
 
+/** 每頁對應的章節序號(section 頁遞增,其後的頁面沿用) */
+export function computeSectionNos(slides: Slide[]): number[] {
+  let n = 0;
+  return slides.map((s) => {
+    if (s.layout === "section") n += 1;
+    return n;
+  });
+}
+
 export function SlideSurface({
   slide,
   template,
   pageNo,
   total,
+  sectionNo,
+  docTitle,
 }: {
   slide: Slide;
   template: TemplateConfig;
   pageNo?: number;
   total?: number;
+  sectionNo?: number;
+  docTitle?: string;
 }) {
   const spec = template.layouts[slide.layout];
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -73,6 +86,13 @@ export function SlideSurface({
         } as React.CSSProperties
       }
     >
+      {slide.layout === "section" ? (
+        <>
+          <div className="sd-ghost-no">{String(sectionNo ?? 0).padStart(2, "0")}</div>
+          <div className="sd-overline">SECTION {String(sectionNo ?? 0).padStart(2, "0")}</div>
+        </>
+      ) : null}
+      {slide.layout === "title" ? <div className="sd-overline">SNAPDECK</div> : null}
       {heading ? (
         <div className="sd-slide-title" style={{ color: titleColor }}>
           <BlockView block={heading} template={template} context="slide" />
@@ -97,9 +117,15 @@ export function SlideSurface({
         )}
       </div>
       {showBadge ? <div className="sd-overflow-badge">內容過多,建議用 --- 拆頁</div> : null}
-      {pageNo != null && total != null && slide.layout !== "title" ? (
-        <div className="sd-page-no">
-          {pageNo} / {total}
+      {pageNo != null &&
+      total != null &&
+      slide.layout !== "title" &&
+      slide.layout !== "section" ? (
+        <div className="sd-slide-footer">
+          <span className="sd-footer-title">{docTitle ?? ""}</span>
+          <span className="sd-page-no">
+            {pageNo} / {total}
+          </span>
         </div>
       ) : null}
     </div>

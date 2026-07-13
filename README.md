@@ -8,6 +8,10 @@ SnapDeck 是 Markdown 的「分享與簡報層」,不是編輯器。貼上一份
 - 可全螢幕簡報的 **HTML slide mode**(鍵盤翻頁、speaker notes、深連結)
 - 套用 template、**文字可編輯**的 **pptx 下載**
 
+內建 **5 套 template**(Clean Light / Midnight / Craft / Forest / Boardroom),
+preview 頂欄色點一鍵切換,HTML、slide、pptx、mermaid 配色同步生效。
+貼上的內容自動存在瀏覽器 localStorage(僅本機),重新整理不遺失。
+
 全程純前端:解析、渲染、pptx 產出都在瀏覽器完成,**文件內容不離開瀏覽器**、零網路呼叫(mermaid 等函式庫打包進 bundle)。
 
 ## 快速開始

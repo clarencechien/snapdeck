@@ -1,7 +1,7 @@
 // renderPptx:IR + template config → pptxgenjs。
 // 遵守 HANDOFF §7 坑清單:LAYOUT_WIDE 先設、色碼無 #、options 物件不重用、
 // bullet:true 不手打「•」、breakLine 除最後一項、addNotes、margin:0。
-// 文字全部為原生文字框(可編輯)。
+// 文字全部為原生文字框(可編輯);裝飾一律取 template 色票,零硬編碼色。
 
 import pptxgen from "pptxgenjs";
 import type { Block, InlineText, ListItem, Slide, SlideDoc } from "../ir/types";
@@ -18,10 +18,22 @@ export type RenderPptxOptions = {
   renderDiagram?: DiagramRenderer;
 };
 
+const PAGE_W = 13.33;
+const PAGE_H = 7.5;
+
 function pptFont(css: string): string {
-  // CSS font stack → 單一字型名(pptx 只吃一個);挑第一個,去引號
   const first = css.split(",")[0]?.trim().replace(/^['"]|['"]$/g, "");
   return first || "Arial";
+}
+
+/** 兩色線性混合(6 碼 hex,無 #),t=0 → a、t=1 → b。確定性,取代 transparency。 */
+export function mixHex(a: string, b: string, t: number): string {
+  const pa = [0, 2, 4].map((i) => parseInt(a.slice(i, i + 2), 16));
+  const pb = [0, 2, 4].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return pa
+    .map((v, i) => Math.round(v + (pb[i] - v) * t).toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
 }
 
 function inlineToRuns(text: InlineText, baseColor: string): TextRun[] {
@@ -38,7 +50,7 @@ function inlineToRuns(text: InlineText, baseColor: string): TextRun[] {
   }));
 }
 
-/** 確定性溢版估算:HTML 端的量測不可得時(或匯出時),依內容量選字級縮放 */
+/** 確定性溢版估算:依內容量選字級縮放(見 DECISIONS.md D3) */
 export function estimateFontScale(slide: Slide): number {
   let weight = 0;
   for (const b of slide.blocks) {
@@ -78,6 +90,7 @@ type Ctx = {
   pres: pptxgen;
   template: TemplateConfig;
   opts: RenderPptxOptions;
+  docTitle: string;
 };
 
 function colorOf(t: TemplateConfig, key: LayoutSpec["bg"]): string {
@@ -95,10 +108,18 @@ function addHeading(
     | Extract<Block, { kind: "heading" }>
     | undefined;
   if (!heading) return;
-  s.addText(inlineToRuns(heading.text, colorOf(t, spec.titleColor)) as never, {
+  // 標題左側的 accent 短欄(內容頁的視覺錨點)
+  s.addShape("rect", {
     x: spec.titleBox.x,
+    y: spec.titleBox.y + 0.06,
+    w: 0.12,
+    h: 0.52,
+    fill: { color: t.colors.accent },
+  });
+  s.addText(inlineToRuns(heading.text, colorOf(t, spec.titleColor)) as never, {
+    x: spec.titleBox.x + 0.3,
     y: spec.titleBox.y,
-    w: spec.titleBox.w,
+    w: spec.titleBox.w - 0.3,
     h: spec.titleBox.h,
     fontSize: Math.round(spec.titleFontPt * scale),
     fontFace: pptFont(t.fonts.display),
@@ -109,23 +130,69 @@ function addHeading(
   });
 }
 
-function listToRuns(items: ListItem[], color: string, mutedColor: string): TextRun[] {
+/** 內容頁頁腳:hairline + 文件標題 + 頁碼 */
+function addFooter(s: pptxgen.Slide, ctx: Ctx, spec: LayoutSpec, pageNo: number, total: number) {
+  const t = ctx.template;
+  const bg = colorOf(t, spec.bg);
+  const fg = colorOf(t, spec.fg);
+  const hairline = mixHex(bg, fg, 0.25);
+  const faint = mixHex(bg, fg, 0.55);
+  s.addShape("rect", {
+    x: 0.7,
+    y: PAGE_H - 0.52,
+    w: PAGE_W - 1.4,
+    h: 0.012,
+    fill: { color: hairline },
+  });
+  s.addText(ctx.docTitle, {
+    x: 0.7,
+    y: PAGE_H - 0.46,
+    w: 6.0,
+    h: 0.3,
+    fontSize: 9,
+    fontFace: pptFont(t.fonts.body),
+    color: faint,
+    align: "left",
+    valign: "middle",
+    margin: 0,
+  });
+  s.addText(`${pageNo} / ${total}`, {
+    x: PAGE_W - 1.9,
+    y: PAGE_H - 0.46,
+    w: 1.2,
+    h: 0.3,
+    fontSize: 9,
+    fontFace: pptFont(t.fonts.body),
+    color: faint,
+    align: "right",
+    valign: "middle",
+    margin: 0,
+  });
+}
+
+function listToRuns(
+  items: ListItem[],
+  color: string,
+  termColor: string,
+  ordered: boolean
+): TextRun[] {
   const runs: TextRun[] = [];
+  const bullet = ordered ? { type: "number" } : true;
   items.forEach((it, idx) => {
     const isLast = idx === items.length - 1;
     if (it.term) {
       runs.push({
-        text: it.term,
-        options: { bold: true, color, bullet: true, paraSpaceAfter: 2 },
+        text: `${it.term}`,
+        options: { bold: true, color: termColor, bullet, paraSpaceAfter: 2 },
       });
       runs.push({
         text: it.desc ? plainText(it.desc) : "",
         options: {
-          color: mutedColor,
+          color,
           breakLine: !isLast,
           bullet: false,
           indentLevel: 1,
-          paraSpaceAfter: 8,
+          paraSpaceAfter: 10,
         },
       });
     } else {
@@ -136,14 +203,13 @@ function listToRuns(items: ListItem[], color: string, mutedColor: string): TextR
           text: r.text,
           options: {
             ...r.options,
-            ...(ri === 0 ? { bullet: true } : {}),
+            ...(ri === 0 ? { bullet } : {}),
             breakLine: isLastRun ? !isLast : false,
-            paraSpaceAfter: 8,
+            paraSpaceAfter: 10,
           },
         });
       });
       if (it.children?.length) {
-        // 巢狀清單:縮排一階
         it.children.forEach((child, ci) => {
           runs.push({
             text: plainText(child.text),
@@ -152,7 +218,7 @@ function listToRuns(items: ListItem[], color: string, mutedColor: string): TextR
               bullet: true,
               indentLevel: 1,
               breakLine: !(isLast && ci === it.children!.length - 1),
-              paraSpaceAfter: 4,
+              paraSpaceAfter: 6,
             },
           });
         });
@@ -171,10 +237,12 @@ async function addBlocks(
   scale: number
 ) {
   const t = ctx.template;
+  const bg = colorOf(t, spec.bg);
   const fg = colorOf(t, spec.fg);
-  const muted = t.colors.muted;
+  const muted = mixHex(bg, fg, 0.62);
   const accent = t.colors.accent;
   const primary = t.colors.primary;
+  const termColor = spec.bg === "primary" ? t.colors.accent : primary;
   const bodyPt = Math.round(spec.bodyFontPt * scale);
   const bodyFont = pptFont(t.fonts.body);
 
@@ -182,42 +250,65 @@ async function addBlocks(
   const each = blocks.filter((b) => b.kind !== "heading");
 
   for (const block of each) {
-    if (y >= box.y + box.h - 0.3) break; // 保底:不畫出安全區外
+    if (y >= box.y + box.h - 0.3) break;
     const remaining = box.y + box.h - y;
 
     switch (block.kind) {
       case "para": {
         const lines = Math.max(1, Math.ceil(plainText(block.text).length / 55));
         const h = Math.min(remaining, 0.34 * lines * scale + 0.15);
-        const runs = inlineToRuns(block.text, block.emphasis ? primary : fg);
+        const runs = inlineToRuns(block.text, block.emphasis ? fg : fg);
         if (block.emphasis) {
+          const panelH = h + 0.3;
           s.addShape("rect", {
             x: box.x,
             y,
             w: box.w,
-            h: h + 0.15,
-            fill: { color: accent, transparency: 88 },
-            line: { color: accent, width: 1 },
+            h: panelH,
+            fill: { color: mixHex(bg, accent, 0.14) },
           });
+          s.addShape("rect", {
+            x: box.x,
+            y,
+            w: 0.07,
+            h: panelH,
+            fill: { color: accent },
+          });
+          s.addText(runs as never, {
+            x: box.x + 0.3,
+            y: y + 0.15,
+            w: box.w - 0.6,
+            h,
+            fontSize: bodyPt,
+            fontFace: bodyFont,
+            align: spec.align === "center" ? "center" : "left",
+            valign: "top",
+            margin: 0,
+          });
+          y += panelH + 0.25;
+        } else {
+          s.addText(runs as never, {
+            x: box.x,
+            y,
+            w: box.w,
+            h,
+            fontSize: bodyPt,
+            fontFace: bodyFont,
+            align: spec.align === "center" ? "center" : "left",
+            valign: "top",
+            margin: 0,
+          });
+          y += h + 0.25;
         }
-        s.addText(runs as never, {
-          x: box.x + (block.emphasis ? 0.15 : 0),
-          y,
-          w: box.w - (block.emphasis ? 0.3 : 0),
-          h: h + (block.emphasis ? 0.15 : 0),
-          fontSize: bodyPt,
-          fontFace: bodyFont,
-          align: spec.align === "center" ? "center" : "left",
-          valign: "top",
-          margin: 0,
-        });
-        y += h + 0.25;
         break;
       }
       case "list": {
-        const runs = listToRuns(block.items, fg, fg);
-        const lineCount = block.items.length * (block.shape === "cards" ? 2 : 1.2);
-        const h = Math.min(remaining, lineCount * 0.32 * scale + 0.2);
+        const runs = listToRuns(block.items, fg, termColor, block.ordered);
+        const lineCount = block.items.reduce(
+          (n, it) => n + (it.term ? 2 : 1) + (it.children?.length ?? 0),
+          0
+        );
+        const h = Math.min(remaining, lineCount * 0.34 * scale + 0.2);
         s.addText(runs as never, {
           x: box.x,
           y,
@@ -232,7 +323,7 @@ async function addBlocks(
         break;
       }
       case "quote": {
-        const h = Math.min(remaining, 1.6);
+        const h = Math.min(remaining, 1.7);
         s.addShape("rect", {
           x: box.x,
           y,
@@ -242,7 +333,10 @@ async function addBlocks(
         });
         s.addText(
           [
-            { text: plainText(block.text), options: { italic: true, color: fg } },
+            {
+              text: plainText(block.text),
+              options: { italic: true, color: fg, fontFace: pptFont(t.fonts.display) },
+            },
             ...(block.cite
               ? [
                   {
@@ -253,9 +347,9 @@ async function addBlocks(
               : []),
           ] as never,
           {
-            x: box.x + 0.25,
+            x: box.x + 0.3,
             y,
-            w: box.w - 0.25,
+            w: box.w - 0.3,
             h,
             fontSize: Math.round(bodyPt * 1.15),
             fontFace: bodyFont,
@@ -269,21 +363,22 @@ async function addBlocks(
       case "code": {
         const lines = block.value.split("\n");
         const h = Math.min(remaining, lines.length * 0.24 * scale + 0.3);
-        s.addShape("rect", {
+        s.addShape("roundRect", {
           x: box.x,
           y,
           w: box.w,
           h,
-          fill: { color: t.colors.onSurface },
+          rectRadius: 0.06,
+          fill: { color: mixHex(t.colors.onSurface, "000000", 0.2) },
         });
         s.addText(block.value, {
-          x: box.x + 0.15,
-          y: y + 0.1,
-          w: box.w - 0.3,
-          h: h - 0.2,
-          fontSize: Math.max(10, Math.round(bodyPt * 0.75)),
+          x: box.x + 0.2,
+          y: y + 0.12,
+          w: box.w - 0.4,
+          h: h - 0.24,
+          fontSize: Math.max(10, Math.round(bodyPt * 0.72)),
           fontFace: "Courier New",
-          color: t.colors.surface,
+          color: mixHex(t.colors.surface, "FFFFFF", 0.5),
           valign: "top",
           margin: 0,
         });
@@ -297,13 +392,18 @@ async function addBlocks(
             bold: true,
             color: t.colors.onPrimary,
             fill: { color: primary },
-            fontSize: Math.round(bodyPt * 0.8),
+            fontSize: Math.round(bodyPt * 0.78),
           },
         }));
-        const bodyRows = block.rows.map((row) =>
+        const altFill = mixHex(bg, primary, 0.05);
+        const bodyRows = block.rows.map((row, ri) =>
           row.map((c) => ({
             text: plainText(c),
-            options: { color: fg, fontSize: Math.round(bodyPt * 0.8) },
+            options: {
+              color: fg,
+              fontSize: Math.round(bodyPt * 0.78),
+              ...(ri % 2 === 1 ? { fill: { color: altFill } } : {}),
+            },
           }))
         );
         s.addTable([headerRow, ...bodyRows] as never, {
@@ -311,33 +411,40 @@ async function addBlocks(
           y,
           w: box.w,
           fontFace: bodyFont,
-          border: { type: "solid", color: t.colors.muted, pt: 0.5 },
-          margin: 0.05,
+          border: { type: "solid", color: mixHex(bg, fg, 0.2), pt: 0.5 },
+          margin: 0.07,
           valign: "middle",
         });
-        y += Math.min(remaining, (block.rows.length + 1) * 0.32 + 0.2) + 0.2;
+        y += Math.min(remaining, (block.rows.length + 1) * 0.34 + 0.2) + 0.2;
         break;
       }
       case "stat": {
-        const h = Math.min(remaining, 2.4);
+        const h = Math.min(remaining, 2.6);
         s.addText(block.value, {
           x: box.x,
           y,
           w: box.w,
-          h: h * 0.62,
-          fontSize: Math.round(66 * scale),
+          h: h * 0.58,
+          fontSize: Math.round(72 * scale),
           fontFace: pptFont(t.fonts.display),
           bold: true,
-          color: primary,
+          color: termColor,
           align: "center",
           valign: "bottom",
           margin: 0,
         });
+        s.addShape("rect", {
+          x: box.x + box.w / 2 - 0.7,
+          y: y + h * 0.62,
+          w: 1.4,
+          h: 0.06,
+          fill: { color: accent },
+        });
         s.addText(block.label, {
           x: box.x,
-          y: y + h * 0.62,
+          y: y + h * 0.68,
           w: box.w,
-          h: h * 0.38,
+          h: h * 0.32,
           fontSize: Math.round(20 * scale),
           fontFace: bodyFont,
           color: muted,
@@ -349,10 +456,16 @@ async function addBlocks(
         break;
       }
       case "image": {
-        // 外部 URL 失敗風險由 linter 警告;此處直接嘗試置入
         const h = Math.min(remaining, 3.5);
         try {
-          s.addImage({ path: block.url, x: box.x, y, w: box.w, h, sizing: { type: "contain", w: box.w, h } });
+          s.addImage({
+            path: block.url,
+            x: box.x,
+            y,
+            w: box.w,
+            h,
+            sizing: { type: "contain", w: box.w, h },
+          });
         } catch {
           s.addText(`[圖片:${block.alt ?? block.url}]`, {
             x: box.x,
@@ -374,7 +487,6 @@ async function addBlocks(
           try {
             const png = await ctx.opts.renderDiagram(block.source);
             if (png) {
-              // 依 SVG bbox 等比縮入安全區
               const ratio = png.width / png.height;
               let w = box.w;
               let hh = w / ratio;
@@ -397,13 +509,14 @@ async function addBlocks(
           }
         }
         if (!placed) {
-          s.addShape("rect", {
+          s.addShape("roundRect", {
             x: box.x,
             y,
             w: box.w,
             h: 1.2,
-            fill: { color: t.colors.muted, transparency: 85 },
-            line: { color: t.colors.muted, width: 1, dashType: "dash" },
+            rectRadius: 0.06,
+            fill: { color: mixHex(bg, fg, 0.06) },
+            line: { color: mixHex(bg, fg, 0.3), width: 1, dashType: "dash" },
           });
           s.addText("[mermaid 圖表:於瀏覽器匯出時嵌入]", {
             x: box.x,
@@ -426,7 +539,13 @@ async function addBlocks(
   }
 }
 
-async function addCardsSlide(s: pptxgen.Slide, slide: Slide, spec: LayoutSpec, ctx: Ctx, scale: number) {
+async function addCardsSlide(
+  s: pptxgen.Slide,
+  slide: Slide,
+  spec: LayoutSpec,
+  ctx: Ctx,
+  scale: number
+) {
   const t = ctx.template;
   addHeading(s, slide, spec, t, scale);
   const list = slide.blocks.find((b) => b.kind === "list" && b.shape === "cards") as
@@ -434,6 +553,8 @@ async function addCardsSlide(s: pptxgen.Slide, slide: Slide, spec: LayoutSpec, c
     | undefined;
   const others = slide.blocks.filter((b) => b.kind !== "heading" && b !== list);
   const box = { ...spec.bodyBox };
+  const bg = colorOf(t, spec.bg);
+  const fg = colorOf(t, spec.fg);
 
   let y = box.y;
   if (others.length) {
@@ -444,9 +565,11 @@ async function addCardsSlide(s: pptxgen.Slide, slide: Slide, spec: LayoutSpec, c
     const n = list.items.length;
     const cols = n <= 3 ? n : Math.ceil(n / 2);
     const rows = Math.ceil(n / cols);
-    const gap = 0.25;
+    const gap = 0.3;
     const cardW = (box.w - gap * (cols - 1)) / cols;
-    const cardH = Math.min(2.2, (box.y + box.h - y - gap * (rows - 1)) / rows);
+    const cardH = Math.min(2.3, (box.y + box.h - y - gap * (rows - 1)) / rows);
+    const cardFill = mixHex(bg, "FFFFFF", 0.55);
+    const cardLine = mixHex(bg, fg, 0.16);
     list.items.forEach((it, i) => {
       const cx = box.x + (i % cols) * (cardW + gap);
       const cy = y + Math.floor(i / cols) * (cardH + gap);
@@ -455,16 +578,31 @@ async function addCardsSlide(s: pptxgen.Slide, slide: Slide, spec: LayoutSpec, c
         y: cy,
         w: cardW,
         h: cardH,
-        rectRadius: 0.08,
-        fill: { color: t.colors.surface },
-        line: { color: t.colors.primary, width: 1 },
-        shadow: { type: "outer", color: t.colors.muted, blur: 6, offset: 2, angle: 90, opacity: 0.25 },
+        rectRadius: 0.07,
+        fill: { color: cardFill },
+        line: { color: cardLine, width: 1 },
+        shadow: {
+          type: "outer",
+          color: mixHex(bg, fg, 0.5),
+          blur: 7,
+          offset: 2,
+          angle: 90,
+          opacity: 0.22,
+        },
+      });
+      // 卡片頂部 accent 條
+      s.addShape("rect", {
+        x: cx + 0.18,
+        y: cy + 0.2,
+        w: 0.5,
+        h: 0.06,
+        fill: { color: t.colors.accent },
       });
       s.addText(it.term ?? plainText(it.text), {
-        x: cx + 0.15,
-        y: cy + 0.12,
-        w: cardW - 0.3,
-        h: 0.45,
+        x: cx + 0.18,
+        y: cy + 0.34,
+        w: cardW - 0.36,
+        h: 0.5,
         fontSize: Math.round(16 * scale),
         fontFace: pptFont(t.fonts.display),
         bold: true,
@@ -474,13 +612,13 @@ async function addCardsSlide(s: pptxgen.Slide, slide: Slide, spec: LayoutSpec, c
       });
       if (it.desc) {
         s.addText(plainText(it.desc), {
-          x: cx + 0.15,
-          y: cy + 0.6,
-          w: cardW - 0.3,
-          h: cardH - 0.75,
+          x: cx + 0.18,
+          y: cy + 0.88,
+          w: cardW - 0.36,
+          h: cardH - 1.04,
           fontSize: Math.round(13 * scale),
           fontFace: pptFont(t.fonts.body),
-          color: t.colors.onSurface,
+          color: fg,
           margin: 0,
           valign: "top",
         });
@@ -489,17 +627,48 @@ async function addCardsSlide(s: pptxgen.Slide, slide: Slide, spec: LayoutSpec, c
   }
 }
 
-async function renderSlide(ctx: Ctx, slide: Slide, pageNo: number, total: number) {
+async function renderSlide(
+  ctx: Ctx,
+  slide: Slide,
+  pageNo: number,
+  total: number,
+  sectionNo: number
+) {
   const { pres, template: t } = ctx;
   const spec = t.layouts[slide.layout];
   const s = pres.addSlide();
-  s.background = { color: colorOf(t, spec.bg) };
+  const bg = colorOf(t, spec.bg);
+  const fg = colorOf(t, spec.fg);
+  s.background = { color: bg };
   const scale = slide.fit ? Math.min(estimateFontScale(slide), 0.85) : estimateFontScale(slide);
 
   switch (slide.layout) {
     case "title": {
+      // 左側 accent 色帶(全高)+ 主色細帶,建立版面錨點
+      s.addShape("rect", { x: 0, y: 0, w: 0.26, h: PAGE_H, fill: { color: t.colors.accent } });
+      s.addShape("rect", {
+        x: 0.26,
+        y: 0,
+        w: 0.07,
+        h: PAGE_H,
+        fill: { color: mixHex(bg, fg, 0.18) },
+      });
       const heading = slide.blocks.find((b) => b.kind === "heading");
       const rest = slide.blocks.filter((b) => b !== heading);
+      // overline 小標
+      s.addText("SNAPDECK", {
+        x: spec.titleBox.x,
+        y: spec.titleBox.y - 0.55,
+        w: 6,
+        h: 0.35,
+        fontSize: 11,
+        fontFace: pptFont(t.fonts.body),
+        color: t.colors.accent,
+        charSpacing: 4,
+        bold: true,
+        margin: 0,
+        valign: "middle",
+      });
       if (heading && heading.kind === "heading") {
         s.addText(inlineToRuns(heading.text, colorOf(t, spec.titleColor)) as never, {
           x: spec.titleBox.x,
@@ -509,30 +678,29 @@ async function renderSlide(ctx: Ctx, slide: Slide, pageNo: number, total: number
           fontSize: spec.titleFontPt,
           fontFace: pptFont(t.fonts.display),
           bold: true,
-          align: spec.align === "center" ? "center" : "left",
+          align: "left",
           valign: "bottom",
           margin: 0,
         });
       }
-      // 主色飾條
       s.addShape("rect", {
-        x: spec.titleBox.x,
-        y: spec.titleBox.y + spec.titleBox.h + 0.15,
-        w: 1.6,
-        h: 0.08,
+        x: spec.titleBox.x + 0.02,
+        y: spec.titleBox.y + spec.titleBox.h + 0.22,
+        w: 1.8,
+        h: 0.07,
         fill: { color: t.colors.accent },
       });
       for (const b of rest) {
         if (b.kind === "para") {
           s.addText(plainText(b.text), {
             x: spec.bodyBox.x,
-            y: spec.bodyBox.y,
+            y: spec.bodyBox.y + 0.15,
             w: spec.bodyBox.w,
             h: spec.bodyBox.h,
             fontSize: spec.bodyFontPt,
             fontFace: pptFont(t.fonts.body),
-            color: t.colors.muted,
-            align: spec.align === "center" ? "center" : "left",
+            color: mixHex(bg, fg, 0.6),
+            align: "left",
             valign: "top",
             margin: 0,
           });
@@ -541,12 +709,53 @@ async function renderSlide(ctx: Ctx, slide: Slide, pageNo: number, total: number
       break;
     }
     case "section": {
-      addHeading(s, slide, spec, t, 1);
+      // 幽靈章節序號(底色與前景的低對比混色,右側超大字)
+      s.addText(String(sectionNo).padStart(2, "0"), {
+        x: PAGE_W - 5.4,
+        y: 1.3,
+        w: 4.7,
+        h: 4.8,
+        fontSize: 220,
+        fontFace: pptFont(t.fonts.display),
+        bold: true,
+        color: mixHex(bg, fg, 0.12),
+        align: "right",
+        valign: "middle",
+        margin: 0,
+      });
+      s.addText(`SECTION ${String(sectionNo).padStart(2, "0")}`, {
+        x: spec.titleBox.x + 0.02,
+        y: spec.titleBox.y - 0.6,
+        w: 5,
+        h: 0.35,
+        fontSize: 12,
+        fontFace: pptFont(t.fonts.body),
+        color: t.colors.accent,
+        charSpacing: 4,
+        bold: true,
+        margin: 0,
+        valign: "middle",
+      });
+      const heading = slide.blocks.find((b) => b.kind === "heading");
+      if (heading && heading.kind === "heading") {
+        s.addText(inlineToRuns(heading.text, colorOf(t, spec.titleColor)) as never, {
+          x: spec.titleBox.x,
+          y: spec.titleBox.y,
+          w: spec.titleBox.w,
+          h: spec.titleBox.h,
+          fontSize: spec.titleFontPt,
+          fontFace: pptFont(t.fonts.display),
+          bold: true,
+          align: "left",
+          valign: "top",
+          margin: 0,
+        });
+      }
       s.addShape("rect", {
-        x: spec.titleBox.x,
-        y: spec.titleBox.y + spec.titleBox.h + 0.1,
-        w: 1.2,
-        h: 0.08,
+        x: spec.titleBox.x + 0.02,
+        y: spec.titleBox.y + spec.titleBox.h + 0.15,
+        w: 1.3,
+        h: 0.07,
         fill: { color: t.colors.accent },
       });
       break;
@@ -554,7 +763,7 @@ async function renderSlide(ctx: Ctx, slide: Slide, pageNo: number, total: number
     case "two-col": {
       addHeading(s, slide, spec, t, scale);
       const box = spec.bodyBox;
-      const colW = (box.w - 0.5) / 2;
+      const colW = (box.w - 0.6) / 2;
       const [left, right] = slide.columns ?? [
         slide.blocks.filter((b) => b.kind !== "heading"),
         [],
@@ -563,26 +772,74 @@ async function renderSlide(ctx: Ctx, slide: Slide, pageNo: number, total: number
       await addBlocks(
         s,
         right,
-        { x: box.x + colW + 0.5, y: box.y, w: colW, h: box.h },
+        { x: box.x + colW + 0.6, y: box.y, w: colW, h: box.h },
         spec,
         ctx,
         scale
       );
-      // 中線
-      s.addShape("line", {
-        x: box.x + colW + 0.25,
+      s.addShape("rect", {
+        x: box.x + colW + 0.28,
         y: box.y + 0.1,
-        w: 0,
-        h: box.h - 0.4,
-        line: { color: t.colors.muted, width: 0.75 },
+        w: 0.014,
+        h: box.h - 0.5,
+        fill: { color: mixHex(bg, fg, 0.2) },
       });
       break;
     }
     case "cards":
       await addCardsSlide(s, slide, spec, ctx, scale);
       break;
+    case "quote": {
+      addHeading(s, slide, spec, t, scale);
+      // 大引號 + 置中引文
+      const q = slide.blocks.find((b) => b.kind === "quote");
+      const box = spec.bodyBox;
+      s.addText("“", {
+        x: box.x,
+        y: box.y - 0.5,
+        w: box.w,
+        h: 1.2,
+        fontSize: 120,
+        fontFace: pptFont(t.fonts.display),
+        bold: true,
+        color: t.colors.accent,
+        align: "center",
+        valign: "top",
+        margin: 0,
+      });
+      if (q && q.kind === "quote") {
+        s.addText(
+          [
+            {
+              text: plainText(q.text),
+              options: { italic: true, color: fg, fontFace: pptFont(t.fonts.display) },
+            },
+            ...(q.cite
+              ? [
+                  {
+                    text: `\n\n— ${q.cite}`,
+                    options: { color: mixHex(bg, fg, 0.6), fontSize: 16, italic: false },
+                  },
+                ]
+              : []),
+          ] as never,
+          {
+            x: box.x,
+            y: box.y + 0.7,
+            w: box.w,
+            h: box.h - 0.7,
+            fontSize: Math.round(spec.bodyFontPt * 1.05),
+            fontFace: pptFont(t.fonts.display),
+            align: "center",
+            valign: "top",
+            margin: 0,
+          }
+        );
+      }
+      break;
+    }
     default: {
-      // content / big-stat / quote / diagram 共用縱向排版
+      // content / big-stat / diagram 共用縱向排版
       addHeading(s, slide, spec, t, scale);
       await addBlocks(s, slide.blocks, spec.bodyBox, spec, ctx, scale);
       break;
@@ -592,17 +849,7 @@ async function renderSlide(ctx: Ctx, slide: Slide, pageNo: number, total: number
   if (slide.notes) s.addNotes(slide.notes);
 
   if (slide.layout !== "title" && slide.layout !== "section") {
-    s.addText(`${pageNo} / ${total}`, {
-      x: t.page.widthIn - 1.3,
-      y: t.page.heightIn - 0.45,
-      w: 1.0,
-      h: 0.3,
-      fontSize: 10,
-      fontFace: pptFont(t.fonts.body),
-      color: t.colors.muted,
-      align: "right",
-      margin: 0,
-    });
+    addFooter(s, ctx, spec, pageNo, total);
   }
 }
 
@@ -618,11 +865,13 @@ export async function renderPptx(
   if (doc.meta.author) pres.author = doc.meta.author;
 
   const slides = doc.slides.filter((s) => !s.skip);
-  const ctx: Ctx = { pres, template, opts };
+  const ctx: Ctx = { pres, template, opts, docTitle: doc.meta.title ?? "" };
   let n = 0;
+  let sectionNo = 0;
   for (const slide of slides) {
     n += 1;
-    await renderSlide(ctx, slide, n, slides.length);
+    if (slide.layout === "section") sectionNo += 1;
+    await renderSlide(ctx, slide, n, slides.length, sectionNo);
   }
   return pres;
 }

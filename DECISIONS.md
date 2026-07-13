@@ -45,11 +45,27 @@ HANDOFF M3 建議 `soffice --headless --convert-to pdf` 做 CI 冒煙測試。
 well-formed(手動驗證過瀏覽器實際匯出檔,44 parts 全過)。soffice 冒煙
 測試留給有健康 LibreOffice 的 CI 環境。
 
-## D7:v1 先內建 2 套 template(規格允許 2–3)
+## D7:內建 template 擴充為 5 套(v0.2)
 
-`clean-light` 與 `midnight`(title/section 深、content 淺的三明治結構),
-足以展示「同一份 MD 換 template」;第三套等 Phase 2 template config
-schema 穩定後再加。
+v0.1 依 HANDOFF 出 2 套;使用者回饋要求「至少五種可直接選」,擴充為
+`clean-light`、`midnight`、`craft`(暖紙 serif)、`forest`(松綠蜜金)、
+`boardroom`(藏青金 serif)。共用 layout 幾何抽到 `templates/base.ts`
+(standardLayouts),template 之間只分歧在色票、字型與深淺色頁的分佈,
+維持「所有顏色集中在 config」的原則。
+
+## D9:使用者內容持久化到 localStorage(v0.2)
+
+v0.1 的簡報模式用 early-return 卸載整棵編輯器,退出後 CodeMirror 以預設
+範例重建,使用者貼上的內容遺失(實測重現)。修法:(a) 簡報模式改為
+overlay,editor 常駐不卸載;(b) 內容與 template 選擇 debounce 寫入
+localStorage,重新整理後還原。localStorage 僅存於本機瀏覽器,不違反
+「文件內容不得離開瀏覽器」原則。
+
+## D10:pptx 裝飾以混色取代透明度
+
+裝飾層(幽靈章節序號、emphasis 面板、表格斑馬紋、hairline)需要低對比
+色。pptxgenjs 的 fill transparency 在部分渲染器上表現不一,改用確定性
+的兩色線性混合(mixHex),輸出檔案內全部是實色 6 碼 hex,規避相容性風險。
 
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
