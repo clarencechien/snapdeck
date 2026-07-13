@@ -6,7 +6,7 @@
   "name": "snapdeck",
   "compatibility_date": "2026-07-13",
   "main": "worker/index.js",
-  "assets": {
+  "assets": {https://github.com/clarencechien/snapdeck/pull/14/conflicts
     "directory": "./dist",
     "not_found_handling": "single-page-application",
     "binding": "ASSETS"
@@ -19,4 +19,8 @@
   // ,"kv_namespaces": [
   //   { "binding": "LINKS", "id": "0123456789abcdef0123456789abcdef" }
   // ]
+  //啟用短連結時取消註解:
+  ,"kv_namespaces": [
+     { "binding": "LINKS", "id": "1dd64f786c2547beb2971a5600c64b90" }
+   ]
 }
