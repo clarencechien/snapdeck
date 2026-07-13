@@ -1,6 +1,6 @@
 # SnapDeck
 
-**寫作即排版,貼上即上台。**
+**寫作即排版,貼上即上台。** — 線上版:https://snapdeck.ai-apps.work(Phase 1 已結案,狀態見 [`docs/STATUS.md`](docs/STATUS.md))
 
 SnapDeck 是 Markdown 的「分享與簡報層」,不是編輯器。貼上一份「類通用 Markdown」,十秒內得到:
 
