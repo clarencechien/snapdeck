@@ -14,6 +14,6 @@
   }
   //啟用短連結時取消註解:
   ,"kv_namespaces": [
-     { "binding": "LINKS", "id": "snapdeck.kv" }
+     { "binding": "LINKS", "id": "1dd64f786c2547beb2971a5600c64b90" }
    ]
 }
