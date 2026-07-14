@@ -193,6 +193,22 @@ emphasis 整份 1–2 處;fit 只給拆不開的密集表格。修正後 Gemini 
 10042,config 與文件已加防呆)。壓縮天花板說明一併記錄:deflate-raw
 已是瀏覽器原生最緊,base64 33% 膨脹是 URL 字元集固定成本。
 
+## D22:Drop mode — 雙模式簡報 zip + 半自動上 Cloudflare Drop(v0.6)
+
+Cloudflare Drop(2026-07-08 上線)無公開 API,採 DROP-MODE.md 方案 A:
+- HTML 按鈕旁「Drop」勾選:未勾 = 原本閱讀版單檔;勾選 = 雙模式 deck
+  (預設簡報播放、header bar 切閱讀)打包成含 index.html 的 zip
+  (Drop 要求根目錄有 index.html;限制 60 分鐘/25MB/100MB/2000 檔,
+  我們單檔 30–300KB 遠低於),並同步開啟 cloudflare.com/drop 分頁。
+- Drop 分頁必須在使用者手勢內「同步」window.open,否則 popup blocker
+  會擋——先開分頁再做非同步產檔。
+- 播放 runtime 為 ~3KB vanilla JS(不帶 React):翻頁/點擊/transform
+  縮放/?p=N/s 鍵 notes/全螢幕;slides 於匯出時離螢幕預渲染,等字級
+  縮放收斂後序列化,兩端(站內/匯出檔)版面一致。
+- 隱私:Drop 是三通道中唯一「內容明文存於第三方」者,tooltip 明示並
+  導引敏感內容用零知識短連結。
+- jszip 由 devDependencies 移入 dependencies(lazy import,不進首包)。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值

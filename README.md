@@ -29,6 +29,13 @@ KV 時自動退回長連結;啟用兩分鐘搞定,見 [`docs/SHORTLINK.md`](docs
 「↓ HTML」把閱讀頁匯出成單一自含 HTML 檔(CSS 與 mermaid SVG 全內嵌,
 零外部依賴),可寄信、可丟任何靜態空間。
 
+**Drop mode(勾選 HTML 旁的「Drop」)**:HTML 匯出升級為**雙模式簡報
+zip**——內含 index.html,開啟預設是全螢幕簡報播放(vanilla runtime:
+鍵盤/點擊翻頁、`?p=N`、`s` 備註),header bar 可切 blog 閱讀模式;
+並自動開啟 [cloudflare.com/drop](https://cloudflare.com/drop) 分頁,
+把 zip 拖進去**秒得 60 分鐘匿名臨時網址**(按 Claim 可永久保留)。
+計劃與取捨見 [`docs/DROP-MODE.md`](docs/DROP-MODE.md)。
+
 全程純前端:解析、渲染、pptx 產出都在瀏覽器完成,**文件內容不離開瀏覽器**、零網路呼叫(mermaid 等函式庫打包進 bundle)。
 
 ## 快速開始

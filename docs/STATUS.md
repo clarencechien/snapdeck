@@ -26,6 +26,7 @@
 - **LLM 產出鏈強化**:few-shot prompt、fence 包裹 + 貼上自動剝殼、directive 使用門檻(D17/D18/D20);Gemini 非 thinking 模型實測可一次產出合規文件
 - **localStorage 持久化**(D9)
 - **零知識短連結**(選配,D21):AES-GCM 客戶端加密 + KV 存密文,金鑰只在 fragment;~60 字元;未啟用自動退回長連結
+- **Drop mode**(D22):雙模式簡報 zip(預設播放、可切閱讀,~3KB vanilla runtime)+ 半自動上 Cloudflare Drop(60 分鐘匿名臨時站)
 
 ## 已知限制(留待後續 phase)
 

@@ -20,7 +20,8 @@ import {
 } from "./share";
 import type { SharePayload, ShareView } from "./share";
 import { sealPayload, uploadSealed, resolveShortLink } from "./shortlink";
-import { exportHtml, downloadHtml } from "./exportHtml";
+import { exportHtml, downloadHtml, downloadBlob } from "./exportHtml";
+import { exportDeck, deckToZip } from "../render-html/exportDeck";
 import promptText from "../../prompt.md?raw";
 
 const exampleModules = import.meta.glob("../../examples/*.md", {
@@ -95,6 +96,21 @@ export default function App() {
       /* ignore */
     }
   }, [shortLinks]);
+  // Drop mode:HTML 匯出改為「雙模式 deck + zip + 開啟 Cloudflare Drop」
+  const [dropMode, setDropMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("snapdeck:dropmode") === "1";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("snapdeck:dropmode", dropMode ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+  }, [dropMode]);
 
   const debouncedMd = useDebounced(md, 200);
 
@@ -263,16 +279,28 @@ export default function App() {
 
   const exportHtmlFile = useCallback(async () => {
     setExporting(true);
+    // Drop 分頁必須在使用者手勢內同步開啟,否則會被 popup blocker 擋
+    const dropTab = dropMode ? window.open("https://cloudflare.com/drop", "_blank") : null;
     try {
-      const html = await exportHtml(doc, template);
-      downloadHtml(html, safeFilename(doc.meta.title, "html"));
-      showToast("HTML 已下載(單一檔案,可直接寄出或放任何靜態空間)");
+      if (dropMode) {
+        const html = await exportDeck(doc, template);
+        const zip = await deckToZip(html);
+        downloadBlob(zip, safeFilename(doc.meta.title, "zip"));
+        showToast(
+          "zip 已下載——把它拖進剛開啟的 Cloudflare Drop 頁面,秒得 60 分鐘臨時網址(按 Claim 可永久保留)"
+        );
+      } else {
+        const html = await exportHtml(doc, template);
+        downloadHtml(html, safeFilename(doc.meta.title, "html"));
+        showToast("HTML 已下載(單一檔案,可直接寄出或放任何靜態空間)");
+      }
     } catch (e) {
+      dropTab?.close();
       showToast(`匯出失敗:${(e as Error).message}`);
     } finally {
       setExporting(false);
     }
-  }, [doc, template, showToast]);
+  }, [doc, template, dropMode, showToast]);
 
   const copyPrompt = useCallback(async () => {
     // 只複製 prompt 本體(PROMPT-START 之後),檔頭使用說明不進剪貼簿
@@ -377,9 +405,29 @@ export default function App() {
           <button className="ctrl primary outline" onClick={exportPptx} disabled={exporting}>
             {exporting ? "匯出中…" : "↓ pptx"}
           </button>
-          <button className="ctrl primary outline" onClick={exportHtmlFile} disabled={exporting}>
-            ↓ HTML
+          <button
+            className="ctrl primary outline"
+            onClick={exportHtmlFile}
+            disabled={exporting}
+            title={
+              dropMode
+                ? "匯出雙模式簡報 zip(預設簡報播放、可切閱讀),並開啟 Cloudflare Drop 供拖放上線"
+                : "匯出單檔閱讀版 HTML"
+            }
+          >
+            {dropMode ? "↓ HTML(Drop)" : "↓ HTML"}
           </button>
+          <label
+            className="drop-check"
+            title="勾選後:HTML 匯出變成「簡報 + 閱讀」雙模式的 zip(內含 index.html),並自動開啟 cloudflare.com/drop——拖進去秒得 60 分鐘匿名臨時網址,按 Claim 可永久保留。內容會以明文放上臨時網站,敏感內容請改用分享選單的零知識短連結"
+          >
+            <input
+              type="checkbox"
+              checked={dropMode}
+              onChange={(e) => setDropMode(e.target.checked)}
+            />
+            Drop
+          </label>
         </div>
       </header>
 
