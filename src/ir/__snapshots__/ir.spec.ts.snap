@@ -1485,10 +1485,9 @@ exports[`buildIR — golden samples > IR snapshot: 02-production-monthly.md 1`] 
           ],
         },
         {
-          "caption": "創產線改線以來新高",
           "kind": "stat",
-          "label": "直通率",
-          "value": "94.1%",
+          "label": "創產線改線以來新高",
+          "value": "94.1% 直通率",
         },
       ],
       "headingPath": [
@@ -2035,10 +2034,9 @@ exports[`buildIR — golden samples > IR snapshot: 03-sales-quarterly.md 1`] = `
           ],
         },
         {
-          "caption": "首次過半後持續攀升",
           "kind": "stat",
-          "label": "營收來自 App 會員",
-          "value": "61%",
+          "label": "首次過半後持續攀升",
+          "value": "61% 營收來自 App 會員",
         },
       ],
       "headingPath": [
@@ -3765,10 +3763,9 @@ exports[`buildIR — golden samples > IR snapshot: 06-finance-annual.md 1`] = `
           ],
         },
         {
-          "caption": "原物料上漲吃掉的毛利",
           "kind": "stat",
-          "label": "個百分點",
-          "value": "1.8",
+          "label": "原物料上漲吃掉的毛利",
+          "value": "1.8 個百分點",
         },
       ],
       "headingPath": [

@@ -65,21 +65,44 @@ describe("design rules", () => {
     expect(list && list.kind === "list" && list.shape).toBe("steps");
   });
 
-  it("rule 5:數字開頭短段落 → stat / big-stat", () => {
+  it("rule 5:數字開頭短段落(無逗號)→ 整段即大字", () => {
     const doc = ir("## 頁\n\n96% 試產良率");
     const slide = doc.slides[0];
     expect(slide.layout).toBe("big-stat");
     const stat = slide.blocks.find((b) => b.kind === "stat");
-    expect(stat && stat.kind === "stat" && stat.value).toBe("96%");
+    expect(stat && stat.kind === "stat" && stat.value).toBe("96% 試產良率");
   });
 
-  it("rule 5(v2):≤40 字含逗號 → 標籤 + 補充說明", () => {
+  it("rule 5(v4):第一個逗號前的全部 = 大字", () => {
     const doc = ir("## 頁\n\n61% 營收來自 App 會員,首次過半後持續攀升");
     const stat = doc.slides[0].blocks.find((b) => b.kind === "stat");
-    expect(stat && stat.kind === "stat" && stat.value).toBe("61%");
-    expect(stat && stat.kind === "stat" && stat.label).toBe("營收來自 App 會員");
-    expect(stat && stat.kind === "stat" && stat.caption).toBe("首次過半後持續攀升");
+    expect(stat && stat.kind === "stat" && stat.value).toBe("61% 營收來自 App 會員");
+    expect(stat && stat.kind === "stat" && stat.label).toBe("首次過半後持續攀升");
     expect(doc.slides[0].layout).toBe("big-stat");
+  });
+
+  it("rule 5(v4):比較符號/範圍/任意單位全進大字(使用者案例)", () => {
+    const cases: Array<[string, string, string]> = [
+      ["99.89%,體積縮減率,透過 esbuild 達成優化", "99.89%", "體積縮減率"],
+      ["129 KB,Node.js 腳本,最輕量的執行方案", "129 KB", "Node.js 腳本"],
+      ["0 MB,安裝空間,直接透過 NPX 執行即可", "0 MB", "安裝空間"],
+      ["< 500ms,簡單查詢響應,極速回傳資料", "< 500ms", "簡單查詢響應"],
+      ["< 10s,萬筆資料匯出,維持低記憶體佔用", "< 10s", "萬筆資料匯出"],
+      ["20-30%,效能提升幅度,導入資料庫連線池技術", "20-30%", "效能提升幅度"],
+    ];
+    for (const [line, value, label] of cases) {
+      const doc = ir(`## 頁\n\n${line}`);
+      const stat = doc.slides[0].blocks.find((b) => b.kind === "stat");
+      expect(stat && stat.kind === "stat" && stat.value, line).toBe(value);
+      expect(stat && stat.kind === "stat" && stat.label, line).toBe(label);
+    }
+  });
+
+  it("rule 5(v4):千分位逗號不是欄位分隔", () => {
+    const doc = ir("## 頁\n\n10,000+ 小時,喜劇內容總製作量");
+    const stat = doc.slides[0].blocks.find((b) => b.kind === "stat");
+    expect(stat && stat.kind === "stat" && stat.value).toBe("10,000+ 小時");
+    expect(stat && stat.kind === "stat" && stat.label).toBe("喜劇內容總製作量");
   });
 
   it("rule 5:超過 40 字不升格 stat(graceful degradation)", () => {

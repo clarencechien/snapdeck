@@ -51,7 +51,10 @@ function inlineToRuns(text: InlineText, baseColor: string): TextRun[] {
 }
 
 export { estimateFontScale } from "../ir/weight";
-import { estimateFontScale, isSparse } from "../ir/weight";
+import { estimateFontScale, isSparse, statSizeTier } from "../ir/weight";
+
+const STAT_PT = [72, 54, 40] as const;
+const STAT_TILE_PT = [38, 30, 23] as const;
 
 /** 與 addBlocks 的實際排版常數一致的高度估算(供稀疏頁垂直置中用) */
 function estimateBlockHeight(block: Block, scale: number): number {
@@ -275,7 +278,7 @@ function addStatGrid(
       y: cy + 0.3,
       w: tileW - 0.4,
       h: tileH * 0.52,
-      fontSize: Math.round(38 * scale),
+      fontSize: Math.round(STAT_TILE_PT[statSizeTier(st.value)] * scale),
       fontFace: pptFont(t.fonts.display),
       bold: true,
       color: t.colors.primary,
@@ -513,7 +516,7 @@ async function addBlocks(
           y,
           w: box.w,
           h: h * 0.55,
-          fontSize: Math.round(72 * scale),
+          fontSize: Math.round(STAT_PT[statSizeTier(block.value)] * scale),
           fontFace: pptFont(t.fonts.display),
           bold: true,
           color: termColor,

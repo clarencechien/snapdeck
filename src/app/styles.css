@@ -318,6 +318,8 @@ code { font-family: var(--sd-font-mono); font-size: 0.92em; background: rgba(127
   font-size: 3.6em; line-height: 1.1; color: var(--sd-primary);
   font-variant-numeric: tabular-nums;
 }
+.sd-stat-value.sd-stat-t1 { font-size: 2.8em; }
+.sd-stat-value.sd-stat-t2 { font-size: 2.1em; }
 .sd-layout-big-stat .sd-stat-value::after {
   content: ""; display: block; width: 130px; height: 6px; margin: 0.18em auto 0;
   background: var(--sd-accent); border-radius: 3px;
@@ -353,6 +355,8 @@ code { font-family: var(--sd-font-mono); font-size: 0.92em; background: rgba(127
   font-size: 1.7em; line-height: 1.1; color: var(--sd-primary);
   font-variant-numeric: tabular-nums;
 }
+.sd-stat-tile-value.sd-stat-t1 { font-size: 1.35em; }
+.sd-stat-tile-value.sd-stat-t2 { font-size: 1.05em; }
 .sd-stat-tile-label {
   font-size: 0.66em; margin-top: 0.4em; font-weight: 600;
   color: color-mix(in srgb, var(--sd-slide-fg) 82%, transparent);
