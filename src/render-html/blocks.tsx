@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Block, InlineText, ListItem } from "../ir/types";
 import type { TemplateConfig } from "../templates";
 import { renderMermaid } from "./mermaid";
+import { statSizeTier } from "../ir/weight";
 
 export function Inline({ text }: { text: InlineText }) {
   return (
@@ -190,8 +191,10 @@ export function BlockView({
     case "stat":
       return (
         <div className={`sd-stat${emphasisCls}`}>
-          <div className="sd-stat-value">{block.value}</div>
-          <div className="sd-stat-label">{block.label}</div>
+          <div className={`sd-stat-value sd-stat-t${statSizeTier(block.value)}`}>
+            {block.value}
+          </div>
+          {block.label ? <div className="sd-stat-label">{block.label}</div> : null}
           {block.caption ? <div className="sd-stat-caption">{block.caption}</div> : null}
         </div>
       );

@@ -6,7 +6,7 @@ import type { Block, Slide } from "../ir/types";
 import type { TemplateConfig } from "../templates";
 import { BlockView } from "./blocks";
 import { groupStatRuns } from "../ir/group";
-import { isSparse } from "../ir/weight";
+import { isSparse, statSizeTier } from "../ir/weight";
 
 /** stat 連段 → KPI 看板;其餘逐塊渲染。頁面 view 與 slide 共用。 */
 export function BodyBlocks({
@@ -25,8 +25,10 @@ export function BodyBlocks({
           <div className="sd-stats-grid" data-count={item.stats.length} key={i}>
             {item.stats.map((st, j) => (
               <div className="sd-stat-tile" key={j}>
-                <div className="sd-stat-tile-value">{st.value}</div>
-                <div className="sd-stat-tile-label">{st.label}</div>
+                <div className={`sd-stat-tile-value sd-stat-t${statSizeTier(st.value)}`}>
+                  {st.value}
+                </div>
+                {st.label ? <div className="sd-stat-tile-label">{st.label}</div> : null}
                 {st.caption ? <div className="sd-stat-tile-caption">{st.caption}</div> : null}
               </div>
             ))}

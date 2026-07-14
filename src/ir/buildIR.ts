@@ -91,27 +91,34 @@ export function toInline(nodes: PhrasingContent[]): InlineText {
 
 // ---------- blocks ----------
 
-const STAT_START_RE = /^(?:約|近|逾|超過)?\s*(?:NT\$|US\$|[$€£¥])?\d/;
-const STAT_VALUE_RE =
-  /^((?:約|近|逾|超過)?\s*(?:NT\$|US\$|[$€£¥])?\d[\d,.]*\s*[+＋]?(?:\s*(?:%|萬|億|兆|k|K|M|B|倍|x|X|ms|s|hr|小時|天|週|個月|月|年|台|人|件|次|元|千元|萬元|分鐘|分|秒|家|店|間|支|筆|名|位|場|座|款)(?:以?[內上下])?)?\s*[+＋]?)\s*[,,::]?\s*([\s\S]*)$/;
+/** 數值欄位的合法開頭:選配比較/範圍符號與約量詞,接著必須出現數字 */
+const STAT_START_RE = /^[<>≤≥≈~±]?\s*(?:約|近|逾|超過)?\s*(?:NT\$|US\$|[$€£¥])?\d/;
+/** 欄位分隔:全形逗號(，)/全形分號(；)/半形分號一律是;
+    半形逗號後面接數字時視為千分位(10,000),不是分隔 */
+const FIELD_SEP_RE = /，|；|;|,(?![0-9])/;
 
-/** design rule 5(v3):數字開頭段落 → stat(value + label + 選配 caption)。
-    value = 數字 + 選配的 +/單位(「10,000+ 小時」整組進大字);
-    第一個逗號前為標籤(≤16 字)、之後為小字補充;全段 ≤ 40 字。
-    超出上限 → 維持一般段落(graceful degradation)。 */
+/** design rule 5(v4,使用者定案):**第一個逗號前的全部就是大字**。
+    數值可含比較符號(< 500ms)、範圍(20-30%)、任意單位(129 KB)、
+    +(10,000+ 小時)——不再用單位白名單去猜。
+    格式:`數值,標籤,補充`;數值 ≤14 字、標籤 ≤16 字、全段 ≤40 字;
+    千分位逗號(數字間的半形逗號)不視為欄位分隔。
+    無逗號:整段即數值。超出上限 → 維持一般段落(graceful degradation)。 */
 function detectStat(text: InlineText): { value: string; label: string; caption?: string } | null {
   const plain = plainText(text).trim();
-  if (!STAT_START_RE.test(plain)) return null;
   const len = (s: string) => [...s.replace(/\s/g, "")].length;
   if (len(plain) > 40) return null;
-  const m = STAT_VALUE_RE.exec(plain);
-  if (!m) return null;
-  const value = m[1].trim();
-  const rest = m[2].trim();
-  const commaIdx = rest.search(/[,,;;]/);
-  const label = (commaIdx === -1 ? rest : rest.slice(0, commaIdx)).trim();
-  const caption = commaIdx === -1 ? "" : rest.slice(commaIdx + 1).trim();
-  if (len(value) > 14 || len(label) > 16) return null;
+
+  const sep1 = plain.search(FIELD_SEP_RE);
+  const value = (sep1 === -1 ? plain : plain.slice(0, sep1)).trim();
+  if (!STAT_START_RE.test(value)) return null;
+  if (len(value) > 14) return null;
+  if (sep1 === -1) return { value, label: "" };
+
+  const rest = plain.slice(sep1 + 1).trim();
+  const sep2 = rest.search(FIELD_SEP_RE);
+  const label = (sep2 === -1 ? rest : rest.slice(0, sep2)).trim();
+  const caption = sep2 === -1 ? "" : rest.slice(sep2 + 1).trim();
+  if (len(label) > 16) return null;
   return { value, label, ...(caption ? { caption } : {}) };
 }
 
