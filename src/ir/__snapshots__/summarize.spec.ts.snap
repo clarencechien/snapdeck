@@ -1,0 +1,725 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 01-mdshare-product.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:MD Share & Present 產品規劃",
+      "para:2026-07-13",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:定位與問題",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:產品定位",
+      "para:Markdown 的「分享與簡報層」,不是編輯器。",
+      "para:貼上一份類通用 Markdown,十秒內得到三種產出:",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:市場缺口",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:企業三大硬需求",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:目標用戶",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:核心設計",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:設計原則",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:系統架構",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:三大資料結構",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:分階段交付",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:五個階段",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:Phase 0 規格先行",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:Phase 1 前端 MVP",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:Phase 2 企業萃取",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:Phase 3 與 4",
+      "para:Phase 3 AI 藝術指導",
+      "list",
+      "para:Phase 4 Server Tier",
+      "list",
+    ],
+    "layout": "two-col",
+  },
+  {
+    "blocks": [
+      "heading:指標與風險",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:核心體驗指標",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:成功指標",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:主要風險",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:開放問題",
+      "list",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 02-production-monthly.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:保溫瓶產線 6 月月報",
+      "para:製造部 · 2026-07-13",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:本月摘要",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:關鍵數字",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:不良柏拉圖",
+      "table",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:產線自動化改造時程",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:下月行動",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:附錄:各週產量明細",
+      "table",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 03-sales-quarterly.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:手搖飲連鎖 Q2 銷售回顧",
+      "para:營運企劃 · 2026-07-13",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:整體表現",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:季度總覽",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:一眼看板",
+      "stat",
+      "stat",
+      "stat",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:最亮眼的數字",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:品類結構",
+      "table",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:通路與客群",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:通路表現",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:Q3 三個行動",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:給區域主管的一句話",
+      "quote:尖峰十五分鐘的等待,就是下一家店開在你隔壁的理由。",
+    ],
+    "layout": "quote",
+  },
+  {
+    "blocks": [
+      "heading:附錄:區域明細",
+      "table",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 04-hr-halfyear.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:人才招募與留任半年報",
+      "para:人資處 · 2026-07-13",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:上半年人力全貌",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:最需要正視的數字",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:招募漏斗",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:離職原因分析",
+      "table",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:下半年三項方案",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:附錄:各部門離職率",
+      "table",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 05-rnd-architecture.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:訂餐平台通知系統重構提案",
+      "para:研發架構組 · 2026-07-13",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:現況",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:為什麼要重構",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:現行架構",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:提案",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:目標架構",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:通知決策流程",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:方案比較",
+      "para:自建通知中樞",
+      "list",
+      "para:採購 SaaS 方案",
+      "list",
+    ],
+    "layout": "two-col",
+  },
+  {
+    "blocks": [
+      "heading:預期效益",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:導入步驟",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:附錄:容量估算",
+      "table",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 06-finance-annual.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:連鎖餐飲年度財務健診",
+      "para:財務部 · 2026-07-13",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:損益結構",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:年度損益速覽",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:最關鍵的數字",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:成本結構變化",
+      "table",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:費用分佈",
+      "diagram",
+    ],
+    "layout": "diagram",
+  },
+  {
+    "blocks": [
+      "heading:資金與行動",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:現金水位",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:明年三項財務行動",
+      "list",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:給經營團隊的提醒",
+      "quote:成長掩蓋的問題,會在成長放緩的那一季全部到期。",
+    ],
+    "layout": "quote",
+  },
+  {
+    "blocks": [
+      "heading:附錄:季度毛利率走勢",
+      "table",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 07-blog-knowledge.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:寫好錯誤訊息的三個原則",
+      "para:平台體驗組 · 2026-07-17",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:為什麼錯誤訊息值得認真寫",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:錯誤訊息是最常被讀的文案",
+      "para:錯誤訊息是使用者最專心閱讀的一段文字。",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:三個原則",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:原則一:說人話,說發生了什麼",
+      "para:第一句永遠描述使用者眼中的事實,而不是系統眼中的異常。",
+      "para:寫法上有一個簡單的檢驗:把訊息唸給一個沒用過這個產品的人聽,他能複述「發生了什麼事」就及格。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:原則二:給出下一步,而且只給一步",
+      "para:脫困指引要具體到「動詞 + 對象」。",
+      "para:指引 = 動詞 + 對象,一次只給一步",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:原則三:留下可追查的線索",
+      "para:好的錯誤訊息對使用者說人話,同時對工程師留暗號。",
+      "para:代碼要短、可唸、可搜尋。",
+      "stat",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:落地",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:從盤點開始的三步",
+      "list",
+      "para:寫錯誤訊息不需要新框架,只需要把它當成正式文案對待。",
+    ],
+    "layout": "content",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 08-blog-story.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:我們下線了自己最得意的功能",
+      "para:產品復盤 · 2026-07-17",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:起點",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:一個所有人都喜歡的功能",
+      "para:智慧排程是我們做過最漂亮的功能。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:數字說了不一樣的故事",
+      "para:上線三個月後,儀表板上的留存曲線和我們的自信完全對不上。",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:追查",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:訪談推翻了我們的假設",
+      "para:我們約了十一位放棄使用的使用者做訪談。",
+      "quote:你們的功能很聰明,但排會議需要的不是聰明,是分寸。",
+      "para:排程的本質是政治與體貼,不是最佳化問題。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:修補的三個月教會我們停損",
+      "para:之後的一季我們嘗試了各種修補:加權重、加偏好設定、加「避開午餐」的開關。",
+      "para:修補一個方向錯誤的功能,每一分努力都在增加沉沒成本。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:結尾",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:下線那天發生的事",
+      "para:我們給功能設了九十天的日落期:先對新用戶隱藏,再通知既有使用者,最後在一個安靜的週二早晨關掉開關。",
+      "para:下線釋出的維護人力,兩個月後做出了行事曆的批次改期工具。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:這次復盤留下的原則",
+      "list",
+    ],
+    "layout": "cards",
+  },
+]
+`;
+
+exports[`summarizeDoc — 既有黃金樣本不退化 > 投影 snapshot: 09-blog-persuasion.md 1`] = `
+[
+  {
+    "blocks": [
+      "heading:停開每日站會的提案",
+      "para:工程效率組 · 2026-07-17",
+    ],
+    "layout": "title",
+  },
+  {
+    "blocks": [
+      "heading:問題",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:站會已經變成一種儀式",
+      "para:每天早上十點,十四個人放下手上的事,輪流唸出昨天做了什麼。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:儀式的真實成本",
+      "para:站會的帳面成本是每人每天十五分鐘,真實成本遠大於此。",
+      "stat",
+    ],
+    "layout": "big-stat",
+  },
+  {
+    "blocks": [
+      "heading:提案",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:改為書面非同步同步",
+      "para:提案很簡單:站會取消,改為每天上班後在頻道發一則三行的書面更新——昨天完成、今天要做、哪裡卡住。",
+      "para:書面化還帶來兩個免費的副產品。",
+    ],
+    "layout": "content",
+  },
+  {
+    "blocks": [
+      "heading:大家擔心的三件事",
+      "list",
+    ],
+    "layout": "cards",
+  },
+  {
+    "blocks": [
+      "heading:請求",
+    ],
+    "layout": "section",
+  },
+  {
+    "blocks": [
+      "heading:用六週實驗代替永久決定",
+      "para:我們不要求永久取消,只要求一個可回退的實驗:六週,兩個自願的小隊,期末用資料說話。",
+      "para:這不是取消同步,是把同步從「每天固定打斷十四個人」換成「需要時立刻發生」。",
+      "list",
+    ],
+    "layout": "content",
+  },
+]
+`;

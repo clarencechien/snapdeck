@@ -7,6 +7,7 @@ import { join } from "node:path";
 import JSZip from "jszip";
 import { parseMarkdown } from "../parser/parse";
 import { buildIR } from "../ir/buildIR";
+import { summarizeDoc } from "../ir/summarize";
 import { getTemplate } from "../templates";
 import { renderPptx } from "./renderPptx";
 
@@ -14,7 +15,8 @@ const dir = join(__dirname, "../../examples");
 const files = readdirSync(dir).filter((f) => f.endsWith(".md")).sort();
 
 async function buildZip(md: string) {
-  const doc = buildIR(parseMarkdown(md));
+  // v2:pptx 一律吃摘要投影後的 SlideIR(與 app 行為對齊)
+  const doc = summarizeDoc(buildIR(parseMarkdown(md)));
   const pres = await renderPptx(doc, getTemplate(doc.meta.template));
   const buf = (await pres.write({ outputType: "nodebuffer" })) as Buffer;
   return { doc, zip: await JSZip.loadAsync(buf) };

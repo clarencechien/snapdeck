@@ -220,6 +220,36 @@ v3 用單位白名單猜數值邊界,實測連環失敗:`129 KB` 被切成 129 K
 避免長數值溢版。教訓:全形/半形逗號在字元類中肉眼難辨,分隔符 regex
 一律用明確字面(，；;)不用混排字元類。
 
+---
+
+# v2(ADR-001 / HANDOFF-snapdeck-v2)
+
+## D24:v2 M1–M4 落地對應(2026-07-17)
+
+依 HANDOFF v2 接手,與交接文件的用語對應與裁決:
+- **DocIR/SlideIR 對應**:repo 既有 `SlideDoc`(保留全量 blocks 的分頁
+  結構)即 DocIR;`summarizeDoc()`(ir/summarize.ts)輸出同型別的
+  SlideIR。不另立平行型別——分頁錨點兩態共用,型別分裂只會製造同步債。
+- **summarizer 規則 v1 細化**:段落取第一句(全形。!?直斷;半形 .!?
+  僅後接空白/行尾,防切壞 3.5 與縮寫);第一句 >60 字截 48 字+…;
+  **連續 ≥3 段**才收斂為清單(HANDOFF 寫「連續多段」,門檻取 3 以保護
+  v1 樣本的 1–2 段頁不退化),≤5 條、超出丟棄;emphasis 段與帶
+  slide: hint 的段不參與收斂;形狀 block 原樣;投影後重推 layout
+  (directive 指定與 title 頁除外——title 是 frontmatter 特建,
+  inferLayout 推不回來,初版曾因此把 title 頁降成 content,已修)。
+- **slide: directive**:掛在下一個 block(同 emphasis 模式);無值
+  視為 keep;值去除前後引號。摘要投影的 custom 文字丟棄行內格式
+  (粗體等),v2 接受此損失。
+- **消費側**:站內簡報縮圖/簡報模式/pptx/Drop deck 一律吃
+  summarizeDoc 輸出;文件態(preview「文件」、HTML 匯出、Drop 檔的
+  閱讀模式)吃完整 DocIR。preview 預設落在文件態。
+- **不退化驗證**:9 份樣本投影後 68 頁 layout 與原 IR 完全一致;
+  投影 digest 進 snapshot(summarize.spec)防迭代退化。
+- **AI 產生**改為選單:「引導我寫 blog(v2)」複製
+  prompts/blog-intent.md 本體;原簡報改寫 prompt 保留為第二項。
+- 新增 3 份 blog 密度樣本(知識整理/故事復盤/說服),皆示範
+  slide: skip/keep/custom 與「每段第一句 = 要點」的寫法。
+
 ## D8:表格 pptx 高度交給 addTable 自動配置
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值

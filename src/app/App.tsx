@@ -5,6 +5,7 @@ import { markdown } from "@codemirror/lang-markdown";
 import { parseMarkdown } from "../parser/parse";
 import { lint } from "../parser/linter";
 import { buildIR } from "../ir/buildIR";
+import { summarizeDoc } from "../ir/summarize";
 import { templates, getTemplate, templateCssVars } from "../templates";
 import { PageView } from "../render-html/PageView";
 import { SlideMode } from "../render-html/SlideMode";
@@ -23,6 +24,7 @@ import { sealPayload, uploadSealed, resolveShortLink } from "./shortlink";
 import { exportHtml, downloadHtml, downloadBlob } from "./exportHtml";
 import { exportDeck, deckToZip } from "../render-html/exportDeck";
 import promptText from "../../prompt.md?raw";
+import blogIntentText from "../../prompts/blog-intent.md?raw";
 
 const exampleModules = import.meta.glob("../../examples/*.md", {
   query: "?raw",
@@ -75,7 +77,8 @@ function safeFilename(title: string | undefined, ext: string): string {
 export default function App() {
   const [md, setMd] = useState<string>(loadInitialMd);
   const [templateOverride, setTemplateOverride] = useState<string | "auto">(loadInitialTemplate);
-  const [previewMode, setPreviewMode] = useState<"page" | "slides">("slides");
+  // v2:文件態為主(HANDOFF v2 §7),預設落在文件態
+  const [previewMode, setPreviewMode] = useState<"page" | "slides">("page");
   const [presenting, setPresenting] = useState(false);
   const [reader, setReader] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -118,6 +121,10 @@ export default function App() {
     const parsed = parseMarkdown(debouncedMd);
     return { doc: buildIR(parsed), lintResult: lint(parsed) };
   }, [debouncedMd]);
+
+  // v2 雙態同源:文件態吃完整 DocIR(doc);簡報/pptx/deck 一律吃
+  // 摘要投影後的 SlideIR(確定性降密度,見 ir/summarize.ts)
+  const slideDoc = useMemo(() => summarizeDoc(doc), [doc]);
 
   // 持久化:貼上的內容與 template 選擇存回本機
   useEffect(() => {
@@ -258,7 +265,7 @@ export default function App() {
   const exportPptx = useCallback(async () => {
     setExporting(true);
     try {
-      const pres = await renderPptx(doc, template, {
+      const pres = await renderPptx(slideDoc, template, {
         renderDiagram: async (source) => {
           try {
             const svg = await renderMermaid(source, template);
@@ -275,7 +282,7 @@ export default function App() {
     } finally {
       setExporting(false);
     }
-  }, [doc, template, showToast]);
+  }, [slideDoc, doc, template, showToast]);
 
   const exportHtmlFile = useCallback(async () => {
     setExporting(true);
@@ -283,7 +290,7 @@ export default function App() {
     const dropTab = dropMode ? window.open("https://cloudflare.com/drop", "_blank") : null;
     try {
       if (dropMode) {
-        const html = await exportDeck(doc, template);
+        const html = await exportDeck(slideDoc, doc, template);
         const zip = await deckToZip(html);
         downloadBlob(zip, safeFilename(doc.meta.title, "zip"));
         showToast(
@@ -300,18 +307,28 @@ export default function App() {
     } finally {
       setExporting(false);
     }
-  }, [doc, template, dropMode, showToast]);
+  }, [doc, slideDoc, template, dropMode, showToast]);
 
-  const copyPrompt = useCallback(async () => {
-    // 只複製 prompt 本體(PROMPT-START 之後),檔頭使用說明不進剪貼簿
-    const body = promptText.split("<!-- PROMPT-START -->")[1]?.trim() ?? promptText;
-    await navigator.clipboard.writeText(body);
-    showToast("AI 產生 prompt 已複製,貼給任何 LLM、換上你的素材即可");
-  }, [showToast]);
+  const [aiOpen, setAiOpen] = useState(false);
+  const copyPrompt = useCallback(
+    async (which: "deck" | "blog") => {
+      setAiOpen(false);
+      // 只複製 prompt 本體(PROMPT-START 之後),檔頭使用說明不進剪貼簿
+      const raw = which === "deck" ? promptText : blogIntentText;
+      const body = raw.split("<!-- PROMPT-START -->")[1]?.trim() ?? raw;
+      await navigator.clipboard.writeText(body);
+      showToast(
+        which === "deck"
+          ? "簡報改寫 prompt 已複製,貼給任何 LLM、換上你的素材即可"
+          : "blog 意圖引導 prompt 已複製——貼給你的 LLM,它會一步步問你問題,收斂後把 md 帶回來"
+      );
+    },
+    [showToast]
+  );
 
   const errors = lintResult.messages.filter((m) => m.severity === "error");
   const warnings = lintResult.messages.filter((m) => m.severity === "warning");
-  const presentableSlides = doc.slides.filter((s) => !s.skip);
+  const presentableSlides = slideDoc.slides.filter((s) => !s.skip);
   const sectionNos = useMemo(() => computeSectionNos(presentableSlides), [presentableSlides]);
 
   return (
@@ -345,9 +362,27 @@ export default function App() {
               </option>
             ))}
           </select>
-          <button className="ctrl ghost" onClick={copyPrompt} title="複製給 LLM 的產生指令,貼給任何模型即可產出合規 MD">
-            ✦ AI 產生
-          </button>
+          <div className="share-wrap">
+            <button
+              className="ctrl ghost"
+              onClick={() => setAiOpen((v) => !v)}
+              title="複製給 LLM 的產生指令(runtime 零 LLM,一律帶去你自己的模型)"
+            >
+              ✦ AI 產生 ▾
+            </button>
+            {aiOpen && (
+              <div className="share-menu" onMouseLeave={() => setAiOpen(false)}>
+                <button onClick={() => copyPrompt("blog")}>
+                  <b>引導我寫 blog(v2)</b>
+                  <span>對話式意圖澄清 → 產出文件密度 MD,一次 render 文件+簡報</span>
+                </button>
+                <button onClick={() => copyPrompt("deck")}>
+                  <b>素材改寫成簡報</b>
+                  <span>一段素材 → 直接改寫成簡報密度 MD</span>
+                </button>
+              </div>
+            )}
+          </div>
           <div className="share-wrap">
             <button
               className="ctrl ghost"
@@ -456,18 +491,18 @@ export default function App() {
         </section>
         <section className="pane pane-preview">
           <div className="pane-head">
-            <div className="seg">
+            <div className="seg" title="同一份 MD 的兩種態:文件(密集、可獨立閱讀)與簡報(自動摘要投影)">
               <button
                 className={previewMode === "page" ? "seg-on" : ""}
                 onClick={() => setPreviewMode("page")}
               >
-                頁面
+                文件
               </button>
               <button
                 className={previewMode === "slides" ? "seg-on" : ""}
                 onClick={() => setPreviewMode("slides")}
               >
-                投影片
+                簡報
               </button>
             </div>
             <div className="tpl-picker" role="radiogroup" aria-label="Template">
@@ -582,7 +617,7 @@ export default function App() {
       {/* 簡報模式是 overlay:editor 不卸載,內容不會消失 */}
       {presenting ? (
         <SlideMode
-          doc={doc}
+          doc={slideDoc}
           template={template}
           onExit={() => setPresenting(false)}
           onShare={(pageNo) => copyShareLink("present", pageNo)}

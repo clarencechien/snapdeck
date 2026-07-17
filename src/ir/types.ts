@@ -12,6 +12,13 @@ export type InlineSpan = {
 
 export type InlineText = InlineSpan[];
 
+/** v2:`<!-- slide: ... -->` 對單一 block 的雙態控制。
+    keep = 全量進 slide;skip = 只在文件態;custom = 以 text 作為 slide 要點 */
+export type SlideHint =
+  | { kind: "keep" }
+  | { kind: "skip" }
+  | { kind: "custom"; text: string };
+
 export type ListItem = {
   text: InlineText;
   /** cards/steps 偵測時拆出的「**粗體詞**:說明」結構 */
@@ -21,22 +28,23 @@ export type ListItem = {
   checked?: boolean | null;
 };
 
+type BlockCommon = { emphasis?: boolean; slideHint?: SlideHint };
+
 export type Block =
-  | { kind: "heading"; depth: 1 | 2 | 3; text: InlineText; emphasis?: boolean }
-  | { kind: "para"; text: InlineText; emphasis?: boolean }
-  | {
+  | ({ kind: "heading"; depth: 1 | 2 | 3; text: InlineText } & BlockCommon)
+  | ({ kind: "para"; text: InlineText } & BlockCommon)
+  | ({
       kind: "list";
       ordered: boolean;
       items: ListItem[];
       shape?: "plain" | "cards" | "steps";
-      emphasis?: boolean;
-    }
-  | { kind: "quote"; text: InlineText; cite?: string; emphasis?: boolean }
-  | { kind: "code"; lang?: string; value: string; emphasis?: boolean }
-  | { kind: "table"; header: InlineText[]; rows: InlineText[][]; emphasis?: boolean }
-  | { kind: "image"; url: string; alt?: string; emphasis?: boolean }
-  | { kind: "diagram"; engine: "mermaid"; source: string; svg?: string; emphasis?: boolean }
-  | { kind: "stat"; value: string; label: string; caption?: string; emphasis?: boolean };
+    } & BlockCommon)
+  | ({ kind: "quote"; text: InlineText; cite?: string } & BlockCommon)
+  | ({ kind: "code"; lang?: string; value: string } & BlockCommon)
+  | ({ kind: "table"; header: InlineText[]; rows: InlineText[][] } & BlockCommon)
+  | ({ kind: "image"; url: string; alt?: string } & BlockCommon)
+  | ({ kind: "diagram"; engine: "mermaid"; source: string; svg?: string } & BlockCommon)
+  | ({ kind: "stat"; value: string; label: string; caption?: string } & BlockCommon);
 
 export type LayoutIntent =
   | "title"

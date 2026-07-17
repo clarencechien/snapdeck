@@ -16,6 +16,9 @@ export const DIRECTIVE_KEYWORDS = [
   "emphasis",
   "fit",
   "skip",
+  // v2(HANDOFF-snapdeck-v2 §4):唯一新增的 directive family。
+  // 值:keep(全量進 slide)/ skip(只在文件態)/ 任意字串(當該段的 slide 要點)
+  "slide",
 ] as const;
 
 export type DirectiveKeyword = (typeof DIRECTIVE_KEYWORDS)[number];

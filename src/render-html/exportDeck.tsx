@@ -37,8 +37,18 @@ function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function DeckExport({ doc, template }: { doc: SlideDoc; template: TemplateConfig }) {
-  const slides = doc.slides.filter((s) => !s.skip);
+function DeckExport({
+  deckDoc,
+  readerDoc,
+  template,
+}: {
+  /** 簡報態:摘要投影後的 SlideIR */
+  deckDoc: SlideDoc;
+  /** 閱讀態:完整 DocIR(文件密度) */
+  readerDoc: SlideDoc;
+  template: TemplateConfig;
+}) {
+  const slides = deckDoc.slides.filter((s) => !s.skip);
   const secs = computeSectionNos(slides);
   return (
     <>
@@ -51,7 +61,7 @@ function DeckExport({ doc, template }: { doc: SlideDoc; template: TemplateConfig
               pageNo={i + 1}
               total={slides.length}
               sectionNo={secs[i]}
-              docTitle={doc.meta.title}
+              docTitle={deckDoc.meta.title}
             />
             <div className="dk-notes" hidden>
               {slide.notes ?? ""}
@@ -60,7 +70,7 @@ function DeckExport({ doc, template }: { doc: SlideDoc; template: TemplateConfig
         ))}
       </div>
       <div id="dk-reader-src">
-        <PageView doc={doc} template={template} />
+        <PageView doc={readerDoc} template={template} />
       </div>
     </>
   );
@@ -171,7 +181,12 @@ const DECK_CSS = `
     font-size:12.5px;color:var(--sd-muted);font-family:var(--sd-font-body);}
 `;
 
-export async function exportDeck(doc: SlideDoc, template: TemplateConfig): Promise<string> {
+export async function exportDeck(
+  deckDoc: SlideDoc,
+  readerDoc: SlideDoc,
+  template: TemplateConfig
+): Promise<string> {
+  const doc = readerDoc; // meta 與 diagram 計數以完整文件為準
   const host = document.createElement("div");
   host.style.position = "fixed";
   host.style.left = "-99999px";
@@ -180,8 +195,9 @@ export async function exportDeck(doc: SlideDoc, template: TemplateConfig): Promi
   const root = createRoot(host);
 
   try {
-    root.render(<DeckExport doc={doc} template={template} />);
-    const expected = countDiagrams(doc);
+    root.render(<DeckExport deckDoc={deckDoc} readerDoc={readerDoc} template={template} />);
+    // 簡報態的 diagram 數以投影後為準(slide: skip 的圖不進 deck)
+    const expected = { page: countDiagrams(readerDoc).page, deck: countDiagrams(deckDoc).deck };
     const deadline = Date.now() + 10000;
     const ready = () =>
       host.querySelector(".sd-page") !== null &&
