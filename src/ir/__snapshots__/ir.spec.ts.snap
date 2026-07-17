@@ -4274,3 +4274,1030 @@ exports[`buildIR — golden samples > IR snapshot: 06-finance-annual.md 1`] = `
   ],
 }
 `;
+
+exports[`buildIR — golden samples > IR snapshot: 07-blog-knowledge.md 1`] = `
+{
+  "meta": {
+    "author": "平台體驗組",
+    "date": "2026-07-17",
+    "lang": "zh-TW",
+    "template": "clean-light",
+    "title": "寫好錯誤訊息的三個原則",
+  },
+  "slides": [
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "寫好錯誤訊息的三個原則",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "平台體驗組 · 2026-07-17",
+            },
+          ],
+        },
+      ],
+      "headingPath": [],
+      "layout": "title",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "為什麼錯誤訊息值得認真寫",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "為什麼錯誤訊息值得認真寫",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "錯誤訊息是最常被讀的文案",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "錯誤訊息是使用者最專心閱讀的一段文字。正常流程裡沒有人逐字讀介面,但出錯的那一刻,使用者會把訊息從頭讀到尾,因為他此刻唯一想要的就是脫困。這也是為什麼一句敷衍的「發生錯誤,請稍後再試」對信任的傷害遠大於它省下的工程時間。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "slideHint": {
+            "kind": "skip",
+          },
+          "text": [
+            {
+              "text": "我們統計過客服工單的來源,發現有相當比例的工單,使用者其實已經看到了錯誤訊息,只是訊息沒有告訴他下一步該做什麼。換句話說,這些工單的成本本來可以用一行字省下來。訊息寫得好,客服量就是產品品質的溫度計。",
+            },
+          ],
+        },
+        {
+          "caption": "訊息本可自助解決",
+          "kind": "stat",
+          "label": "含錯誤截圖的工單",
+          "value": "38%",
+        },
+      ],
+      "headingPath": [
+        "為什麼錯誤訊息值得認真寫",
+        "錯誤訊息是最常被讀的文案",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "開場先建立「錯誤訊息 = 高注意力時刻」的心智,數字讓大家有感",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "三個原則",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "三個原則",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "原則一:說人話,說發生了什麼",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "第一句永遠描述使用者眼中的事實,而不是系統眼中的異常。「無法儲存你的變更」是人話;「Error 500: Internal Server Error」是系統的自言自語。使用者不需要知道是哪一層炸了,他需要知道他做的那件事現在處於什麼狀態——存了沒有?會不會遺失?",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "寫法上有一個簡單的檢驗:把訊息唸給一個沒用過這個產品的人聽,他能複述「發生了什麼事」就及格。做不到,通常是因為訊息在描述例外,而不是描述後果。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "三個原則",
+        "原則一:說人話,說發生了什麼",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "500 的例子每個人都見過,共鳴點",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "原則二:給出下一步,而且只給一步",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "脫困指引要具體到「動詞 + 對象」。「請稍後再試」不合格,因為「稍後」無法行動;「三分鐘後重新整理頁面,你的草稿已自動保存」才是指引。使用者在錯誤當下的認知頻寬極低,一次給三個選項等於沒給,挑一個成功率最高的路徑直接指過去。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "slideHint": {
+            "kind": "custom",
+            "text": "指引 = 動詞 + 對象,一次只給一步",
+          },
+          "text": [
+            {
+              "text": "我們把「下一步」的品質拆成三級:能自助脫困、能正確求助(帶著對的資訊找對的人)、只能焦慮等待。改版的目標就是把第三級的訊息全部往前搬一級。實務上最有效的一招,是在訊息裡直接嵌入那個「下一步」的按鈕,而不是用文字描述它。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "三個原則",
+        "原則二:給出下一步,而且只給一步",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "三級分類是這頁的骨架,按鈕嵌入是可以現場 demo 的點",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "原則三:留下可追查的線索",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "好的錯誤訊息對使用者說人話,同時對工程師留暗號。做法是在訊息尾端附一個短代碼(如 ",
+            },
+            {
+              "code": true,
+              "text": "EC-4102",
+            },
+            {
+              "text": "),使用者回報時唸得出來,客服查得到,工程師能對回 log。這比要求使用者描述「你剛剛做了什麼」可靠得多。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "代碼要短、可唸、可搜尋。UUID 沒人唸得完,時間戳會被抄錯;四到六碼的字母數字組合,錯誤率最低。這個小設計讓我們的平均除錯時間有了肉眼可見的下降。",
+            },
+          ],
+        },
+        {
+          "caption": "導入錯誤短代碼之後",
+          "kind": "stat",
+          "label": "除錯時間縮短",
+          "value": "42%",
+        },
+      ],
+      "headingPath": [
+        "三個原則",
+        "原則三:留下可追查的線索",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "短代碼是本篇最容易被帶走實作的一招,收尾強調",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "落地",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "落地",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "從盤點開始的三步",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "text": [
+                {
+                  "text": "盤點:抓出前 20 名最常觸發的錯誤訊息",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "重寫:每則套用三原則,一句事實 + 一步指引 + 一個代碼",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "度量:追蹤這些錯誤觸發後的客服工單率變化",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": true,
+          "shape": "steps",
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "寫錯誤訊息不需要新框架,只需要把它當成正式文案對待。從清單的第一名開始,一週改五則,一季就能把最痛的九成場景換掉。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "落地",
+        "從盤點開始的三步",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "收尾給可執行的節奏,避免聽完覺得「道理都懂」但沒行動",
+    },
+  ],
+}
+`;
+
+exports[`buildIR — golden samples > IR snapshot: 08-blog-story.md 1`] = `
+{
+  "meta": {
+    "author": "產品復盤",
+    "date": "2026-07-17",
+    "lang": "zh-TW",
+    "template": "craft",
+    "title": "我們下線了自己最得意的功能",
+  },
+  "slides": [
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "我們下線了自己最得意的功能",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "產品復盤 · 2026-07-17",
+            },
+          ],
+        },
+      ],
+      "headingPath": [],
+      "layout": "title",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "起點",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "起點",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "一個所有人都喜歡的功能",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "智慧排程是我們做過最漂亮的功能。它會讀取團隊行事曆,自動找出所有人都有空的時段,一鍵發出會議邀請。發布那週的內部展示掌聲不斷,媒體報導用了「魔法」這個詞,新客戶的簽約簡報裡它永遠排第一頁。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "slideHint": {
+            "kind": "skip",
+          },
+          "text": [
+            {
+              "text": "回頭看,掌聲是第一個警訊。為它鼓掌的是展示會裡的我們自己和記者,不是每天要排會的行政人員。真實使用者的聲音在那個當下完全缺席,而我們把媒體的興奮誤讀成了市場的需求。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "起點",
+        "一個所有人都喜歡的功能",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "開場先給「得意」的高點,後面的下墜才有張力",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "數字說了不一樣的故事",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "上線三個月後,儀表板上的留存曲線和我們的自信完全對不上。功能的首次使用率不差,但第二次使用率斷崖式下跌——人們試了一次,然後回到手動排程。",
+            },
+          ],
+        },
+        {
+          "caption": "首週試用者中僅存",
+          "kind": "stat",
+          "label": "第二週回訪使用率",
+          "value": "7%",
+        },
+      ],
+      "headingPath": [
+        "起點",
+        "數字說了不一樣的故事",
+      ],
+      "layout": "big-stat",
+      "layoutSource": "inferred",
+      "notes": "一個數字就夠,不要堆數字稀釋衝擊",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "追查",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "追查",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "訪談推翻了我們的假設",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "我們約了十一位放棄使用的使用者做訪談。原本準備聽到的是「不好用」「有 bug」,實際聽到的是同一句話的十一種版本:「它排的時段是對的,但不是好的。」演算法找得到大家都有空的時間,卻不懂週五下午四點的會沒人有靈魂,也不懂業務主管的「有空」其實是留給客戶的緩衝。",
+            },
+          ],
+        },
+        {
+          "cite": "受訪者 #7,行政主管",
+          "kind": "quote",
+          "text": [
+            {
+              "text": "你們的功能很聰明,但排會議需要的不是聰明,是分寸。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "排程的本質是政治與體貼,不是最佳化問題。這個認知我們晚了六個月才取得,而它只需要三通電話。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "追查",
+        "訪談推翻了我們的假設",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "引言是全篇核心,放慢速度唸",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "修補的三個月教會我們停損",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "之後的一季我們嘗試了各種修補:加權重、加偏好設定、加「避開午餐」的開關。每加一個選項,設定頁就更像一張報稅表,使用率沒有回來,維護成本卻線性上升。第九週的週會上,工程師問了那個該問的問題:「我們是在修產品,還是在修面子?」",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "slideHint": {
+            "kind": "keep",
+          },
+          "text": [
+            {
+              "text": "修補一個方向錯誤的功能,每一分努力都在增加沉沒成本。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "追查",
+        "修補的三個月教會我們停損",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "這句是轉折句,slide 上整句保留",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "結尾",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "結尾",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "下線那天發生的事",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "我們給功能設了九十天的日落期:先對新用戶隱藏,再通知既有使用者,最後在一個安靜的週二早晨關掉開關。預想中的抗議信只來了兩封,其中一封還是感謝信——對方說終於不用向同事解釋為什麼要關掉這個預設功能了。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "下線釋出的維護人力,兩個月後做出了行事曆的批次改期工具。它平凡、無聊、沒有任何媒體想報導,第二週回訪率是智慧排程的六倍。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "結尾",
+        "下線那天發生的事",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "對比收尾:魔法 vs 無聊但有用",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "這次復盤留下的原則",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "內部展示的興奮與市場需求無關",
+                },
+              ],
+              "term": "掌聲不是訊號",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "掌聲不是訊號",
+                },
+                {
+                  "text": ":內部展示的興奮與市場需求無關",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "任何演算法投資前,先訪談三個真實使用者",
+                },
+              ],
+              "term": "先打三通電話",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "先打三通電話",
+                },
+                {
+                  "text": ":任何演算法投資前,先訪談三個真實使用者",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "上線時就寫好「什麼數字代表該關掉它」",
+                },
+              ],
+              "term": "給功能設日落",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "給功能設日落",
+                },
+                {
+                  "text": ":上線時就寫好「什麼數字代表該關掉它」",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "結尾",
+        "這次復盤留下的原則",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "三張卡片收尾,讓聽眾帶得走",
+    },
+  ],
+}
+`;
+
+exports[`buildIR — golden samples > IR snapshot: 09-blog-persuasion.md 1`] = `
+{
+  "meta": {
+    "author": "工程效率組",
+    "date": "2026-07-17",
+    "lang": "zh-TW",
+    "template": "boardroom",
+    "title": "停開每日站會的提案",
+  },
+  "slides": [
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "停開每日站會的提案",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "工程效率組 · 2026-07-17",
+            },
+          ],
+        },
+      ],
+      "headingPath": [],
+      "layout": "title",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "問題",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "問題",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "站會已經變成一種儀式",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "每天早上十點,十四個人放下手上的事,輪流唸出昨天做了什麼。這個儀式的原始目的是同步與求援,但實際運作中,它已經退化成向主管證明「我有在做事」的例行公事。真正需要協調的事,大家散會後還是私下再約。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "slideHint": {
+            "kind": "skip",
+          },
+          "text": [
+            {
+              "text": "判斷一個會議是否退化,有個簡單的測試:如果把它取消一週,誰會受影響?我們在春節連假前後意外做了這個實驗——站會停了九個工作天,沒有任何一件協作因此延誤,倒是有兩位同事說那是他們專注度最高的兩週。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "問題",
+        "站會已經變成一種儀式",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "開場不罵站會,先描述它「退化」的過程,降低防衛",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "儀式的真實成本",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "站會的帳面成本是每人每天十五分鐘,真實成本遠大於此。十點的會議把上午切成兩段,而工程工作最需要的就是不被切割的長時段。會前二十分鐘,多數人不會啟動需要深度的工作;會後回到原本的思路,平均還要再花一段熱身時間。",
+            },
+          ],
+        },
+        {
+          "caption": "含切割與熱身成本",
+          "kind": "stat",
+          "label": "每人每週流失的深度工時",
+          "value": "3.5 小時",
+        },
+      ],
+      "headingPath": [
+        "問題",
+        "儀式的真實成本",
+      ],
+      "layout": "big-stat",
+      "layoutSource": "inferred",
+      "notes": "把 15 分鐘的表面成本翻成 3.5 小時,是說服的關鍵一步",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "提案",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "提案",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "改為書面非同步同步",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "提案很簡單:站會取消,改為每天上班後在頻道發一則三行的書面更新——昨天完成、今天要做、哪裡卡住。卡住的項目由當事人直接標記相關同事,十分鐘內就能開始解決,不用等到隔天早上十點。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "書面化還帶來兩個免費的副產品。更新變成可搜尋的紀錄,新人回溯脈絡不再靠問;而「寫下來」這個動作本身,會逼人把模糊的進度說清楚——說不清楚的,往往正是需要求援的。",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "提案",
+        "改為書面非同步同步",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "副產品(可搜尋、逼清晰)常比主論點更打動主管",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "大家擔心的三件事",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "desc": [
+                {
+                  "text": "協調改為即時發生,不用積到隔天早上",
+                },
+              ],
+              "term": "失去同步",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "失去同步",
+                },
+                {
+                  "text": ":協調改為即時發生,不用積到隔天早上",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "書面紀錄比口頭輪報更完整、可回溯",
+                },
+              ],
+              "term": "主管失去掌握",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "主管失去掌握",
+                },
+                {
+                  "text": ":書面紀錄比口頭輪報更完整、可回溯",
+                },
+              ],
+            },
+            {
+              "desc": [
+                {
+                  "text": "站會不是社交,週五的 demo 時間才是",
+                },
+              ],
+              "term": "團隊感變淡",
+              "text": [
+                {
+                  "bold": true,
+                  "text": "團隊感變淡",
+                },
+                {
+                  "text": ":站會不是社交,週五的 demo 時間才是",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": false,
+          "shape": "cards",
+        },
+      ],
+      "headingPath": [
+        "提案",
+        "大家擔心的三件事",
+      ],
+      "layout": "cards",
+      "layoutSource": "inferred",
+      "notes": "預先繳械三個反對意見,每張卡片一句話回應",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 1,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "請求",
+            },
+          ],
+        },
+      ],
+      "headingPath": [
+        "請求",
+      ],
+      "layout": "section",
+      "layoutSource": "inferred",
+    },
+    {
+      "blocks": [
+        {
+          "depth": 2,
+          "kind": "heading",
+          "text": [
+            {
+              "text": "用六週實驗代替永久決定",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "text": [
+            {
+              "text": "我們不要求永久取消,只要求一個可回退的實驗:六週,兩個自願的小隊,期末用資料說話。度量三件事——深度工時的變化、卡點從發生到被接手的時長、以及匿名的團隊滿意度。任何一項顯著惡化,立刻恢復站會,成本為零。",
+            },
+          ],
+        },
+        {
+          "kind": "para",
+          "slideHint": {
+            "kind": "keep",
+          },
+          "text": [
+            {
+              "text": "這不是取消同步,是把同步從「每天固定打斷十四個人」換成「需要時立刻發生」。",
+            },
+          ],
+        },
+        {
+          "items": [
+            {
+              "text": [
+                {
+                  "text": "第 1 週:兩小隊開始書面更新,其他隊照舊",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "第 3 週:期中檢視卡點接手時長",
+                },
+              ],
+            },
+            {
+              "text": [
+                {
+                  "text": "第 6 週:全員數據對比,決定推廣或回退",
+                },
+              ],
+            },
+          ],
+          "kind": "list",
+          "ordered": true,
+          "shape": "steps",
+        },
+      ],
+      "headingPath": [
+        "請求",
+        "用六週實驗代替永久決定",
+      ],
+      "layout": "content",
+      "layoutSource": "inferred",
+      "notes": "收尾把請求縮到最小(六週、自願、可回退),讓否決變得比同意更費力",
+    },
+  ],
+}
+`;

@@ -1,4 +1,6 @@
-# Phase 1 結案狀態(2026-07-13)
+# 結案狀態
+
+## Phase 1(2026-07-13)
 
 線上版本:https://snapdeck.ai-apps.work(Cloudflare Workers 直連 GitHub,push 即部署)
 
@@ -38,3 +40,20 @@
 ## 測試
 
 `npm test`:64 tests(IR snapshot、design rules、linter、pptx 結構、share 編碼、貼上正規化、短連結加密);`npm run lint:samples`:6/6。
+
+---
+
+# v2 結案對照(2026-07-17,HANDOFF-snapdeck-v2 §9)
+
+| 條款 | 狀態 | 備註 |
+|---|---|---|
+| 一份文件密度 md 一次 render 出可獨立閱讀的 blog + 可簡報的 slide,同源無矛盾 | ✅ | e2e 以 08-blog-story 驗證:skip 段只在文件態、段落自動取第一句、keep 段整句上台 |
+| 摘要投影層確定性、runtime 零 LLM | ✅ | ir/summarize.ts;確定性測試(同輸入 deep-equal) |
+| 既有樣本 slide/pptx 輸出無退化 | ✅ | 投影後 68 頁 layout 與原 IR 全等;投影 digest snapshot 固定 |
+| `slide:` 為唯一新增 directive | ✅ | keep / skip / 自訂字串;無其他詞彙擴充 |
+| ≥3 份 blog 密度樣本 | ✅ | 07 知識整理 / 08 故事復盤 / 09 說服(進 fixtures,9/9 過 linter) |
+| blog 意圖 meta-prompt | ✅ | prompts/blog-intent.md(蘇格拉底提問 + 格式合約 + 收斂終點線);站內「AI 產生 → 引導我寫 blog」 |
+| 文件態單檔 HTML 匯出零外部依賴 | ✅ | 沿用既有匯出(本就是文件態);Drop 檔閱讀模式同步吃完整 DocIR |
+| build 單一靜態站、npm test 全綠 | ✅ | 93 tests(新增 summarizer 18 例 + 投影 snapshot ×9) |
+
+v2 相關裁決:DECISIONS D24。方向文件:docs/ADR-001-v1-to-v3.md、docs/HANDOFF-snapdeck-v2.md。

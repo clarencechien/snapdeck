@@ -276,7 +276,7 @@ function splitIntoSlides(nodes: ParsedNode[]): RawSlide[] {
   return slides;
 }
 
-function inferLayout(blocks: Block[]): LayoutIntent {
+export function inferLayout(blocks: Block[]): LayoutIntent {
   const nonHeading = blocks.filter((b) => b.kind !== "heading");
   const headings = blocks.filter((b) => b.kind === "heading");
 
@@ -314,6 +314,7 @@ function buildSlide(raw: RawSlide): Slide {
   let skip = false;
   let fit = false;
   let pendingEmphasis = false;
+  let pendingSlideHint: import("./types").SlideHint | undefined;
   const splitIndices: number[] = [];
 
   for (const pn of raw.mdNodes) {
@@ -338,6 +339,14 @@ function buildSlide(raw: RawSlide): Slide {
         case "skip":
           skip = true;
           break;
+        case "slide": {
+          // v2:雙態控制,掛在下一個 block(同 emphasis 模式)
+          const v = (d.value ?? "keep").trim().replace(/^["'「]|["'」]$/g, "");
+          if (v.toLowerCase() === "keep" || v === "") pendingSlideHint = { kind: "keep" };
+          else if (v.toLowerCase() === "skip") pendingSlideHint = { kind: "skip" };
+          else pendingSlideHint = { kind: "custom", text: v };
+          break;
+        }
       }
       continue;
     }
@@ -347,6 +356,10 @@ function buildSlide(raw: RawSlide): Slide {
         if (pendingEmphasis) {
           (block as { emphasis?: boolean }).emphasis = true;
           pendingEmphasis = false;
+        }
+        if (pendingSlideHint) {
+          (block as { slideHint?: import("./types").SlideHint }).slideHint = pendingSlideHint;
+          pendingSlideHint = undefined;
         }
         blocks.push(block);
       }
