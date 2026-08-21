@@ -89,3 +89,16 @@ v2 相關裁決:DECISIONS D24。方向文件:docs/ADR-001-v1-to-v3.md、docs/HAN
 - v0.9.2 修:簡報播放時 mermaid 節點塌到原點(CSS transform 覆蓋 SVG
   transform 屬性,DECISIONS D28)——圖表內部改為純 opacity 動畫 +
   防呆測試;實測節點座標與未動畫縮圖完全一致(動畫中與動畫後皆是)。
+
+## 下一步(已規劃、**尚未實作**)
+
+- **影片匯出**:方案查證與落地位置都已定案,見 docs/VIDEO-MODE.md
+  §2(三路線)、§5(落地位置)與 DECISIONS D29。要點——錄「匯出的
+  deck HTML」而非站內簡報模式;新模組 `src/render-video/`;既有程式
+  只需改 deck runtime 的 `?render` 模式;UI 為獨立「↓ 影片」按鈕。
+  Phase 1 錄影式(約 1 天)→ Phase 2 離線逐幀(1–2 週)。
+  **目前程式碼零改動,等指令再開工。**
+- **分拍揭露**(`<Steps>` 式逐拍顯示):未規劃細節;影片不需要它,
+  屬於講者互動節奏,可獨立評估。
+- **morph 跨頁轉場**:研究過(open-slide 為 MIT、FLIP 實作),
+  評估為錦上添花,暫不排程。
