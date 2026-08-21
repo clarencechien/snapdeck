@@ -35,23 +35,23 @@
 
 /* ---- 換頁:整頁淡入(house transition) ---- */
 :is(.sd-present, #dk-frame) .sd-slide {
-  animation: sd-fade 260ms var(--sd-ease-out) both;
+  animation: sd-fade 260ms cubic-bezier(0, 0, 0.2, 1) both;
 }
 
 /* ---- 標題與章節裝飾 ---- */
 :is(.sd-present, #dk-frame) .sd-slide-title {
-  animation: sd-rise 420ms var(--sd-ease-out) 60ms both;
+  animation: sd-rise 420ms cubic-bezier(0, 0, 0.2, 1) 60ms both;
 }
 :is(.sd-present, #dk-frame) .sd-overline {
-  animation: sd-fade 460ms var(--sd-ease-out) 40ms both;
+  animation: sd-fade 460ms cubic-bezier(0, 0, 0.2, 1) 40ms both;
 }
 :is(.sd-present, #dk-frame) .sd-ghost-no {
-  animation: sd-pop 620ms var(--sd-ease-out) both;
+  animation: sd-pop 620ms cubic-bezier(0, 0, 0.2, 1) both;
 }
 
 /* ---- 內容區:逐塊上浮 ---- */
 :is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > * {
-  animation: sd-rise 460ms var(--sd-ease-out) both;
+  animation: sd-rise 460ms cubic-bezier(0, 0, 0.2, 1) both;
   animation-delay: 160ms;
 }
 :is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > *:nth-child(2) { animation-delay: 220ms; }
@@ -65,7 +65,7 @@
 
 /* ---- 卡片:逐張浮現 ---- */
 :is(.sd-present, #dk-frame) .sd-card {
-  animation: sd-pop 420ms var(--sd-ease-out) both;
+  animation: sd-pop 420ms cubic-bezier(0, 0, 0.2, 1) both;
   animation-delay: 260ms;
 }
 :is(.sd-present, #dk-frame) .sd-card:nth-child(2) { animation-delay: 320ms; }
@@ -75,7 +75,7 @@
 
 /* ---- 步驟條:依序推入 ---- */
 :is(.sd-present, #dk-frame) .sd-steps > li {
-  animation: sd-wipe 420ms var(--sd-ease-out) both;
+  animation: sd-wipe 420ms cubic-bezier(0, 0, 0.2, 1) both;
   animation-delay: 260ms;
 }
 :is(.sd-present, #dk-frame) .sd-steps > li:nth-child(2) { animation-delay: 330ms; }
@@ -85,7 +85,7 @@
 
 /* ---- KPI 看板:逐格浮現(數字本身由 count-up 滾動) ---- */
 :is(.sd-present, #dk-frame) .sd-stat-tile {
-  animation: sd-pop 440ms var(--sd-ease-out) both;
+  animation: sd-pop 440ms cubic-bezier(0, 0, 0.2, 1) both;
   animation-delay: 240ms;
 }
 :is(.sd-present, #dk-frame) .sd-stat-tile:nth-child(2) { animation-delay: 320ms; }
@@ -94,7 +94,7 @@
 
 /* ---- 清單、表格列 ---- */
 :is(.sd-present, #dk-frame) .sd-list > li {
-  animation: sd-rise 400ms var(--sd-ease-out) both;
+  animation: sd-rise 400ms cubic-bezier(0, 0, 0.2, 1) both;
   animation-delay: 240ms;
 }
 :is(.sd-present, #dk-frame) .sd-list > li:nth-child(2) { animation-delay: 300ms; }
@@ -102,7 +102,7 @@
 :is(.sd-present, #dk-frame) .sd-list > li:nth-child(4) { animation-delay: 420ms; }
 :is(.sd-present, #dk-frame) .sd-list > li:nth-child(n + 5) { animation-delay: 480ms; }
 :is(.sd-present, #dk-frame) .sd-table tbody tr {
-  animation: sd-fade 380ms var(--sd-ease-out) both;
+  animation: sd-fade 380ms cubic-bezier(0, 0, 0.2, 1) both;
   animation-delay: 300ms;
 }
 :is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(2) { animation-delay: 350ms; }
@@ -112,19 +112,19 @@
 
 /* ---- 圖表:整張浮現後,節點/線條/扇形依序長出 ---- */
 :is(.sd-present, #dk-frame) .sd-diagram :is(.node, .cluster, .label-container) {
-  animation: sd-pop 460ms var(--sd-ease-out) 420ms both;
+  animation: sd-pop 460ms cubic-bezier(0, 0, 0.2, 1) 420ms both;
 }
 :is(.sd-present, #dk-frame) .sd-diagram :is(.edgePath, .edgePaths, .edgeLabel, .flowchart-link) {
-  animation: sd-fade 500ms var(--sd-ease-out) 560ms both;
+  animation: sd-fade 500ms cubic-bezier(0, 0, 0.2, 1) 560ms both;
 }
 :is(.sd-present, #dk-frame) .sd-diagram :is(.pieCircle, .slice, .bar, .arc) {
-  animation: sd-pop 520ms var(--sd-ease-out) 420ms both;
+  animation: sd-pop 520ms cubic-bezier(0, 0, 0.2, 1) 420ms both;
   transform-origin: center;
 }
 
 /* ---- 頁尾最後才出現 ---- */
 :is(.sd-present, #dk-frame) .sd-slide-footer {
-  animation: sd-fade 500ms var(--sd-ease-out) 520ms both;
+  animation: sd-fade 500ms cubic-bezier(0, 0, 0.2, 1) 520ms both;
 }
 
 /* ---- 無障礙:使用者要求減少動態 → 全部靜態呈現 ---- */
