@@ -1,6 +1,6 @@
 # VIDEO-MODE — autoplay 與影片輸出計劃(查證版,尚未實作影片)
 
-> 狀態:**autoplay 已實作**(app 簡報模式 + Drop zip runtime);影片輸出
+> 狀態:**autoplay(v0.8)與簡報動畫層(v0.9)已實作**;影片輸出
 > 為計劃,方法與瀏覽器支援度已查證(2026-08),落地順序見文末。
 
 ## 0. 已交付:autoplay
@@ -92,11 +92,18 @@ Safari 走 B(16.4+)或退到 A 錄 WebM → 都不行就只給 autoplay。
 
 ## 4. 落地順序
 
-1. ✅ autoplay(本次交付)——自身就有 kiosk 價值,也是影片的地基。
-2. 動畫系統 1+2+3(house transition / block 進場 / 分拍揭露,
-   見 open-slide 研究)——影片「值得看」的前提。
+1. ✅ autoplay(v0.8)——自身就有 kiosk 價值,也是影片的地基。
+2. ✅ 動畫系統第 1+2 項(v0.9,DECISIONS D26):換頁轉場、逐塊/逐項
+   進場、大數字 count-up、圖表節點依序長出。影片「值得看」的前提已成立。
+   ⏸ 第 3 項分拍揭露(`<Steps>` 式)未做——影片其實不需要它(它是
+   講者互動節奏),真要做也可獨立於影片。
 3. 路線 A(+A+):錄影式 MVP,1–2 天,先能出片。
 4. 路線 B:離線逐幀 MP4,體驗終局。A 的 UI 保留當 fallback。
+
+補充:逐幀渲染(路線 B)撥時間軸靠 `document.getAnimations()`——
+v0.9 的動畫全部是 CSS `@keyframes`,天生就在這個 API 的掌握範圍內;
+唯一需要另外對時的是 count-up 的 rAF 迴圈(逐幀模式要改成吃外部
+時間參數,而非 `requestAnimationFrame` 的實時時鐘)。
 
 ## 5. 參考資料(查證來源)
 

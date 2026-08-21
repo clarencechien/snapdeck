@@ -69,3 +69,17 @@ v2 相關裁決:DECISIONS D24。方向文件:docs/ADR-001-v1-to-v3.md、docs/HAN
   Chrome Region·Element Capture/離線逐幀 WebCodecs),Chrome-only
   可達「按一下→進度條→mp4 下載」的終局體驗;實作排在動畫系統之後。
 - 裁決:DECISIONS D25。
+
+---
+
+# v0.9 增量(簡報動畫層)
+
+- **動畫已交付**:換頁淡入、標題/內容逐塊上浮、卡片與 KPI 逐格浮現、
+  步驟條依序推入、清單與表格逐列、圖表節點/連線依序長出、大數字
+  count-up。零依賴(CSS + rAF),bundle 無增量。
+- **範圍**:只作用於 `.sd-present`(站內簡報)與 `#dk-frame`(Drop 匯出),
+  縮圖/閱讀頁/pptx 不受影響;`prefers-reduced-motion` 全靜態降級。
+- **驗證**:110 tests(新增 statnum 17 例);Chromium e2e——站內
+  count-up `0.30 億→2.44 億→2.84 億` 終值精準還原、簡報態外動畫數 0;
+  匯出 zip 7/7 靜態檢查通過且開檔實測數字會跳、零外部請求。
+- 裁決:DECISIONS D26。未做:分拍揭露(`<Steps>` 式)、morph。

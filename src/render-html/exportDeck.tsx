@@ -109,6 +109,28 @@ const RUNTIME = String.raw`(function(){
   }
   function stopAuto(){autoOn=false;autoLoop=false;clearTimeout(autoT);paintAuto();}
   function paintAuto(){count.style.color=autoOn?'var(--sd-accent)':'';}
+  // 大數字 count-up(等價於站內 render-html/countUp.ts,見 DECISIONS D26)
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function countUp(root){
+    if(reduce)return;
+    [].forEach.call(root.querySelectorAll('[data-num]'),function(el){
+      var to=parseFloat(el.getAttribute('data-num'));if(!isFinite(to))return;
+      var dec=parseInt(el.getAttribute('data-dec')||'0',10)||0,
+          pre=el.getAttribute('data-pre')||'',suf=el.getAttribute('data-suf')||'',
+          grp=el.getAttribute('data-grp')==='1',t0=0;
+      function fmt(v){
+        return pre+(grp?v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})
+                       :v.toFixed(dec))+suf;
+      }
+      function step(ts){
+        if(!t0)t0=ts;
+        var k=Math.min(1,(ts-t0)/900),e=1-Math.pow(1-k,3);
+        el.textContent=fmt(to*e);
+        if(k<1)requestAnimationFrame(step);
+      }
+      el.textContent=fmt(0);requestAnimationFrame(step);
+    });
+  }
   function mode(){return document.body.getAttribute('data-mode');}
   function setMode(m){
     document.body.setAttribute('data-mode',m);
@@ -129,6 +151,7 @@ const RUNTIME = String.raw`(function(){
     i=Math.max(0,Math.min(total-1,n));
     slides.forEach(function(el,j){el.style.display=j===i?'block':'none';});
     count.textContent=(autoOn?'▶ ':'')+(i+1)+' / '+total;
+    countUp(slides[i]);
     var nd=slides[i].querySelector('.dk-notes');
     notesBody.textContent=(nd&&nd.textContent.trim())||'(本頁無備註)';
     try{history.replaceState(null,'',location.pathname+'?p='+(i+1));}catch(e){}

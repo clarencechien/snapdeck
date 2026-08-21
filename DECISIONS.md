@@ -273,3 +273,33 @@ pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估�
   比即時快、零彈窗,風險集中在 DOM 光柵化保真。伺服器端渲染因
   零後端原則否決。順序:動畫系統(open-slide 研究的 1+2+3)先於
   影片——影片值不值得出,取決於畫面裡有沒有動畫可看。
+
+## D26:簡報動畫層(v0.9)
+
+autoplay 交付後 UAT 回饋「怎麼沒有動畫感」——autoplay 只是自動翻頁,
+換頁仍是 `display:none/block` 硬切。本次補上動畫層(對應 open-slide
+研究的第 1、2 項;第 3 項分拍揭露仍未做,第 4 項 morph 不做)。
+
+- **零依賴**:全部 CSS `@keyframes` + 一支 ~25 行 rAF 計數器。不引入
+  任何動畫函式庫,bundle 零增量,Drop 匯出檔照樣自含。
+- **範圍鎖在簡報態**:所有規則以 `:is(.sd-present, #dk-frame)` 為前綴
+  ——編輯器縮圖、blog 閱讀頁、HTML 匯出、pptx 一律不受影響。e2e 實測
+  簡報態外在跑的動畫數 = 0。
+- **只動 opacity/transform**,絕不動高度或 margin:溢版偵測與字級降級
+  靠 scrollHeight 量測,動畫因此完全不干擾既有版面邏輯。
+- **紀律**(業界簡報動畫標準):一份 deck 一套 DNA;位移 ≤10px、縮放
+  ≤4%;opacity 永遠參與;進場一律 ease-out;換頁 260ms、內容 460ms、
+  逐項間隔 60ms。不做推頁(translateX 100%)、不做 clip-path 揭露。
+- **大數字 count-up**:`splitLeadingNumber` 把 value 拆成
+  前綴+數值+後綴(`< 500ms` → `< ` / 500 / `ms`;`10,000+ 小時` 保留
+  千分位)。**無損還原檢查**是核心安全閥:格式化終值必須逐字等於原
+  字串,否則回傳 null 不做動畫——寧可靜態,也不能讓畫面停在跟原文
+  不同的數字上(`0 MB`、`1,0000 元` 因此不動畫)。
+- **重播機制**:站內靠 `key={idx}` 讓 slide 重掛;Drop 檔靠
+  `display:none→block` 天然重啟 CSS 動畫,兩邊都不需要額外狀態。
+- **count-up 兩份實作**:站內 `render-html/countUp.ts`、Drop runtime
+  內一份等價 vanilla(runtime 不能 import)。純函式
+  (`splitLeadingNumber`/`formatStatNumber`)只有一份且有 17 個測試,
+  漂移風險限縮在 25 行的動畫迴圈。
+- **無障礙**:`prefers-reduced-motion: reduce` 時整組 `animation:none
+  !important`,數字直接停在終值(原字串),不需要另寫 fallback。
