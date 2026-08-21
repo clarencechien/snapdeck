@@ -105,7 +105,71 @@ v0.9 的動畫全部是 CSS `@keyframes`,天生就在這個 API 的掌握範圍�
 唯一需要另外對時的是 count-up 的 rAF 迴圈(逐幀模式要改成吃外部
 時間參數,而非 `requestAnimationFrame` 的實時時鐘)。
 
-## 5. 參考資料(查證來源)
+## 5. 落地位置(要做在哪)
+
+### 5.1 錄製來源:匯出的 deck HTML,不是站內簡報模式
+
+兩個候選來源,選後者:
+
+| | 站內簡報模式 `.sd-present` | **匯出的 deck HTML `#dk-frame`** |
+|---|---|---|
+| 內容 | React 驅動,和編輯器共用 DOM | 自含單檔,零 React |
+| 尺寸 | 跟著視窗縮放 | 固定 1280×720 設計面,可等比放大 1080p |
+| 時間資料 | 無 | 每頁已有 `data-dur`(autoplay 用) |
+| 隔離性 | 撥動畫時間軸會影響主畫面 | 塞進隱藏 iframe,完全隔離 |
+| 裁切 | 要避開頂欄、hint、notes 面板 | Element Capture 直接鎖定 iframe |
+| 確定性 | 受 React 重繪與量測時序影響 | 序列化完成的靜態 DOM |
+
+**結論**:影片一律錄「`exportDeck()` 產出的 HTML」——它本來就是我們
+對外交付的成品,錄它等於錄使用者真正會拿到的東西。站內簡報模式維持
+純粹「給人看」的角色,不背錄影責任。
+
+### 5.2 模組配置
+
+```
+src/render-video/
+  timeline.ts    # 由 slideDoc 算出確定性時間軸(重用 autoDelaySeconds
+                 # 與 motion.css 的 delay/duration 常數):每頁何時進場、
+                 # 動畫何時結束、何時換頁 → 總長度與每一幀的 (page, t)
+  deckStage.ts   # 把 exportDeck() 的 HTML 掛進隱藏 iframe,提供
+                 # goto(n) / seek(ms) / size(w,h);錄影與逐幀共用
+  recordDeck.ts  # 路線 A/A+:getDisplayMedia(preferCurrentTab)
+                 # + restrictTo(iframe) + MediaRecorder → mp4/webm
+  renderFrames.ts# 路線 B:暫停 getAnimations()、逐幀撥 currentTime、
+                 # foreignObject 光柵化 → VideoEncoder → mp4-muxer
+```
+
+### 5.3 唯一需要改既有程式的地方:deck runtime 的 `?render` 模式
+
+匯出檔的 vanilla runtime 加一個 `?render` 參數(約 20 行):
+
+- 關閉 autoplay 與鍵盤/點擊翻頁(避免與驅動程式打架);
+- 暴露 `window.__sd = { total, goto(n) }` 供 iframe 外驅動;
+- **count-up 改吃外部時鐘**:目前是 `requestAnimationFrame` 的實時
+  時鐘,逐幀渲染必須能被撥到任意時間點,所以 render 模式下改成
+  `__sd.tick(elapsedMs)` 由渲染迴圈餵。CSS 動畫本身不用改——
+  `document.getAnimations()` 就能撥。
+
+### 5.4 UI 落點
+
+- 主工具列在 `↓ pptx`、`↓ HTML` 之後加 **`↓ 影片`**,獨立按鈕。
+  **不做成 Drop 那種 checkbox**:影片流程有進度、要數十秒到數分鐘、
+  需要可取消,和「按一下就下載」的既有匯出行為不同。
+- 按下開小面板:解析度(1080p / 720p)、每頁秒數(估算值 or 固定 N 秒)、
+  是否含頁碼頁尾、輸出格式(依瀏覽器能力自動選 mp4 / webm)。
+- 進度條 + 取消鈕;完成直接下載。無 WebCodecs 的瀏覽器改走錄影式,
+  面板要先講清楚「會跳出分頁授權、需要即時播完」。
+- 簡報模式內可加一個「錄製這份」入口,但走的是同一條 render-video
+  流程(仍然錄匯出的 deck,不是錄當下畫面)。
+
+### 5.5 分期
+
+1. **Phase 1(約 1 天)**:`timeline.ts` + `deckStage.ts` + `recordDeck.ts`
+   + `?render` 模式 → Chrome 上先能出 mp4(錄影式,即時)。
+2. **Phase 2(1–2 週)**:`renderFrames.ts` 離線逐幀,比即時快、無彈窗;
+   Phase 1 的 UI 與 fallback 原封不動保留。
+
+## 6. 參考資料(查證來源)
 
 - WebCodecs 支援度:digitalsamba.com/blog/webcodecs-api-explained、
   testmuai.com/learning-hub/webcodecs-browser-support

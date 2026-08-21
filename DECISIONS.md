@@ -357,3 +357,22 @@ keyframe 也自動納管。
 
 **通則**:動畫要碰 SVG 內容時,先問「這個元素的定位是不是靠屬性?」
 是的話,能動的只有 opacity / fill / stroke 這類不參與定位的性質。
+
+## D29:影片匯出的落地位置(規格,未實作)
+
+- **錄的是「匯出的 deck HTML」,不是站內簡報模式**。理由:自含單檔、
+  零 React、固定 1280×720、每頁已有 `data-dur`、可塞隱藏 iframe 完全
+  隔離(撥動畫時間軸不影響主畫面)、Element Capture 可直接鎖定它。
+  更重要的是——那份 HTML 本來就是對外交付的成品,錄它等於錄使用者
+  真正拿到的東西。站內簡報模式維持「給人看」的單一職責。
+- **新模組 `src/render-video/`**:timeline(確定性時間軸,重用
+  autoDelaySeconds)、deckStage(iframe 掛載與驅動)、recordDeck
+  (錄影式)、renderFrames(離線逐幀)。既有 export 流程不動。
+- **唯一要改的既有程式**:deck runtime 加 `?render` 模式(關閉 autoplay
+  與翻頁、暴露 `window.__sd.goto/tick`、count-up 改吃外部時鐘)。
+  CSS 動畫不用改,`document.getAnimations()` 就能撥時間軸——這也是
+  D26 選擇「純 CSS 動畫」的額外紅利。
+- **UI 是獨立按鈕不是 checkbox**:影片有進度、耗時、需可取消,與
+  「按一下就下載」的 pptx/HTML 行為不同,不該擠進 Drop 那種修飾旗標。
+- 分期:Phase 1 錄影式(約 1 天,先能出片)→ Phase 2 離線逐幀。
+  細節見 docs/VIDEO-MODE.md §5。

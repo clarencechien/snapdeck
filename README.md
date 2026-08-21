@@ -1,6 +1,10 @@
 # SnapDeck
 
-**寫作即排版,貼上即上台。** — 線上版:https://snapdeck.ai-apps.work(v2 雙態同源已交付,狀態見 [`docs/STATUS.md`](docs/STATUS.md);方向見 [`docs/ADR-001-v1-to-v3.md`](docs/ADR-001-v1-to-v3.md))
+**寫作即排版,貼上即上台。** — 線上版:https://snapdeck.ai-apps.work
+(v2 雙態同源已交付,v0.9 補上簡報動畫與自動播放;狀態見
+[`docs/STATUS.md`](docs/STATUS.md),方向見
+[`docs/ADR-001-v1-to-v3.md`](docs/ADR-001-v1-to-v3.md),
+影片輸出計劃見 [`docs/VIDEO-MODE.md`](docs/VIDEO-MODE.md))
 
 **v2:一份 MD,兩種態。** 寫一份**文件密度**的 Markdown(完整段落、可
 獨立閱讀),SnapDeck 一次 render 出**文件態**(blog,主)與**簡報態**
@@ -12,8 +16,9 @@
 SnapDeck 是 Markdown 的「分享與簡報層」,不是編輯器。貼上一份「類通用 Markdown」,十秒內得到:
 
 - 有設計感的**網頁 view**(Notion page 質感)
-- 可全螢幕簡報的 **HTML slide mode**(鍵盤翻頁、speaker notes、深連結)
+- 可全螢幕簡報的 **HTML slide mode**(鍵盤翻頁、speaker notes、深連結、**進場動畫**)
 - 套用 template、**文字可編輯**的 **pptx 下載**
+- 可**自動播放**的 deck(`a` 鍵 / `?auto`),展場掛牆或錄影都用得上
 
 內建 **5 套 template**(Clean Light / Midnight / Craft / Forest / Boardroom),
 preview 頂欄色點一鍵切換,HTML、slide、pptx、mermaid 配色同步生效。
@@ -25,7 +30,14 @@ preview 頂欄色點一鍵切換,HTML、slide、pptx、mermaid 配色同步生�
 `10,000+ 小時` 都能正確滾動並精準還原原字串)。全套走 CSS 動畫 +
 一支 rAF 計數器,零函式庫、零 bundle 增量;Drop 匯出檔一併帶著。
 動畫只作用在簡報態——編輯器縮圖、blog 閱讀頁、pptx 完全不受影響;
-使用者若開啟系統的「減少動態效果」則自動全靜態。
+使用者若開啟系統的「減少動態效果」則自動全靜態。兩條硬規則(踩過坑,
+有測試釘住):animation 簡寫不得含 `var()`(匯出的 CSS 序列化會整條
+掉,D27)、SVG 內部只准動 opacity(CSS transform 會覆蓋 mermaid 的
+定位屬性讓圖表塌掉,D28)。
+
+**自動播放**:簡報模式按 `a` 開始自動翻頁,每頁停留 4–12 秒依內容量
+估算;網址帶 `?auto` 進場即播,Drop 匯出檔的 `?auto` 還會循環播放
+(展場 kiosk),`?auto=8` 可固定每頁秒數。手動翻頁即停。
 
 **分享連結(仿 PlantUML)**:「⛓ 分享」把目前的 MD + template 以
 deflate 壓縮 + base64url 編進網址的 hash fragment(`#s=2.…`),對方開
