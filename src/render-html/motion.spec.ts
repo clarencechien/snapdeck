@@ -53,6 +53,25 @@ describe("motion.css — 匯出安全性", () => {
     }
   });
 
+  it("SVG 內部只准動 opacity(CSS transform 會覆蓋 mermaid 的定位屬性)", () => {
+    // 只動 opacity 的 keyframe 名單
+    const opacityOnly = new Set(
+      (motion.match(/@keyframes\s+([\w-]+)\s*\{[\s\S]*?\n\}/g) ?? [])
+        .filter((f) => !/transform\s*:/.test(f))
+        .map((f) => /@keyframes\s+([\w-]+)/.exec(f)![1])
+    );
+    expect(opacityOnly.has("sd-fade")).toBe(true);
+
+    const rules = motion.replace(/\/\*[\s\S]*?\*\//g, "").match(/[^{}]+\{[^}]*\}/g) ?? [];
+    const svgRules = rules.filter((r) => /\.sd-diagram/.test(r.split("{")[0]));
+    expect(svgRules.length).toBeGreaterThan(0);
+    for (const r of svgRules) {
+      const used = /animation:\s*([\w-]+)/.exec(r)?.[1];
+      expect(used && opacityOnly.has(used), `圖表規則用了會動 transform 的 ${used}:\n${r}`).toBe(true);
+      expect(/transform(-origin)?\s*:/.test(r), `圖表規則不得設 transform:\n${r}`).toBe(false);
+    }
+  });
+
   it("保留 prefers-reduced-motion 降級", () => {
     expect(motion).toMatch(/@media \(prefers-reduced-motion: reduce\)/);
     expect(motion).toMatch(/animation: none !important/);

@@ -86,3 +86,6 @@ v2 相關裁決:DECISIONS D24。方向文件:docs/ADR-001-v1-to-v3.md、docs/HAN
 - v0.9.1 修:匯出檔動畫失效(CSS 序列化丟簡寫,DECISIONS D27)——
   緩動改寫死 + motion.css 原文內嵌 + 5 條防呆測試;逐頁驗收 10/10 頁
   的內容區塊與子項目在匯出檔都拿到動畫。
+- v0.9.2 修:簡報播放時 mermaid 節點塌到原點(CSS transform 覆蓋 SVG
+  transform 屬性,DECISIONS D28)——圖表內部改為純 opacity 動畫 +
+  防呆測試;實測節點座標與未動畫縮圖完全一致(動畫中與動畫後皆是)。
