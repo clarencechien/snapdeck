@@ -303,3 +303,33 @@ autoplay 交付後 UAT 回饋「怎麼沒有動畫感」——autoplay 只是自
   漂移風險限縮在 25 行的動畫迴圈。
 - **無障礙**:`prefers-reduced-motion: reduce` 時整組 `animation:none
   !important`,數字直接停在終值(原字串),不需要另寫 fallback。
+
+## D27:匯出的 CSS 序列化陷阱——動畫在站內有、匯出檔沒有
+
+UAT 回報「第二頁季度總覽的 widget 在 web 有淡入,export 後就沒了」。
+
+**根因**:Drop 匯出用 `collectCss()` 逐條 `rule.cssText` 序列化再重新
+解析。當一條規則同時具備:
+
+1. 含 `var()` 的 `animation` **簡寫**(pending-substitution value),與
+2. 之後覆蓋的 `animation-delay` **長寫**
+
+Chromium 序列化不出這個組合——**整個簡寫消失、只留下 delay**。匯出檔
+因此 `animation-delay: .16s` 還在、`animation-name` 卻是 `none`。這也
+精準解釋了症狀分布:標題/overline/章節鬼影數字(只有簡寫、無 delay
+覆蓋)照常動,卡片/KPI/內容區塊(都有 delay 覆蓋)全部靜止。
+
+**兩道保險**(缺一不可):
+
+- **簡寫不再用 var()**:緩動改寫死 `cubic-bezier(0, 0, 0.2, 1)`。
+  動畫是全站唯一 DNA,不需要換皮,寫死沒有損失。
+- **原文內嵌**:`exportDeck` 以 `motion.css?raw` 把動畫 CSS 原字串
+  直接寫進匯出檔(排在 collectCss 之後),徹底不依賴序列化還原。
+
+**防呆**:`render-html/motion.spec.ts` 5 條測試釘住——簡寫不得含
+var()、exportDeck 必須原文內嵌、keyframes 只准動 opacity/transform、
+每條規則都要有簡報態前綴、reduced-motion 降級要在。
+
+**教訓**:凡是「把 live DOM/CSSOM 序列化成檔案」的匯出路徑,都要有一
+條「匯出檔本身」的驗收,不能只驗站內。站內是 CSSOM,匯出檔是文字—
+—兩者之間有損。

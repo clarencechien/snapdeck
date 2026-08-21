@@ -4,6 +4,9 @@
 // 播放 runtime 是 ~3KB vanilla JS,不帶 React。
 
 import { createRoot } from "react-dom/client";
+// 動畫 CSS 以原始文字內嵌:collectCss() 走 rule.cssText 的序列化會漏掉
+// 某些宣告組合(見 DECISIONS D27),原文注入是唯一保證匯出與站內一致的方式。
+import motionCss from "../app/motion.css?raw";
 import type { SlideDoc } from "../ir/types";
 import { autoDelaySeconds } from "../ir/weight";
 import type { TemplateConfig } from "../templates";
@@ -270,6 +273,7 @@ export async function exportDeck(
       '<meta name="viewport" content="width=device-width, initial-scale=1">',
       `<title>${title}</title>`,
       `<style>${collectCss()}</style>`,
+      `<style>${motionCss}</style>`,
       `<style>${DECK_CSS}</style>`,
       "</head>",
       '<body data-mode="deck">',
