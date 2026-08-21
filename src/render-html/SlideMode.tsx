@@ -1,8 +1,10 @@
 // 自製 slide runtime:全螢幕、方向鍵/空白鍵翻頁、Esc 退出、
-// ?p=N 深連結、speaker notes 面板(s 鍵)。不用 reveal.js。
+// ?p=N 深連結、speaker notes 面板(s 鍵)、autoplay(a 鍵/?auto)。
+// 不用 reveal.js。
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { SlideDoc } from "../ir/types";
+import { autoDelaySeconds } from "../ir/weight";
 import type { TemplateConfig } from "../templates";
 import { ScaledSlide, computeSectionNos } from "./SlideView";
 
@@ -10,6 +12,10 @@ function readDeepLink(): number {
   const p = new URLSearchParams(window.location.search).get("p");
   const n = p ? parseInt(p, 10) : NaN;
   return Number.isFinite(n) && n >= 1 ? n - 1 : 0;
+}
+
+function readAutoParam(): boolean {
+  return new URLSearchParams(window.location.search).get("auto") !== null;
 }
 
 function writeDeepLink(idx: number) {
@@ -41,6 +47,7 @@ export function SlideMode({
   const sectionNos = useMemo(() => computeSectionNos(slides), [slides]);
   const [idx, setIdx] = useState(() => Math.min(readDeepLink(), Math.max(0, slides.length - 1)));
   const [showNotes, setShowNotes] = useState(false);
+  const [auto, setAuto] = useState(readAutoParam);
 
   const go = useCallback(
     (next: number) => {
@@ -50,6 +57,25 @@ export function SlideMode({
     },
     [slides.length]
   );
+
+  // 手動翻頁即停止 autoplay(kiosk 慣例)
+  const goManual = useCallback(
+    (next: number) => {
+      setAuto(false);
+      go(next);
+    },
+    [go]
+  );
+
+  useEffect(() => {
+    if (!auto || !slides.length) return;
+    if (idx >= slides.length - 1) {
+      setAuto(false);
+      return;
+    }
+    const t = setTimeout(() => go(idx + 1), autoDelaySeconds(slides[idx]) * 1000);
+    return () => clearTimeout(t);
+  }, [auto, idx, go, slides]);
 
   useEffect(() => {
     writeDeepLink(idx);
@@ -71,24 +97,28 @@ export function SlideMode({
         case "PageDown":
         case "Enter":
           e.preventDefault();
-          go(idx + 1);
+          goManual(idx + 1);
           break;
         case "ArrowLeft":
         case "ArrowUp":
         case "PageUp":
         case "Backspace":
           e.preventDefault();
-          go(idx - 1);
+          goManual(idx - 1);
           break;
         case "Home":
-          go(0);
+          goManual(0);
           break;
         case "End":
-          go(slides.length - 1);
+          goManual(slides.length - 1);
           break;
         case "s":
         case "S":
           setShowNotes((v) => !v);
+          break;
+        case "a":
+        case "A":
+          setAuto((v) => !v);
           break;
         case "Escape":
           onExit();
@@ -97,7 +127,7 @@ export function SlideMode({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [idx, go, onExit, slides.length]);
+  }, [idx, goManual, onExit, slides.length]);
 
   if (!slides.length) {
     return (
@@ -116,7 +146,7 @@ export function SlideMode({
         onClick={(e) => {
           // 點右半前進、左半後退
           const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-          go(e.clientX - rect.left > rect.width / 2 ? idx + 1 : idx - 1);
+          goManual(e.clientX - rect.left > rect.width / 2 ? idx + 1 : idx - 1);
         }}
       >
         <ScaledSlide
@@ -135,7 +165,7 @@ export function SlideMode({
         </div>
       ) : null}
       <div className="sd-present-hint">
-        ←/→ 翻頁 · s 備註 · Esc 離開
+        {auto ? "▶ 自動播放中 · a 停止 · " : "←/→ 翻頁 · s 備註 · a 自動播放 · "}Esc 離開
         {onShare ? (
           <button
             className="sd-present-share"

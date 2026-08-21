@@ -41,7 +41,9 @@ zip**——內含 index.html,開啟預設是全螢幕簡報播放(vanilla runtim
 鍵盤/點擊翻頁、`?p=N`、`s` 備註),header bar 可切 blog 閱讀模式;
 並自動開啟 [cloudflare.com/drop](https://cloudflare.com/drop) 分頁,
 把 zip 拖進去**秒得 60 分鐘匿名臨時網址**(按 Claim 可永久保留)。
-計劃與取捨見 [`docs/DROP-MODE.md`](docs/DROP-MODE.md)。
+Drop 檔也支援自動播放(`a` 鍵;網址加 `?auto` 循環播放,適合 kiosk)。
+計劃與取捨見 [`docs/DROP-MODE.md`](docs/DROP-MODE.md);
+影片輸出路線(查證完成、未實作)見 [`docs/VIDEO-MODE.md`](docs/VIDEO-MODE.md)。
 
 全程純前端:解析、渲染、pptx 產出都在瀏覽器完成,**文件內容不離開瀏覽器**、零網路呼叫(mermaid 等函式庫打包進 bundle)。
 
@@ -114,8 +116,10 @@ DECISIONS.md     # 實作期間的裁決記錄
 | ←/↑/Backspace | 上一頁 |
 | Home / End | 第一頁 / 最後一頁 |
 | `s` | speaker notes 面板 |
+| `a` | 自動播放開關(每頁停留秒數依內容量 4–12 秒;手動翻頁即停) |
 | Esc | 離開 |
 | 網址 `?p=N` | 深連結到第 N 頁 |
+| 網址 `?auto` | 進場即自動播放;Drop 檔加 `?auto` 會循環播放(kiosk),`?auto=8` 固定每頁 8 秒 |
 
 ## 非目標(v1)
 

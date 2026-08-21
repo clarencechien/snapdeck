@@ -5,6 +5,7 @@
 
 import { createRoot } from "react-dom/client";
 import type { SlideDoc } from "../ir/types";
+import { autoDelaySeconds } from "../ir/weight";
 import type { TemplateConfig } from "../templates";
 import { templateCssVars } from "../templates";
 import { PageView } from "./PageView";
@@ -54,7 +55,7 @@ function DeckExport({
     <>
       <div id="dk-deck-src">
         {slides.map((slide, i) => (
-          <div className="dk-slide" key={i}>
+          <div className="dk-slide" data-dur={autoDelaySeconds(slide)} key={i}>
             <SlideSurface
               slide={slide}
               template={template}
@@ -90,6 +91,24 @@ const RUNTIME = String.raw`(function(){
   var i=0;
   var q=new URLSearchParams(location.search);var p0=parseInt(q.get('p')||'',10);
   if(p0>=1&&p0<=total)i=p0-1;
+  // autoplay:?auto 啟動(kiosk,播到底循環);?auto=N 固定每頁 N 秒;
+  // a 鍵隨時開關(手動開的播到最後一頁停);手動翻頁即停。
+  var autoOn=q.get('auto')!==null,autoLoop=autoOn,autoT=0;
+  var autoFix=parseFloat(q.get('auto')||'');if(!(autoFix>0))autoFix=0;
+  function autoNext(){
+    if(i<total-1){show(i+1);}
+    else if(autoLoop){show(0);}
+    else{autoOn=false;paintAuto();return;}
+    armAuto();
+  }
+  function armAuto(){
+    clearTimeout(autoT);paintAuto();
+    if(!autoOn)return;
+    var d=autoFix||parseFloat(slides[i].getAttribute('data-dur')||'')||6;
+    autoT=setTimeout(autoNext,d*1000);
+  }
+  function stopAuto(){autoOn=false;autoLoop=false;clearTimeout(autoT);paintAuto();}
+  function paintAuto(){count.style.color=autoOn?'var(--sd-accent)':'';}
   function mode(){return document.body.getAttribute('data-mode');}
   function setMode(m){
     document.body.setAttribute('data-mode',m);
@@ -109,7 +128,7 @@ const RUNTIME = String.raw`(function(){
   function show(n){
     i=Math.max(0,Math.min(total-1,n));
     slides.forEach(function(el,j){el.style.display=j===i?'block':'none';});
-    count.textContent=(i+1)+' / '+total;
+    count.textContent=(autoOn?'▶ ':'')+(i+1)+' / '+total;
     var nd=slides[i].querySelector('.dk-notes');
     notesBody.textContent=(nd&&nd.textContent.trim())||'(本頁無備註)';
     try{history.replaceState(null,'',location.pathname+'?p='+(i+1));}catch(e){}
@@ -119,28 +138,29 @@ const RUNTIME = String.raw`(function(){
     if(mode()!=='deck')return;
     switch(e.key){
       case 'ArrowRight':case 'ArrowDown':case ' ':case 'PageDown':case 'Enter':
-        e.preventDefault();show(i+1);break;
+        e.preventDefault();stopAuto();show(i+1);break;
       case 'ArrowLeft':case 'ArrowUp':case 'PageUp':case 'Backspace':
-        e.preventDefault();show(i-1);break;
-      case 'Home':show(0);break;
-      case 'End':show(total-1);break;
+        e.preventDefault();stopAuto();show(i-1);break;
+      case 'Home':stopAuto();show(0);break;
+      case 'End':stopAuto();show(total-1);break;
       case 's':case 'S':notesPanel.hidden=!notesPanel.hidden;break;
+      case 'a':case 'A':autoOn=!autoOn;if(autoOn){armAuto();}else{stopAuto();}show(i);break;
       case 'Escape':notesPanel.hidden=true;break;
     }
   });
   stage.addEventListener('click',function(e){
     if(e.target.closest('#dk-notes-panel'))return;
     var r=stage.getBoundingClientRect();
-    show(e.clientX-r.left>r.width/2?i+1:i-1);
+    stopAuto();show(e.clientX-r.left>r.width/2?i+1:i-1);
   });
   document.getElementById('dk-mode-deck').addEventListener('click',function(){setMode('deck');});
-  document.getElementById('dk-mode-read').addEventListener('click',function(){setMode('reader');});
+  document.getElementById('dk-mode-read').addEventListener('click',function(){stopAuto();setMode('reader');});
   document.getElementById('dk-full').addEventListener('click',function(){
     if(document.fullscreenElement){document.exitFullscreen&&document.exitFullscreen();}
     else{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
   });
   window.addEventListener('resize',fit);
-  setMode('deck');show(i);
+  setMode('deck');show(i);armAuto();
 })();`;
 
 const DECK_CSS = `
@@ -244,7 +264,7 @@ export async function exportDeck(
       `<div id="dk-frame">${deckHtml}</div>`,
       '<aside id="dk-notes-panel" hidden><h4>Speaker Notes(s 鍵開關)</h4><div id="dk-notes-body"></div></aside>',
       "</main>",
-      '<div class="dk-hint">←/→ 或點擊翻頁 · s 備註 · ☰ 切閱讀模式</div>',
+      '<div class="dk-hint">←/→ 或點擊翻頁 · s 備註 · a 自動播放(網址加 ?auto 循環播放)· ☰ 切閱讀模式</div>',
       '<div id="dk-reader" hidden><div class="sd-export-root">',
       readerHtml,
       '<div class="dk-foot">以 SnapDeck 製作 — 寫作即排版,貼上即上台</div>',
