@@ -133,3 +133,12 @@ Drop mode 是三者中唯一「內容明文離開使用者掌控」的通道—�
 - runtime:~3KB vanilla JS(翻頁/點擊/縮放/?p=N/s 鍵 notes/全螢幕),
   不帶 React;slides 於匯出時離螢幕預渲染(字級縮放收斂後序列化)。
 - 隱私提示放在勾選的 tooltip(明文上臨時網站;敏感內容導向零知識短連結)。
+
+## 附註二:autoplay(v0.8)
+
+Drop 檔的播放 runtime 新增自動播放:`a` 鍵開關(播到最後一頁停,適合
+排練);網址加 **`?auto` 進場即播且循環**(kiosk/展場掛牆);
+`?auto=8` 固定每頁 8 秒(對外 demo 要可預測時)。未帶參數時每頁停留
+由內容量估 4–12 秒(export 時寫進各頁 `data-dur`,與 app 端同一條
+`autoDelaySeconds` 規則)。任何手動翻頁(鍵盤/點擊)即停止自動播放;
+切到閱讀模式也會停。影片輸出路線見 docs/VIDEO-MODE.md。

@@ -254,3 +254,22 @@ v3 用單位白名單猜數值邊界,實測連環失敗:`129 KB` 被切成 129 K
 
 pptxgenjs `addTable` 只給 `w` 不鎖 `h`,行高自動長;generator 只以估算值
 推進後續 block 的 y 座標。避免鎖死高度造成文字被裁切(可編輯性優先)。
+
+## D25:autoplay 與影片路線(v0.8)
+
+- **autoplay 先行**:影片=「autoplay 走完 + 畫面存檔」,先交付地基。
+  app 簡報模式與 Drop runtime 同規則:`a` 鍵開關、`?auto` 進場即播、
+  手動翻頁即停(kiosk 慣例)。每頁停留秒數確定性:
+  `autoDelaySeconds = clamp(4 + contentWeight×0.35, 4, 12)`,與字級縮放
+  共用同一套 contentWeight;export 時寫進 `data-dur`,vanilla runtime
+  不必重算,兩端不漂移。
+- **循環語意分家**:Drop 檔 `?auto` 循環播放(展場/kiosk 場景);
+  `a` 手動開啟則播到底就停(排練場景);app 內一律播到底停。
+  `?auto=N` 固定秒數覆蓋估算(demo 對外時要可預測)。
+- **影片輸出只查證、先不做**(docs/VIDEO-MODE.md):錄影式
+  (getDisplayMedia+MediaRecorder,Chrome 可直出 MP4、可用
+  Region/Element Capture 裁到舞台)1–2 天可交付;正解是離線逐幀
+  (WAAPI 撥時間軸 + foreignObject 光柵化 + WebCodecs + mp4-muxer),
+  比即時快、零彈窗,風險集中在 DOM 光柵化保真。伺服器端渲染因
+  零後端原則否決。順序:動畫系統(open-slide 研究的 1+2+3)先於
+  影片——影片值不值得出,取決於畫面裡有沒有動畫可看。

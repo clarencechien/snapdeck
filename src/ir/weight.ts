@@ -53,6 +53,12 @@ export function statSizeTier(value: string): 0 | 1 | 2 {
   return 2;
 }
 
+/** autoplay 每頁停留秒數:依內容量估,4–12 秒。HTML slide mode 與
+    Drop zip runtime 共用(export 時寫進 data-dur,兩端同一條規則)。 */
+export function autoDelaySeconds(slide: Slide): number {
+  return Math.round(Math.min(12, Math.max(4, 4 + contentWeight(slide) * 0.35)) * 10) / 10;
+}
+
 /** 內容稀疏(垂直置中門檻);diagram/image 頁另有專屬置中規則 */
 export function isSparse(slide: Slide): boolean {
   const hasHeavy = slide.blocks.some((b) => b.kind === "diagram" || b.kind === "image");

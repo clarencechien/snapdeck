@@ -57,3 +57,15 @@
 | build 單一靜態站、npm test 全綠 | ✅ | 93 tests(新增 summarizer 18 例 + 投影 snapshot ×9) |
 
 v2 相關裁決:DECISIONS D24。方向文件:docs/ADR-001-v1-to-v3.md、docs/HANDOFF-snapdeck-v2.md。
+
+---
+
+# v0.8 增量(autoplay + 影片路線查證)
+
+- **autoplay 已交付**:app 簡報模式 `a` 鍵/`?auto`;Drop zip `a` 鍵/
+  `?auto`(循環)/`?auto=N`(固定秒);每頁停留 4–12 秒依內容量估
+  (`autoDelaySeconds`,export 寫進 `data-dur`);手動翻頁即停。
+- **影片輸出**:三路線查證完畢寫入 docs/VIDEO-MODE.md(錄影式/
+  Chrome Region·Element Capture/離線逐幀 WebCodecs),Chrome-only
+  可達「按一下→進度條→mp4 下載」的終局體驗;實作排在動畫系統之後。
+- 裁決:DECISIONS D25。
