@@ -110,16 +110,19 @@
 :is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(4) { animation-delay: 450ms; }
 :is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(n + 5) { animation-delay: 500ms; }
 
-/* ---- 圖表:整張浮現後,節點/線條/扇形依序長出 ---- */
+/* ---- 圖表:節點/線條/扇形依序浮現 ----
+   ⚠ SVG 內部**只准動 opacity**(一律 sd-fade)。mermaid 的節點靠
+   `<g transform="translate(x,y)">` 屬性定位,CSS transform 會整個
+   覆蓋掉它,節點會全部塌到原點——而 animation-fill-mode: both 讓
+   這個破壞在動畫結束後仍然留著。見 DECISIONS D28。 */
 :is(.sd-present, #dk-frame) .sd-diagram :is(.node, .cluster, .label-container) {
-  animation: sd-pop 460ms cubic-bezier(0, 0, 0.2, 1) 420ms both;
+  animation: sd-fade 460ms cubic-bezier(0, 0, 0.2, 1) 420ms both;
 }
 :is(.sd-present, #dk-frame) .sd-diagram :is(.edgePath, .edgePaths, .edgeLabel, .flowchart-link) {
   animation: sd-fade 500ms cubic-bezier(0, 0, 0.2, 1) 560ms both;
 }
 :is(.sd-present, #dk-frame) .sd-diagram :is(.pieCircle, .slice, .bar, .arc) {
-  animation: sd-pop 520ms cubic-bezier(0, 0, 0.2, 1) 420ms both;
-  transform-origin: center;
+  animation: sd-fade 520ms cubic-bezier(0, 0, 0.2, 1) 420ms both;
 }
 
 /* ---- 頁尾最後才出現 ---- */

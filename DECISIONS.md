@@ -333,3 +333,27 @@ var()、exportDeck 必須原文內嵌、keyframes 只准動 opacity/transform、
 **教訓**:凡是「把 live DOM/CSSOM 序列化成檔案」的匯出路徑,都要有一
 條「匯出檔本身」的驗收,不能只驗站內。站內是 CSSOM,匯出檔是文字—
 —兩者之間有損。
+
+## D28:CSS transform 不可用在 SVG 內部——mermaid 在播放時塌掉
+
+UAT 回報「預覽沒問題,播放時 mermaid 爛掉」:節點方塊全擠在左上、
+文字互相重疊,只有箭頭還在原位。
+
+**根因**:D26 給圖表內部套了 `sd-pop`(scale 0.96 → none)。mermaid 的
+節點是 `<g class="node" transform="translate(x,y)">`——座標來自 **SVG
+transform 屬性**,而 **CSS transform 會整個覆蓋它**,節點於是全部塌到
+原點;箭頭走 path 的 `d` 座標、不受 transform 影響,所以留在原地——
+這正是畫面上「只剩箭頭」的成因。`animation-fill-mode: both` 讓破壞在
+動畫結束後仍然留著,不是一閃而過而是永久壞掉。預覽縮圖不在
+`.sd-present`/`#dk-frame` 範圍內,所以完好——這就是兩邊落差的來源。
+
+**修法**:`.sd-diagram` 底下一律只用 `sd-fade`(純 opacity),移除
+`transform-origin`。節點依序浮現的效果保留,只是不再帶縮放。
+
+**防呆**:motion.spec 新增一條——凡選擇器含 `.sd-diagram` 的規則,只
+准使用「不含 transform 的 keyframe」,且規則本身不得出現 `transform`/
+`transform-origin`。keyframe 是否動 transform 由測試自己解析,新增
+keyframe 也自動納管。
+
+**通則**:動畫要碰 SVG 內容時,先問「這個元素的定位是不是靠屬性?」
+是的話,能動的只有 opacity / fill / stroke 這類不參與定位的性質。
