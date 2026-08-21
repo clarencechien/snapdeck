@@ -5,6 +5,7 @@ import type { Block, InlineText, ListItem } from "../ir/types";
 import type { TemplateConfig } from "../templates";
 import { renderMermaid } from "./mermaid";
 import { statSizeTier } from "../ir/weight";
+import { statNumberAttrs } from "../ir/statnum";
 
 export function Inline({ text }: { text: InlineText }) {
   return (
@@ -191,7 +192,10 @@ export function BlockView({
     case "stat":
       return (
         <div className={`sd-stat${emphasisCls}`}>
-          <div className={`sd-stat-value sd-stat-t${statSizeTier(block.value)}`}>
+          <div
+            className={`sd-stat-value sd-stat-t${statSizeTier(block.value)}`}
+            {...statNumberAttrs(block.value)}
+          >
             {block.value}
           </div>
           {block.label ? <div className="sd-stat-label">{block.label}</div> : null}

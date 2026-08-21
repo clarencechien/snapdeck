@@ -1,0 +1,138 @@
+/* ============================================================
+   Motion kit — 只作用在「簡報態」:站內簡報模式 .sd-present 與
+   Drop 匯出檔的舞台 #dk-frame。編輯器縮圖、閱讀頁、HTML 匯出、
+   pptx 一律不受影響(它們不在這兩個容器裡)。
+
+   紀律(參考業界簡報動畫標準,見 DECISIONS D26):
+   - 一份 deck 只有一套 DNA:同一組時長、同一組緩動、同一種節奏
+   - 位移上限 10px、縮放上限 4%;opacity 永遠參與
+   - 進場一律 ease-out;時長 260–460ms(換頁 260ms,內容 460ms)
+   - 只動 opacity / transform,絕不動高度或 margin——版面量測
+     (溢版偵測、字級降級)因此完全不受動畫干擾
+   ============================================================ */
+
+:root {
+  --sd-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --sd-motion-step: 60ms; /* 逐項間隔 */
+}
+
+@keyframes sd-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sd-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sd-pop {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sd-wipe {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- 換頁:整頁淡入(house transition) ---- */
+:is(.sd-present, #dk-frame) .sd-slide {
+  animation: sd-fade 260ms var(--sd-ease-out) both;
+}
+
+/* ---- 標題與章節裝飾 ---- */
+:is(.sd-present, #dk-frame) .sd-slide-title {
+  animation: sd-rise 420ms var(--sd-ease-out) 60ms both;
+}
+:is(.sd-present, #dk-frame) .sd-overline {
+  animation: sd-fade 460ms var(--sd-ease-out) 40ms both;
+}
+:is(.sd-present, #dk-frame) .sd-ghost-no {
+  animation: sd-pop 620ms var(--sd-ease-out) both;
+}
+
+/* ---- 內容區:逐塊上浮 ---- */
+:is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > * {
+  animation: sd-rise 460ms var(--sd-ease-out) both;
+  animation-delay: 160ms;
+}
+:is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > *:nth-child(2) { animation-delay: 220ms; }
+:is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > *:nth-child(3) { animation-delay: 280ms; }
+:is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > *:nth-child(4) { animation-delay: 340ms; }
+:is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > *:nth-child(5) { animation-delay: 400ms; }
+:is(.sd-present, #dk-frame) :is(.sd-slide-body, .sd-col) > *:nth-child(n + 6) { animation-delay: 460ms; }
+
+/* two-col 兩欄同時開始,不要左欄跑完才輪右欄 */
+:is(.sd-present, #dk-frame) .sd-two-col { animation: none; }
+
+/* ---- 卡片:逐張浮現 ---- */
+:is(.sd-present, #dk-frame) .sd-card {
+  animation: sd-pop 420ms var(--sd-ease-out) both;
+  animation-delay: 260ms;
+}
+:is(.sd-present, #dk-frame) .sd-card:nth-child(2) { animation-delay: 320ms; }
+:is(.sd-present, #dk-frame) .sd-card:nth-child(3) { animation-delay: 380ms; }
+:is(.sd-present, #dk-frame) .sd-card:nth-child(4) { animation-delay: 440ms; }
+:is(.sd-present, #dk-frame) .sd-card:nth-child(n + 5) { animation-delay: 500ms; }
+
+/* ---- 步驟條:依序推入 ---- */
+:is(.sd-present, #dk-frame) .sd-steps > li {
+  animation: sd-wipe 420ms var(--sd-ease-out) both;
+  animation-delay: 260ms;
+}
+:is(.sd-present, #dk-frame) .sd-steps > li:nth-child(2) { animation-delay: 330ms; }
+:is(.sd-present, #dk-frame) .sd-steps > li:nth-child(3) { animation-delay: 400ms; }
+:is(.sd-present, #dk-frame) .sd-steps > li:nth-child(4) { animation-delay: 470ms; }
+:is(.sd-present, #dk-frame) .sd-steps > li:nth-child(n + 5) { animation-delay: 540ms; }
+
+/* ---- KPI 看板:逐格浮現(數字本身由 count-up 滾動) ---- */
+:is(.sd-present, #dk-frame) .sd-stat-tile {
+  animation: sd-pop 440ms var(--sd-ease-out) both;
+  animation-delay: 240ms;
+}
+:is(.sd-present, #dk-frame) .sd-stat-tile:nth-child(2) { animation-delay: 320ms; }
+:is(.sd-present, #dk-frame) .sd-stat-tile:nth-child(3) { animation-delay: 400ms; }
+:is(.sd-present, #dk-frame) .sd-stat-tile:nth-child(n + 4) { animation-delay: 480ms; }
+
+/* ---- 清單、表格列 ---- */
+:is(.sd-present, #dk-frame) .sd-list > li {
+  animation: sd-rise 400ms var(--sd-ease-out) both;
+  animation-delay: 240ms;
+}
+:is(.sd-present, #dk-frame) .sd-list > li:nth-child(2) { animation-delay: 300ms; }
+:is(.sd-present, #dk-frame) .sd-list > li:nth-child(3) { animation-delay: 360ms; }
+:is(.sd-present, #dk-frame) .sd-list > li:nth-child(4) { animation-delay: 420ms; }
+:is(.sd-present, #dk-frame) .sd-list > li:nth-child(n + 5) { animation-delay: 480ms; }
+:is(.sd-present, #dk-frame) .sd-table tbody tr {
+  animation: sd-fade 380ms var(--sd-ease-out) both;
+  animation-delay: 300ms;
+}
+:is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(2) { animation-delay: 350ms; }
+:is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(3) { animation-delay: 400ms; }
+:is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(4) { animation-delay: 450ms; }
+:is(.sd-present, #dk-frame) .sd-table tbody tr:nth-child(n + 5) { animation-delay: 500ms; }
+
+/* ---- 圖表:整張浮現後,節點/線條/扇形依序長出 ---- */
+:is(.sd-present, #dk-frame) .sd-diagram :is(.node, .cluster, .label-container) {
+  animation: sd-pop 460ms var(--sd-ease-out) 420ms both;
+}
+:is(.sd-present, #dk-frame) .sd-diagram :is(.edgePath, .edgePaths, .edgeLabel, .flowchart-link) {
+  animation: sd-fade 500ms var(--sd-ease-out) 560ms both;
+}
+:is(.sd-present, #dk-frame) .sd-diagram :is(.pieCircle, .slice, .bar, .arc) {
+  animation: sd-pop 520ms var(--sd-ease-out) 420ms both;
+  transform-origin: center;
+}
+
+/* ---- 頁尾最後才出現 ---- */
+:is(.sd-present, #dk-frame) .sd-slide-footer {
+  animation: sd-fade 500ms var(--sd-ease-out) 520ms both;
+}
+
+/* ---- 無障礙:使用者要求減少動態 → 全部靜態呈現 ---- */
+@media (prefers-reduced-motion: reduce) {
+  :is(.sd-present, #dk-frame) *,
+  :is(.sd-present, #dk-frame) *::before,
+  :is(.sd-present, #dk-frame) *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

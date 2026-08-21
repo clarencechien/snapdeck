@@ -2,10 +2,11 @@
 // ?p=N 深連結、speaker notes 面板(s 鍵)、autoplay(a 鍵/?auto)。
 // 不用 reveal.js。
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { SlideDoc } from "../ir/types";
 import { autoDelaySeconds } from "../ir/weight";
 import type { TemplateConfig } from "../templates";
+import { runCountUp } from "./countUp";
 import { ScaledSlide, computeSectionNos } from "./SlideView";
 
 function readDeepLink(): number {
@@ -48,6 +49,12 @@ export function SlideMode({
   const [idx, setIdx] = useState(() => Math.min(readDeepLink(), Math.max(0, slides.length - 1)));
   const [showNotes, setShowNotes] = useState(false);
   const [auto, setAuto] = useState(readAutoParam);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  // 換頁後跑大數字 count-up(CSS 進場動畫由 key 換頁重掛觸發)
+  useEffect(() => {
+    runCountUp(stageRef.current);
+  }, [idx, slides]);
 
   const go = useCallback(
     (next: number) => {
@@ -143,6 +150,7 @@ export function SlideMode({
     <div className="sd-present">
       <div
         className="sd-present-stage"
+        ref={stageRef}
         onClick={(e) => {
           // 點右半前進、左半後退
           const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -150,6 +158,7 @@ export function SlideMode({
         }}
       >
         <ScaledSlide
+          key={idx}
           slide={slide}
           template={template}
           pageNo={idx + 1}

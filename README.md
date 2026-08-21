@@ -19,6 +19,14 @@ SnapDeck 是 Markdown 的「分享與簡報層」,不是編輯器。貼上一份
 preview 頂欄色點一鍵切換,HTML、slide、pptx、mermaid 配色同步生效。
 貼上的內容自動存在瀏覽器 localStorage(僅本機),重新整理不遺失。
 
+**簡報動畫(v0.9)**:進簡報模式即有一套動畫——換頁淡入、標題與內容
+逐塊上浮、卡片逐張浮現、步驟條依序推入、表格逐列淡入、圖表節點與
+連線依序長出,**大數字從 0 滾到目標值**(`2.84 億`、`< 500ms`、
+`10,000+ 小時` 都能正確滾動並精準還原原字串)。全套走 CSS 動畫 +
+一支 rAF 計數器,零函式庫、零 bundle 增量;Drop 匯出檔一併帶著。
+動畫只作用在簡報態——編輯器縮圖、blog 閱讀頁、pptx 完全不受影響;
+使用者若開啟系統的「減少動態效果」則自動全靜態。
+
 **分享連結(仿 PlantUML)**:「⛓ 分享」把目前的 MD + template 以
 deflate 壓縮 + base64url 編進網址的 hash fragment(`#s=2.…`),對方開
 連結即還原內容。fragment 不會送出到伺服器、不進 access log——內容
@@ -96,10 +104,10 @@ repo 已含 [`wrangler.jsonc`](wrangler.jsonc)(靜態資產 + 極薄 Worker:僅�
 src/
   parser/        # remark pipeline、directive 解析、profile linter、分頁切塊
   ir/            # SlideDoc IR、buildIR、design rules(純函式)
-  render-html/   # 頁面 view、slide runtime、溢版量測降級、mermaid
+  render-html/   # 頁面 view、slide runtime、溢版量測降級、mermaid、count-up
   render-pptx/   # pptxgenjs generator
   templates/     # 5 套 template(clean-light/midnight/craft/forest/boardroom)+ schema
-  app/           # 編輯器 UI、分享連結、HTML/pptx export 流程
+  app/           # 編輯器 UI、分享連結、HTML/pptx export 流程、motion.css(簡報動畫)
 spec/PROFILE.md  # MD Profile v1(唯一合約)
 skill/SKILL.md   # LLM 產出技能
 prompt.md        # 「AI 產生」按鈕複製的 prompt
