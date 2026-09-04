@@ -14,7 +14,10 @@ export const templates: Record<string, TemplateConfig> = {
 };
 
 export function getTemplate(id: string | undefined): TemplateConfig {
-  return (id && templates[id]) || cleanLight;
+  // Object.hasOwn,不是 `templates[id]`:frontmatter 的 template 是使用者輸入,
+  // `template: constructor` 會沿著原型鏈拿到 Object 函式,render 當場拋錯白畫面。
+  // (target 是 ES2021,還沒有 Object.hasOwn)
+  return id && Object.prototype.hasOwnProperty.call(templates, id) ? templates[id] : cleanLight;
 }
 
 export * from "./types";
