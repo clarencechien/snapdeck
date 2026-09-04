@@ -396,6 +396,20 @@ function buildSlide(raw: RawSlide): Slide {
 
 const KNOWN_META = ["title", "author", "date", "template", "lang"] as const;
 
+/**
+ * BCP-47 的形狀:主語言 2–3 個字母,後面接任意數量的 subtag。
+ *
+ * lang 跟其他 meta 不一樣 —— 它是**唯一會被匯出器拼進 HTML 屬性**的欄位
+ * (`<html lang="…">`),而 frontmatter 是攻擊者控制得到的:
+ * `lang: 'x"><script>…</script><x a="'` 是合法的 YAML。站內用 React 渲染,
+ * 不碰 lang,所以 SPA 本身沒事;但單檔 HTML 匯出與 Drop 模式的 index.html
+ * 會原封不動帶著它,受害者按下「下載 HTML」就把攻擊者的 script 帶回家。
+ *
+ * 白名單比逃逸更可靠:語言標記本來就只有這個形狀,不符的東西沒有任何理由
+ * 出現在那裡。匯出端的屬性逃逸是第二道,不是第一道。
+ */
+const BCP47 = /^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/;
+
 export function buildMeta(frontmatter: Record<string, unknown>): SlideDocMeta {
   const get = (k: string) => {
     const v = frontmatter[k];
@@ -403,12 +417,13 @@ export function buildMeta(frontmatter: Record<string, unknown>): SlideDocMeta {
     if (v instanceof Date) return v.toISOString().slice(0, 10);
     return String(v);
   };
+  const lang = get("lang");
   return {
     title: get("title"),
     author: get("author"),
     date: get("date"),
     template: get("template") ?? "clean-light",
-    lang: get("lang") ?? "zh-TW",
+    lang: lang && BCP47.test(lang) ? lang : "zh-TW",
   };
 }
 

@@ -37,8 +37,15 @@ function collectCss(): string {
   return rules.join("\n");
 }
 
+// 屬性與文字內容共用。引號也要逃 —— 目前 esc() 只用在文字內容上,
+// 但下一個把它拿去填屬性的人不會知道那個差別。
 function esc(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function DeckExport({
@@ -267,7 +274,10 @@ export async function exportDeck(
 
     return [
       "<!doctype html>",
-      `<html lang="${doc.meta.lang ?? "zh-TW"}" style="${varStyle}">`,
+      // lang 在 buildMeta 就過了 BCP-47 白名單;這裡再逃一次屬性當第二道。
+      // 兩道都在的理由:白名單擋的是形狀,逃逸擋的是「哪天有人繞過 buildMeta
+      // 直接組 SlideDoc」——這個檔案自己就把 doc 當成可信輸入在拼字串。
+      `<html lang="${esc(doc.meta.lang ?? "zh-TW")}" style="${esc(varStyle)}">`,
       "<head>",
       '<meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1">',
