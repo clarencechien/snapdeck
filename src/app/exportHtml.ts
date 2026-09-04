@@ -56,7 +56,16 @@ export async function exportHtml(doc: SlideDoc, template: TemplateConfig): Promi
     const varStyle = Object.entries(vars)
       .map(([k, v]) => `${k}: ${v};`)
       .join(" ");
-    const title = (doc.meta.title ?? "SnapDeck").replace(/[<>&]/g, "");
+    // 屬性與文字內容共用的逃逸。title 原本是把 < > & 直接刪掉 —— 夠安全,
+    // 但會把「A & B」變成「A  B」;改成逃逸,內容留著。
+    const esc = (v: string) =>
+      v
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    const title = esc(doc.meta.title ?? "SnapDeck");
     const extraCss = `
       html { background: color-mix(in srgb, ${`#${template.colors.surface}`} 60%, #ffffff); }
       body { margin: 0; padding: 48px 16px 96px;
@@ -69,7 +78,8 @@ export async function exportHtml(doc: SlideDoc, template: TemplateConfig): Promi
     `;
     return [
       "<!doctype html>",
-      `<html lang="${doc.meta.lang ?? "zh-TW"}">`,
+      // lang 在 buildMeta 就過了 BCP-47 白名單,這裡再逃一次屬性當第二道。
+      `<html lang="${esc(doc.meta.lang ?? "zh-TW")}">`,
       "<head>",
       '<meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1">',
@@ -78,7 +88,7 @@ export async function exportHtml(doc: SlideDoc, template: TemplateConfig): Promi
       `<style>${extraCss}</style>`,
       "</head>",
       "<body>",
-      `<div class="sd-export-root" style="${varStyle}">`,
+      `<div class="sd-export-root" style="${esc(varStyle)}">`,
       host.innerHTML,
       `<div class="sd-export-footer">以 <a href="${window.location.origin}${window.location.pathname}">SnapDeck</a> 製作 — 寫作即排版,貼上即上台</div>`,
       "</div>",
