@@ -17,6 +17,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["src/**/*.spec.ts"],
+    // worker/ 也要納入:短連結端點的寫入閘門測試住在那裡,跟它驗的程式放在一起。
+    include: ["src/**/*.spec.ts", "worker/**/*.spec.js"],
   },
 });
