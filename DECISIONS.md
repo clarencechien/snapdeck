@@ -185,8 +185,14 @@ emphasis 整份 1–2 處;fit 只給拆不開的密集表格。修正後 Gemini 
 (Brotli WASM)僅省 15–25%,救不了場景。裁決:採 PrivateBin 模式——
 瀏覽器內 AES-GCM 加密,KV 只存密文,金鑰放 URL fragment(不隨請求
 送出),伺服器與營運者皆無法解密,守住「內容不給出去」;連結 ~60 字元。
-邊界:密文 180 天過期(長連結永久有效且離線可解)、上限 100KB、
-未做限流(公開部署可加 Cloudflare rate limiting)。部署為選配:
+邊界:密文 20KB 以下 180 天、以上 30 天過期(長連結永久有效且離線可解)、
+上限 100KB。**限流已在 code 內**(2026-09-04,原本記為「未做限流,公開部署可加
+Cloudflare rate limiting」):POST /api/s 誰都能打,而 Free plan 的 KV 每天只有
+1,000 次寫入 —— 1000 個 curl 就讓功能全天 503(實測改動前:1000 次全部寫入成功)。
+dashboard 的 rate limiting 只壓速率、壓不住 180 天 TTL 的累積量,也在 repo 裡
+看不到。改成 DO 閘門:每 IP 每分鐘 5 次 + 全站每天 500 次,跨站寫入 403,
+content-length 超量在讀 body 之前 413。閘門壞掉 fail-closed(503),
+撞上限回 429 —— 兩種前端都退回長連結,站不會壞。部署為選配:
 未綁 KV 時 API 回 503,前端自動退回 `#s=` 長連結,既有部署不受影響;
 啟用步驟見 docs/SHORTLINK.md;/api/health 探針回 {worker,kv} 供確認
 部署版本與 KV 綁定(實測使用者把 KV「名稱」填進 id 欄位 → 部署失敗

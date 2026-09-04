@@ -19,5 +19,14 @@
   },
   "kv_namespaces": [
     { "binding": "LINKS", "id": "1dd64f786c2547beb2971a5600c64b90" }
-  ]
+  ],
+  // POST /api/s 誰都能打(零知識短連結沒有帳號可綁),所以寫入要有閘門:
+  // 每 IP 每分鐘 5 次,加上全站每天 500 次。放在 DO 裡是因為 input gate 讓
+  // 「讀計數 → 判斷 → 加一」是原子的;在 Worker 裡做就是 read-then-act。
+  // 撞上限時前端會自動退回長連結,站不會壞。細節見 worker/index.js。
+  "durable_objects": {
+    "bindings": [{ "name": "WRITE_GATE", "class_name": "WriteGate" }]
+  },
+  // SQLite-backed DO:Free plan 也能用。
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["WriteGate"] }]
 }
