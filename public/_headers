@@ -1,0 +1,26 @@
+# Workers Assets 會讀這個檔(與 Pages 同一套慣例)。Vite 把 public/ 原樣複製進
+# dist/,而 wrangler.jsonc 的 assets.directory 就是 dist —— 所以放這裡就會上線。
+#
+# 為什麼這個站需要 CSP:SnapDeck 會把**別人給的內容**渲染出來。#s= 與 #l= 分享
+# 連結裡的 Markdown 來自對方,而 mermaid 圖是 dangerouslySetInnerHTML 進 DOM 的
+# (render-html/blocks.tsx)。mermaid 自己的 securityLevel: "strict" 是第一道,
+# CSP 是唯一的第二道 —— 在這之前一道都沒有。
+#
+# 各條的理由(改動前先讀,收太緊會讓整個編輯器白畫面):
+#   script-src 'self'      bundle 全內嵌,沒有 CDN。mermaid 走 htmlLabels: false,
+#                          不需要 'unsafe-eval'(htmlLabels 會用 foreignObject,
+#                          而且 SVG→canvas 轉 PNG 時畫不出來,pptx 路徑本來就關掉了)
+#   style-src 'unsafe-inline'  CodeMirror 與 React 都會寫 inline style;
+#                          模板色票也是用 style="--sd-…" 帶進去的
+#   img-src * data: blob:  Markdown 允許外部圖片,匯出時會用 data: 內嵌
+#   connect-src 'self'     只有 /api/s(短連結)。沒有第三方追蹤
+#   worker-src blob:       jszip / pptxgenjs 在打包時會起 blob worker
+#   frame-ancestors 'none' 不給嵌 —— 編輯器裡有使用者的草稿
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; media-src 'self' blob:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'

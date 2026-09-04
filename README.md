@@ -125,8 +125,34 @@ skill/SKILL.md   # LLM 產出技能
 prompt.md        # 「AI 產生」按鈕複製的 prompt
 examples/        # 6 份黃金樣本:產、銷、人、發、財 + 產品規劃(= 測試 fixtures)
 docs/            # HANDOFF、DEMO 腳本、STATUS(結案狀態)、SHORTLINK(短連結啟用)
+public/_headers  # 安全標頭(Vite 會複製進 dist,Workers Assets 讀它)
+worker/          # 短連結 API + 寫入閘門(WriteGate DO)
 DECISIONS.md     # 實作期間的裁決記錄
 ```
+
+## 安全標頭
+
+`public/_headers`。**設定跟著程式碼走,不放 Cloudflare dashboard** —— dashboard 上的
+規則在 repo 裡看不到,壞掉或被改掉沒有人會發現。
+
+這個站需要 CSP 的理由很具體:SnapDeck 會把**別人給的內容**渲染出來。`#s=` 與 `#l=`
+分享連結裡的 Markdown 來自對方,而 mermaid 圖是用 `dangerouslySetInnerHTML` 進 DOM 的
+(`render-html/blocks.tsx`)。mermaid 自己的 `securityLevel: "strict"` 是第一道,
+**CSP 是唯一的第二道** —— 在 2026-09-04 之前一道都沒有。
+
+| | |
+|---|---|
+| `script-src 'self'` | bundle 全內嵌,沒有 CDN。mermaid 走 `htmlLabels: false`,不需要 `'unsafe-eval'` |
+| `style-src 'unsafe-inline'` | CodeMirror 與 React 都會寫 inline style;模板色票也是用 `style="--sd-…"` 帶進去的 |
+| `img-src * data: blob:` | Markdown 允許外部圖片,匯出時會用 `data:` 內嵌 |
+| `worker-src blob:` | jszip / pptxgenjs 打包時會起 blob worker |
+| `frame-ancestors 'none'` | 不給嵌 —— 編輯器裡有使用者的草稿 |
+
+> **改這個檔之前先讀上面那張表,收太緊會讓整個編輯器白畫面。**
+> 驗證方式:`npm run build`,把 `dist/` 用同一份標頭起一個本機 server,
+> 用 Chromium 開起來打一份含 mermaid 圖的 Markdown,再按 pptx 與 HTML 匯出,
+> 數 console 裡的 CSP 攔截次數。`curl` 看得到標頭但不會執行 CSP。
+> 2026-09-04 實測:CSP 攔截 0、JS 錯誤 0、mermaid SVG 有畫出來、兩個匯出都產出檔案。
 
 ## 簡報模式操作
 

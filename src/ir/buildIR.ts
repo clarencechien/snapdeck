@@ -27,6 +27,42 @@ import { plainText } from "./types";
 
 // ---------- inline ----------
 
+/**
+ * 只放行看得懂的連結協定,其餘一律當成沒有連結(文字留著)。
+ *
+ * `blocks.tsx` 把 `s.link` 原樣放進 `<a href>`,而 React 18 的 production build
+ * 對 `javascript:` 只在 dev 警告、不擋。實務上那條路目前走不通 ——
+ * `rel="noreferrer"` 隱含 `noopener`,新分頁是沒有 creator 的 opaque origin,
+ * 規範上 `javascript:` 的跨源導航不執行,現代瀏覽器都是這樣。
+ * 但那是**零層次防禦**:它靠的是別人的實作細節,而不是這裡做了什麼。
+ *
+ * 白名單放在 IR,不放在渲染端:IR 會流進頁面 view、slide、單檔 HTML 匯出、
+ * Drop zip 與 pptx —— 在出口擋要擋五次,在入口擋只要一次。
+ */
+const SAFE_SCHEMES = new Set(["http:", "https:", "mailto:"]);
+
+/** `data:image/png;base64,…`。只給 `<img src>` 用 —— 見 safeUrl 的 forImage。 */
+const DATA_IMAGE = /^data:image\/[a-z0-9.+-]+[;,]/i;
+
+/**
+ * @param forImage `<img src>` 另外放行 `data:image/*`。內嵌圖片是 Markdown
+ *   的正當寫法(單檔匯出要自足時尤其如此),而以 `<img>` 載入的 SVG 不會執行腳本。
+ *   `<a href>` 不放行:那是一個可以導航過去的文件。
+ */
+export function safeUrl(url: string | null | undefined, forImage = false): string | undefined {
+  if (!url) return undefined;
+  const raw = url.trim();
+  if (!raw) return undefined;
+  if (forImage && DATA_IMAGE.test(raw)) return raw;
+  // 純片段與相對路徑沒有協定,交給 URL 解析時用一個假的 base 補上。
+  try {
+    const resolved = new URL(raw, "https://snapdeck.invalid/");
+    return SAFE_SCHEMES.has(resolved.protocol) ? raw : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function toInline(nodes: PhrasingContent[]): InlineText {
   const out: InlineText = [];
   const walk = (
@@ -50,9 +86,12 @@ export function toInline(nodes: PhrasingContent[]): InlineText {
         case "inlineCode":
           out.push({ text: n.value, code: true, ...fmt });
           break;
-        case "link":
-          walk(n.children as PhrasingContent[], { ...fmt, link: n.url });
+        case "link": {
+          // 不合法的協定 → 連結整個拿掉,文字照樣顯示。
+          const link = safeUrl(n.url);
+          walk(n.children as PhrasingContent[], link ? { ...fmt, link } : { ...fmt, link: undefined });
           break;
+        }
         case "break":
           out.push({ text: "\n", ...fmt });
           break;
@@ -210,7 +249,10 @@ export function nodeToBlock(node: RootContent): Block | null {
       // 圖片獨立成段 → image block
       if (p.children.length === 1 && p.children[0].type === "image") {
         const img = p.children[0];
-        return { kind: "image", url: img.url, alt: img.alt ?? undefined };
+        // 同一組白名單:<img src> 吃到 javascript: 不會執行,但 IR 不該把它帶下去。
+        const url = safeUrl(img.url, true);
+        if (!url) return { kind: "para", text: [{ text: img.alt ?? "" }] };
+        return { kind: "image", url, alt: img.alt ?? undefined };
       }
       const text = toInline(p.children as PhrasingContent[]);
       const stat = detectStat(text);
